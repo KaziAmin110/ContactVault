@@ -1,0 +1,13 @@
+services:
+  database:
+    image: mysql:8.4
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+  frontend:
+    image: 'httpd:2.4'
+    restart: always
+    ports:
+        - '8080:80'
+    volumes:
+        - './frontend:/usr/local/apache2/htdocs/'
