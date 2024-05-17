@@ -4,10 +4,21 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: example
-  frontend:
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8081:80
+    links:
+      - database
+    environment:
+      PMA_HOST: database
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+  app:
     image: 'httpd:2.4'
     restart: always
     ports:
-        - '8080:80'
+        - '80:80'
     volumes:
         - './frontend:/usr/local/apache2/htdocs/'
