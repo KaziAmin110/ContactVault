@@ -19,9 +19,10 @@ services:
       PMA_PORT: 3306
       PMA_ARBITRARY: 1
   app:
-    image: 'httpd:2.4'
+    build:
+      dockerfile: ./Dockerfile
     restart: always
     ports:
         - '80:80'
     volumes:
-        - './frontend:/usr/local/apache2/htdocs/'
+        - './app:/var/www/html/'
