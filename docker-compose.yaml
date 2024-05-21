@@ -4,6 +4,9 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: example
+    volumes:
+      - ./database_init_scripts:/docker-entrypoint-initdb.d/:ro # Setup scripts
+      - ./.cache/mysql_data:/var/lib/mysql # Database volume
   phpmyadmin:
     image: phpmyadmin
     restart: always
