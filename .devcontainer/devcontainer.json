@@ -13,6 +13,16 @@
 		},
 		"ghcr.io/devcontainers/features/node:1": {},
 		"ghcr.io/devcontainers/features/php:1": {}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"tomoki1207.pdf",
+				"DEVSENSE.phptools-vscode",
+				"inferrinizzard.prettier-sql-vscode",
+				"redhat.vscode-yaml"
+			]
+		}
 	}
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
