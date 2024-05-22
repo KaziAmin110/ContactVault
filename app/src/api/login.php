@@ -68,7 +68,7 @@ if ($authProvider == 'GOOGLE') {
     http_response_code(401);
     echo json_encode(['error' => 'We do not currently support GOOGLE, we will soon.']);
 
-} else if ($authProvider == 'USERNAME_PASSWROD') {
+} else if ($authProvider == 'USERNAME_PASSWORD') {
     $username = $input['username'];
     $password = $input['password'];
     $userId = verifyPassword($username, $password);
