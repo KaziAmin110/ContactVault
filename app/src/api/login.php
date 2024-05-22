@@ -1,5 +1,5 @@
 <?php
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 require 'config.php';
 require 'jwt.php';
 require 'utils.php';
