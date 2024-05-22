@@ -1,0 +1,14 @@
+{
+    "name": "vscode/app",
+    "type": "project",
+    "require": {
+        "firebase/php-jwt": "^6.10",
+        "google/auth": "^1.39"
+    },
+    "authors": [
+        {
+            "name": "Warren Snipes",
+            "email": "contact@warrensnipes.dev"
+        }
+    ]
+}

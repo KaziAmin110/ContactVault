@@ -1,0 +1,35 @@
+services:
+  database:
+    image: mysql:8.4
+    restart: always
+    ports:
+      - 3306:3306
+    env_file:
+      - ./secrets/.env
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: true
+    volumes:
+      - ./database_init_scripts:/docker-entrypoint-initdb.d/:ro # Setup scripts
+      - ./.cache/mysql_data:/var/lib/mysql # Database volume
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8081:80
+    links:
+      - database
+    environment:
+      PMA_HOST: database
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: ./app
+    restart: always
+    ports:
+      - "80:80"
+    env_file:
+      - ./secrets/.env
+    volumes:
+      - "./secrets:/secrets"
