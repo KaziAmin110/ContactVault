@@ -4,8 +4,10 @@ services:
     restart: always
     ports:
       - 3306:3306
+    env_file:
+      - ./secrets/.env
     environment:
-      MYSQL_ROOT_PASSWORD: example
+      MYSQL_RANDOM_ROOT_PASSWORD: true
     volumes:
       - ./database_init_scripts:/docker-entrypoint-initdb.d/:ro # Setup scripts
       - ./.cache/mysql_data:/var/lib/mysql # Database volume
@@ -27,5 +29,7 @@ services:
     restart: always
     ports:
       - "80:80"
+    env_file:
+      - ./secrets/.env
     volumes:
       - "./secrets:/secrets"
