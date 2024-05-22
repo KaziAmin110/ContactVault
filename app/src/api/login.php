@@ -67,7 +67,7 @@ if ($authProvider == 'GOOGLE') {
     //$userId = handleGoogleSignIn($idToken);
     http_response_code(401);
     echo json_encode(['error' => 'We do not currently support GOOGLE, we will soon.']);
-
+    return;
 } else if ($authProvider == 'USERNAME_PASSWORD') {
     $username = $input['username'];
     $password = $input['password'];
@@ -75,6 +75,7 @@ if ($authProvider == 'GOOGLE') {
 } else {
     http_response_code(401);
     echo json_encode(['error' => 'Invalid authentication_provider. We only support the following: [GOOGLE, USERNAME_PASSWORD]']);
+    return;
 }
 
 if ($userId) {
