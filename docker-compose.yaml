@@ -22,9 +22,10 @@ services:
       PMA_ARBITRARY: 1
   app:
     build:
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
+      context: ./app
     restart: always
     ports:
       - "80:80"
     volumes:
-      - "./app:/var/www/html/"
+      - "./secrets:/secrets"
