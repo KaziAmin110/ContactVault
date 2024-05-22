@@ -8,7 +8,7 @@ require 'utils.php';
 function verifyPassword($username, $password): ?string
 {
     $conn = getDbConnection();
-    $stmt = $conn->prepare("SELECT id, password FROM users WHERE username = ?");
+    $stmt = $conn->prepare("SELECT id, password FROM users WHERE authentication_id = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $stmt->store_result();
