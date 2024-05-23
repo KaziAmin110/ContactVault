@@ -68,4 +68,31 @@ class RegisterResponse
 }
 
 
+class Contact
+{
+    public $id;
+    public $user_id;
+    public $first_name;
+    public $last_name;
+    public $phone_number;
+    public $email_address;
+    public $avatar_url;
+    public $bio;
+    public $description;
+
+    public function __construct($id, $user_id, $first_name, $last_name, $phone_number, $email_address, $avatar_url, $bio, $description)
+    {
+        $this->id = $id;
+        $this->user_id = $user_id;
+        $this->first_name = $first_name;
+        $this->last_name = $last_name;
+        $this->phone_number = $phone_number;
+        $this->email_address = $email_address;
+        $this->avatar_url = $avatar_url;
+        $this->bio = $bio;
+        $this->description = $description;
+    }
+}
+
+
 ?>

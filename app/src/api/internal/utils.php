@@ -31,13 +31,4 @@ function random_str(
     return implode('', $pieces);
 }
 
-function getDbConnection()
-{
-    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-    if ($mysqli->connect_error) {
-        die("Connection failed: " . $mysqli->connect_error);
-    }
-    return $mysqli;
-}
-
 ?>
