@@ -33,6 +33,7 @@ Once you have installed the required software listed above you should be ready t
 4. Run the following to create the JWT RS256 encryption keys:
     ```bash
     ssh-keygen -t rsa -b 4096 -m PEM -f secrets/jwt_encryption_key.pem
+    openssl rsa -in secrets/jwt_encryption_key.pem -pubout -outform PEM -out secrets/jwt_encryption_key.pem.pub
     ```
 ### Starting Server
 ```bash
@@ -57,6 +58,9 @@ rm -rf .cache
 In your VS Code window, press `F1` and select `View: Toggle Ports`. This will open the port fowarding window. 
 
 Next, port forward port `80` by selecting `Add Port`. Under `Forwarded Address` it will give you an address to access the website.
+
+### Accessing API Docuementation
+After starting the server and port-forwarding the website in the previous section, you can open the [Swagger UI](https://swagger.io/tools/swagger-ui/) by opening http://YOUR_FORWARDED_ADDRESS/swagger-ui/.
 
 ### Accessing Database
 In your VS Code window, press `F1` and select `View: Toggle Ports`. This will open the port fowarding window.
