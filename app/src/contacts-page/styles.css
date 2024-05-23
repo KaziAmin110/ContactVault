@@ -1,0 +1,137 @@
+
+body {
+    background-color: #f7f8fc;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container-fluid {
+    padding: 0;
+}
+
+.top-bar {
+    background-color: #333;
+    padding: 20px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-bar-left {
+    flex: 1;
+	padding-left: 20px;
+}
+
+.top-bar-title {
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+	padding-left: 15px;
+}
+
+.top-bar-right {
+    flex: 1;
+    text-align: right;
+	margin-right: 50px;
+}
+
+.top-bar-link {
+    color: #fff;
+    margin-left: 40px;
+    text-decoration: none;
+}
+
+.top-bar-link:hover {
+    text-decoration: underline;
+	color: #fff;
+}
+
+.contacts-list {
+    background-color: #fff;
+    padding: 20px;
+    height: calc(100vh - 60px);
+    border-right: 1px solid #ddd;
+}
+
+.search-bar {
+    margin-bottom: 20px;
+	padding-left: 15px;
+}
+
+.list-group-item {
+    display: flex;
+    justify-content: space;
+    align-items: center;
+    border: none;
+    padding: 15px 0;
+	padding-left: 15px;
+}
+
+.list-group-item .contact-checkbox {
+    margin-right: 15px;
+}
+
+.grey-background {
+    background-color: #f0f0f0;
+}
+
+.contact-info {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.contact-actions {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+	padding-left: 15px;
+}
+
+.contact-actions button {
+    margin-right: 10px;
+}
+
+.contact-details {
+    padding: 20px;
+}
+
+.contact-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+	padding-top: 125px;
+}
+
+.avatar-large {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.bio {
+    font-style: italic;
+    color: #666;
+	padding-right: 150px;
+}
+
+.contact-info-list {
+    list-style: none;
+    padding: 0;
+}
+
+.contact-info-list li {
+    margin-bottom: 10px;
+}
+
+.selected {
+    background-color: #d3d3d3;
+}

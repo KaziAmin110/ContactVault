@@ -1,0 +1,346 @@
+openapi: 3.0.1
+info:
+  title: Authentication API
+  description: API for user authentication and registration
+  version: 1.0.0
+paths:
+  /api/login.php:
+    post:
+      summary: User login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                authentication_provider:
+                  type: string
+                  enum: [USERNAME_PASSWORD, GOOGLE]
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user_id:
+                    type: string
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Invalid credentials or authentication provider
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /api/register.php:
+    post:
+      summary: User registration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                authentication_provider:
+                  type: string
+                  enum: [USERNAME_PASSWORD, GOOGLE]
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successful registration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user_id:
+                    type: string
+        '400':
+          description: Invalid input or duplicate entry
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /api/add_contact.php:
+    post:
+      summary: Add a new contact
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                contact:
+                  type: object
+                  properties:
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    email:
+                      type: string
+      responses:
+        '200':
+          description: Contact added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contact:
+                    type: object
+                    properties:
+                      contact_id:
+                        type: string
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      email:
+                        type: string
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /api/get_contact.php:
+    post:
+      summary: Get a contact
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                contact_id:
+                  type: string
+      responses:
+        '200':
+          description: Contact retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contact:
+                    type: object
+                    properties:
+                      contact_id:
+                        type: string
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      email:
+                        type: string
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '404':
+          description: Contact not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /api/delete_contact.php:
+    post:
+      summary: Delete a contact
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                contact_id:
+                  type: string
+      responses:
+        '200':
+          description: Contact deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contact:
+                    type: object
+                    properties:
+                      contact_id:
+                        type: string
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      email:
+                        type: string
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '404':
+          description: Contact not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /api/search_contacts.php:
+    post:
+      summary: Search contacts
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                page:
+                  type: integer
+                  default: 1
+      responses:
+        '200':
+          description: Contacts retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contacts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        contact_id:
+                          type: string
+                        first_name:
+                          type: string
+                        last_name:
+                          type: string
+                        email:
+                          type: string
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

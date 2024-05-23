@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+	
+	<!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> 
+    <link rel="stylesheet" href="styles.css">
+	
+	 <title>Contact Management</title>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+			<!-- Top menu bar -->
+            <div class="col-12 top-bar">
+                <div class="top-bar-left">
+                    <span class="top-bar-title">Contact Management</span>
+                </div>
+                <div class="top-bar-right">
+                    <a href="#" class="top-bar-link">Home</a>
+                    <a href="#" class="top-bar-link">Description</a>
+                    <a href="#" class="top-bar-link">Login</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Left side columns and rows for contacts -->
+            <div class="col-md-4 contacts-list">
+                <div class="contact-actions mt-3 mb-3">
+                    <button class="btn btn-success" onclick="addContact()">Add</button>
+                    <button class="btn btn-primary" onclick="modifySelected()">Modify</button>
+                    <button class="btn btn-danger" onclick="deleteSelected()">Delete</button>
+                </div>
+                <div class="search-bar">
+                    <input type="text" class="form-control" placeholder="Search for a contact">
+                </div>
+				<!-- Contacts themselves -->
+                <ul class="list-group" id="contact-list">
+                    <li class="list-group-item">
+                        <input type="checkbox" class="contact-checkbox" onchange="toggleSelection(this)">
+                        <div class="contact-info">
+                            <img src="avatar1.jpg" alt="John Doe" class="avatar">
+                            <div>
+                                <h5>John Doe</h5>
+                                <p>johndoe@gmail.com</p>
+                            </div>
+                        </div>
+                    </li>
+					<!-- Every other contact gets a grey-background -->
+                    <li class="list-group-item grey-background">
+                        <input type="checkbox" class="contact-checkbox" onchange="toggleSelection(this)">
+                        <div class="contact-info">
+                            <img src="avatar2.jpg" alt="Jane Smith" class="avatar">
+                            <div>
+                                <h5>Jane Smith</h5>
+                                <p>janesmith@gmail.com</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <input type="checkbox" class="contact-checkbox" onchange="toggleSelection(this)">
+                        <div class="contact-info">
+                            <img src="avatar3.jpg" alt="Neil Marshall" class="avatar">
+                            <div>
+                                <h5>Neil Marshall</h5>
+                                <p>neilmarshall@gmail.com</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item grey-background">
+                        <input type="checkbox" class="contact-checkbox" onchange="toggleSelection(this)">
+                        <div class="contact-info">
+                            <img src="avatar4.jpg" alt="Tammy Sam" class="avatar">
+                            <div>
+                                <h5>Tammy Sam</h5>
+                                <p>tammysam@gmail.com</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <input type="checkbox" class="contact-checkbox" onchange="toggleSelection(this)">
+                        <div class="contact-info">
+                            <img src="avatar5.jpg" alt="Cyndi Lauper" class="avatar">
+                            <div>
+                                <h5>Cyndi Lauper</h5>
+                                <p>cyndilauper@gmail.com</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Contact Details when clicked -->
+            <div class="col-md-8 contact-details">
+                <div class="contact-header">
+                    <img src="avatar1.jpg" alt="John Doe" class="avatar-large">
+                    <div>
+                        <h2>John Doe</h2>
+                    </div>
+                </div>
+                <div class="contact-body">
+                    <p class="bio">Sample test to see how long descriptions can go for and how itll look. The FitnessGram™ Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues.The 20 meter pacer test will begin in 30 seconds. Line up at the start.The running speed starts slowly, but gets faster each minute after you hear this signal. A single lap should be completed each time you hear this sound. Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start. [Level 1] Feel it One Two Three Four Five Six Seven; end of level one [Level 2] Eight Feel it Nine Ten Eleven Twelve Thirteen Fourteen Fifteen; end of level two [Level 3] High rollers Sixteen High rollers Seventeen High rollers Eighteen Nineteen Twenty Twenty-one High rollers Twenty-two High rollers Twenty-three; end of level three [Level 4] High rollers Twenty-four Twenty-five Twenty-six Twenty-seven High rollers Twenty-eight Twenty-nine High rollers Thirty High rollers Thirty-one Thirty-two; end of level four [Level 5] Thirty-three Thirty-four Thirty-five Thirty-six Thirty-seven Thirty-eight Thirty-nine Forty Forty-one; end of level five ... Two hundred fifteen; end of level nineteen ... ... Two hundred forty-seven; end of level twenty-one, end of test</p>
+                    <ul class="contact-info-list">
+                        <li>Email: <span>johndoe@gmail.com</span></li>
+                        <li>Phone: <span>123-456-7890</span></li>
+                        <li>LinkedIn Profile: <a href="https://linkedin.com" target="_blank">linkedin.com/JohnDoe</a></li>
+                    </ul>
+                </div>
+            </div>
+			
+        </div>
+    </div>
+</body>
+</html>

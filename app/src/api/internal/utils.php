@@ -1,5 +1,5 @@
 <?php
-require 'config.php';
+require_once 'config.php';
 
 /**
  * Generate a random string, using a cryptographically secure 
@@ -29,15 +29,6 @@ function random_str(
         $pieces[] = $keyspace[random_int(0, $max)];
     }
     return implode('', $pieces);
-}
-
-function getDbConnection()
-{
-    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-    if ($mysqli->connect_error) {
-        die("Connection failed: " . $mysqli->connect_error);
-    }
-    return $mysqli;
 }
 
 ?>
