@@ -1,6 +1,3 @@
--- Current Database: `ContactManagerDB`
-CREATE DATABASE contact_manager;
-
 USE contact_manager;
 
 CREATE TABLE

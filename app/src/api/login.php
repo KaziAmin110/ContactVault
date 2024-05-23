@@ -1,5 +1,5 @@
 <?php
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 require 'config.php';
 require 'jwt.php';
 require 'utils.php';
@@ -8,7 +8,7 @@ require 'utils.php';
 function verifyPassword($username, $password): ?string
 {
     $conn = getDbConnection();
-    $stmt = $conn->prepare("SELECT id, password FROM users WHERE username = ?");
+    $stmt = $conn->prepare("SELECT id, password FROM users WHERE authentication_id = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $stmt->store_result();
@@ -67,14 +67,15 @@ if ($authProvider == 'GOOGLE') {
     //$userId = handleGoogleSignIn($idToken);
     http_response_code(401);
     echo json_encode(['error' => 'We do not currently support GOOGLE, we will soon.']);
-
-} else if ($authProvider == 'USERNAME_PASSWROD') {
+    return;
+} else if ($authProvider == 'USERNAME_PASSWORD') {
     $username = $input['username'];
     $password = $input['password'];
     $userId = verifyPassword($username, $password);
 } else {
     http_response_code(401);
     echo json_encode(['error' => 'Invalid authentication_provider. We only support the following: [GOOGLE, USERNAME_PASSWORD]']);
+    return;
 }
 
 if ($userId) {

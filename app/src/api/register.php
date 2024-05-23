@@ -7,11 +7,10 @@ require 'jwt.php';
 function registerUser($username, $password)
 {
     $conn = getDbConnection();
-    $salt = random_str(16);
-    $hashedPassword = password_hash($password . $salt, PASSWORD_BCRYPT);
+    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-    $stmt = $conn->prepare("INSERT INTO users (authentication_id, authentication_provider, password) VALUES (?, 'USERNAME_PASSWORD', ?, ?)");
-    $stmt->bind_param("sss", $username, $hashedPassword);
+    $stmt = $conn->prepare("INSERT INTO users (authentication_id, authentication_provider, password) VALUES (?, 'USERNAME_PASSWORD', ?)");
+    $stmt->bind_param("ss", $username, $hashedPassword);
     if ($stmt->execute()) {
         return $stmt->insert_id;
     }
