@@ -1,11 +1,11 @@
 <?php
-require '../vendor/autoload.php';
-require 'config.php';
-require 'jwt.php';
-require 'utils.php';
+require_once '../vendor/autoload.php';
+require_once 'config.php';
+require_once 'jwt.php';
+require_once 'utils.php';
+require_once 'types.php';
 
-
-function verifyPassword($username, $password): ?string
+function verifyPassword($username, $password): ?int
 {
     $conn = getDbConnection();
     $stmt = $conn->prepare("SELECT id, password FROM users WHERE authentication_id = ?");
@@ -59,28 +59,30 @@ function handleGoogleSignIn($idToken)
 
 */
 
-$input = json_decode(file_get_contents('php://input'), true);
-$authProvider = $input['authentication_provider'];
+$input = file_get_contents('php://input');
 
-if ($authProvider == 'GOOGLE') {
+$mapper = (new \JsonMapper\JsonMapperFactory())->bestFit();
+
+$login_payload = $mapper->mapToClassFromString($input, LoginPayload::class);
+
+
+if ($login_payload->authentication_provider == 'GOOGLE') {
     $idToken = $input['idToken'];
     //$userId = handleGoogleSignIn($idToken);
     http_response_code(401);
     echo json_encode(['error' => 'We do not currently support GOOGLE, we will soon.']);
     return;
-} else if ($authProvider == 'USERNAME_PASSWORD') {
-    $username = $input['username'];
-    $password = $input['password'];
-    $userId = verifyPassword($username, $password);
+} else if ($login_payload->authentication_provider == 'USERNAME_PASSWORD') {
+    $user_id = verifyPassword($login_payload->username, $login_payload->password);
 } else {
     http_response_code(401);
     echo json_encode(['error' => 'Invalid authentication_provider. We only support the following: [GOOGLE, USERNAME_PASSWORD]']);
     return;
 }
 
-if ($userId) {
-    $jwt = createJwt($userId);
-    echo json_encode(['token' => $jwt, 'user_id' => $userId]);
+if ($user_id) {
+    $jwt = createJwt($user_id);
+    echo json_encode(['token' => $jwt, 'user_id' => $user_id]);
 } else {
     http_response_code(401);
     echo json_encode(['error' => 'Invalid credentials']);

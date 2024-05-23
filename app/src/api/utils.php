@@ -1,5 +1,5 @@
 <?php
-require 'config.php';
+require_once 'config.php';
 
 /**
  * Generate a random string, using a cryptographically secure 

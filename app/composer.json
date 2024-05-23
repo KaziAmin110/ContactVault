@@ -3,7 +3,8 @@
     "type": "project",
     "require": {
         "firebase/php-jwt": "^6.10",
-        "google/auth": "^1.39"
+        "google/auth": "^1.39",
+        "json-mapper/json-mapper": "^2.22"
     },
     "authors": [
         {
