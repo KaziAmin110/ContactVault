@@ -28,8 +28,6 @@ if ($loggedInUser == null) {
 
 $input = file_get_contents('php://input');
 
-error_log('Raw input data: ' . $input);
-
 $mapper = (new \JsonMapper\JsonMapperFactory())->bestFit();
 
 $get_contact_payload = $mapper->mapToClassFromString($input, GetContactPayload::class);

@@ -77,6 +77,16 @@ class SearchContactsPayload
 
 }
 
+class UpdateContactPayload
+{
+    public Contact $contact;
+
+    public function __construct(Contact $contact)
+    {
+        $this->contact = $contact;
+    }
+}
+
 class DeleteContactPayload
 {
     public int $contact_id;

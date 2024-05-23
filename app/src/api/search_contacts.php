@@ -28,8 +28,6 @@ if ($loggedInUser == null) {
 
 $input = file_get_contents('php://input');
 
-error_log('Raw input data: ' . $input);
-
 $mapper = (new \JsonMapper\JsonMapperFactory())->bestFit();
 
 $search_contact_payload = $mapper->mapToClassFromString($input, SearchContactsPayload::class);
@@ -45,7 +43,6 @@ $contact_manager = new ContactManager(new Database());
 
 $response = $contact_manager->searchContacts($loggedInUser->user_id, $search_contact_payload->query, $search_contact_payload->page ?:1, 10);
 
-//error_log($response);
 
 http_response_code(200);
 echo json_encode($response);
