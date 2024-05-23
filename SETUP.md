@@ -33,6 +33,7 @@ Once you have installed the required software listed above you should be ready t
 4. Run the following to create the JWT RS256 encryption keys:
     ```bash
     ssh-keygen -t rsa -b 4096 -m PEM -f secrets/jwt_encryption_key.pem
+    openssl rsa -in secrets/jwt_encryption_key.pem -pubout -outform PEM -out secrets/jwt_encryption_key.pem.pub
     ```
 ### Starting Server
 ```bash
