@@ -58,6 +58,9 @@ In your VS Code window, press `F1` and select `View: Toggle Ports`. This will op
 
 Next, port forward port `80` by selecting `Add Port`. Under `Forwarded Address` it will give you an address to access the website.
 
+### Accessing API Docuementation
+After starting the server and port-forwarding the website in the previous section, you can open the [Swagger UI](https://swagger.io/tools/swagger-ui/) by opening http://YOUR_FORWARDED_ADDRESS/swagger-ui/.
+
 ### Accessing Database
 In your VS Code window, press `F1` and select `View: Toggle Ports`. This will open the port fowarding window.
 
