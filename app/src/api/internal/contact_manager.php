@@ -14,19 +14,20 @@ class ContactManager
         $this->connection = $db->getConnection();
     }
 
-    public function createContact($contact)
+    public function createContact(int $user_id, Contact $contact): ?Contact
     {
         $query = "INSERT INTO contacts (user_id, first_name, last_name, phone_number, email_address, avatar_url, bio, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->connection->prepare($query);
-        $stmt->bind_param("isssssss", $contact->user_id, $contact->first_name, $contact->last_name, $contact->phone_number, $contact->email_address, $contact->avatar_url, $contact->bio, $contact->description);
+        $stmt->bind_param("isssssss", $user_id, $contact->first_name, $contact->last_name, $contact->phone_number, $contact->email_address, $contact->avatar_url, $contact->bio, $contact->description);
         if ($stmt->execute()) {
-            return $stmt->insert_id;
+            $contact->id = $stmt->insert_id;
+            return $contact;
         } else {
-            return false;
+            return null;
         }
     }
 
-    public function readContact($id)
+    public function getContact($id)
     {
         $query = "SELECT * FROM contacts WHERE id = ?";
         $stmt = $this->connection->prepare($query);
@@ -35,7 +36,8 @@ class ContactManager
         $result = $stmt->get_result();
         if ($result->num_rows == 1) {
             $row = $result->fetch_assoc();
-            return new Contact($row['id'], $row['user_id'], $row['first_name'], $row['last_name'], $row['phone_number'], $row['email_address'], $row['avatar_url'], $row['bio'], $row['description']);
+            $contact = new Contact($row['id'], $row['user_id'], $row['first_name'], $row['last_name'], $row['phone_number'], $row['email_address'], $row['avatar_url'], $row['bio'], $row['description']);
+            return $contact;
         } else {
             return null;
         }
@@ -106,59 +108,35 @@ class ContactManager
         return $stmt->execute();
     }
 
-    public function searchContacts($userId, $searchTerm)
+    public function searchContacts($userId, $searchTerm, $page = 1, $resultsPerPage = 10)
     {
+        $offset = ($page - 1) * $resultsPerPage;
         $searchTerm = '%' . $this->connection->real_escape_string($searchTerm) . '%';
-        $query = "SELECT * FROM contacts WHERE first_name LIKE ? OR last_name LIKE ? OR phone_number LIKE ? OR email_address LIKE ? WHERE user_id = ?";
+
+        // Get the total number of results
+        $countQuery = "SELECT COUNT(*) AS total FROM contacts WHERE user_id = ? AND (first_name LIKE ? OR last_name LIKE ? OR phone_number LIKE ? OR email_address LIKE ?)";
+        $countStmt = $this->connection->prepare($countQuery);
+        $countStmt->bind_param("issss", $userId, $searchTerm, $searchTerm, $searchTerm, $searchTerm);
+        $countStmt->execute();
+        $countResult = $countStmt->get_result();
+        $totalResults = $countResult->fetch_assoc()['total'];
+        $totalPages = ceil($totalResults / $resultsPerPage);
+
+        // Get the search results with pagination
+        $query = "SELECT * FROM contacts WHERE user_id = ? AND (first_name LIKE ? OR last_name LIKE ? OR phone_number LIKE ? OR email_address LIKE ?) LIMIT ?, ?";
         $stmt = $this->connection->prepare($query);
-        $stmt->bind_param("sssss", $searchTerm, $searchTerm, $searchTerm, $searchTerm, $userId);
+        $stmt->bind_param("issssii", $userId, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $offset, $resultsPerPage);
         $stmt->execute();
         $result = $stmt->get_result();
         $contacts = [];
         while ($row = $result->fetch_assoc()) {
             $contacts[] = new Contact($row['id'], $row['user_id'], $row['first_name'], $row['last_name'], $row['phone_number'], $row['email_address'], $row['avatar_url'], $row['bio'], $row['description']);
         }
-        return $contacts;
+
+        return [
+            'contacts' => $contacts,
+            'total_pages' => $totalPages
+        ];
     }
 }
-
-// Usage example:
-$db = new Database();
-$contactManager = new ContactManager($db);
-
-// Create a new contact
-$newContact = new Contact(null, 1, 'John', 'Doe', '123-456-7890', 'john.doe@example.com', 'http://example.com/avatar.jpg', 'Bio text', 'Description text');
-$newContactId = $contactManager->createContact($newContact);
-if ($newContactId) {
-    echo "New contact created with ID: $newContactId\n";
-}
-
-// Read a contact
-$contact = $contactManager->readContact($newContactId);
-if ($contact) {
-    echo "Contact: " . $contact->first_name . " " . $contact->last_name . "\n";
-}
-
-// Update a contact
-$contact->phone_number = '098-765-4321';
-if ($contactManager->updateContact($contact)) {
-    echo "Contact updated successfully\n";
-}
-
-// Delete a contact
-if ($contactManager->deleteContact($newContactId)) {
-    echo "Contact deleted successfully\n";
-}
-
-// Search contacts
-$searchResults = $contactManager->searchContacts('John');
-foreach ($searchResults as $contact) {
-    echo "Found Contact: " . $contact->first_name . " " . $contact->last_name . "\n";
-}
-
-$db->closeConnection();
-?>
-
-
-
 ?>

@@ -32,33 +32,21 @@ error_log('Raw input data: ' . $input);
 
 $mapper = (new \JsonMapper\JsonMapperFactory())->bestFit();
 
-$delete_contact_payload = $mapper->mapToClassFromString($input, DeleteContactPayload::class);
+$search_contact_payload = $mapper->mapToClassFromString($input, SearchContactsPayload::class);
 
 // Validate the mapped data
-if (!isset($delete_contact_payload->contact_id)) {
+if (!isset($search_contact_payload->query)) {
     http_response_code(400);
-    echo json_encode(['error' => 'The contact_id field is required.']);
+    echo json_encode(['error' => 'The query field is required.']);
     exit;
 }
 
 $contact_manager = new ContactManager(new Database());
 
-$contact = $contact_manager->getContact($delete_contact_payload->contact_id);
+$response = $contact_manager->searchContacts($loggedInUser->user_id, $search_contact_payload->query, $search_contact_payload->page ?:1, 10);
 
-if ($contact == null) {
-    http_response_code(404);
-    echo json_encode(['error' => 'Contact not found.']);
-    exit;
-}
-
-if ($contact->user_id != $loggedInUser->user_id) {
-    http_response_code(401);
-    echo json_encode(['error' => 'You do not own the requested contact.']);
-    exit;
-}
-
-$contact_manager->deleteContact($contact->id);
+//error_log($response);
 
 http_response_code(200);
-echo json_encode(['contact' => $contact]);
+echo json_encode($response);
 ?>
