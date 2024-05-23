@@ -80,7 +80,7 @@ if ($authProvider == 'GOOGLE') {
 
 if ($userId) {
     $jwt = createJwt($userId);
-    echo json_encode(['token' => $jwt]);
+    echo json_encode(['token' => $jwt, 'user_id' => $userId]);
 } else {
     http_response_code(401);
     echo json_encode(['error' => 'Invalid credentials']);
