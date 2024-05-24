@@ -39,9 +39,14 @@ if (!isset($get_contact_payload->contact_id)) {
     exit;
 }
 
-$contact_manager = new ContactManager(new Database());
+$database = new Database();
 
-$contact = $contact_manager->getContact($get_contact_payload->contact_id);
+$contact_manager = new ContactManager($database);
+try {
+    $contact = $contact_manager->getContact($get_contact_payload->contact_id);
+} finally {
+    $database->closeConnection();
+}
 
 if ($contact == null) {
     http_response_code(404);

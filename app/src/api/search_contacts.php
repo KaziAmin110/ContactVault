@@ -39,10 +39,13 @@ if (!isset($search_contact_payload->query)) {
     exit;
 }
 
-$contact_manager = new ContactManager(new Database());
-
-$response = $contact_manager->searchContacts($loggedInUser->user_id, $search_contact_payload->query, $search_contact_payload->page ?:1, 10);
-
+$database = new Database();
+try {
+    $contact_manager = new ContactManager($database);
+    $response = $contact_manager->searchContacts($loggedInUser->user_id, $search_contact_payload->query, $search_contact_payload->page ?: 1, 10);
+} finally {
+    $database->closeConnection();
+}
 
 http_response_code(200);
 echo json_encode($response);

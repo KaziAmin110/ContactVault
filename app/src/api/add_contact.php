@@ -46,9 +46,14 @@ if (!isset($get_contact_payload->contact->first_name)) {
     exit;
 }
 
-$contact_manager = new ContactManager(new Database());
+try {
+    $database = new Database();
+    $contact_manager = new ContactManager($database);
 
-$contact = $contact_manager->createContact($loggedInUser->user_id, $get_contact_payload->contact);
+    $contact = $contact_manager->createContact($loggedInUser->user_id, $get_contact_payload->contact);
+} finally {
+    $database->closeConnection();
+}
 
 http_response_code(200);
 echo json_encode(['contact' => $contact]);

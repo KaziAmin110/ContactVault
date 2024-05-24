@@ -12,7 +12,8 @@ $mapper = (new \JsonMapper\JsonMapperFactory())->bestFit();
 $register_payload = $mapper->mapToClassFromString($input, RegisterPayload::class);
 
 if ($register_payload->authentication_provider == 'USERNAME_PASSWORD') {
-    $user_manager = new UserManager(new Database());
+    $database = new Database();
+    $user_manager = new UserManager($database);
 
     try {
         $user_id = $user_manager->registerUser($register_payload->username, $register_payload->password);
@@ -28,6 +29,8 @@ if ($register_payload->authentication_provider == 'USERNAME_PASSWORD') {
             echo json_encode(["error" => "Unexpected error occured: " . $e->getMessage()]);
         }
         return;
+    } finally {
+        $database->closeConnection();
     }
 
     $jwt = createJwt($user_id);
