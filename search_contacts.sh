@@ -13,7 +13,7 @@ if [ -z "$PAGE" ]; then
 fi
 
 # Perform the curl request
-curl -X POST http://localhost:80/api/search_contacts.php \
+curl -X GET http://localhost:80/api/search_contacts.php \
 -H "Content-Type: application/json" \
 -H "Authorization: Bearer $jwt" \
 -d "{
