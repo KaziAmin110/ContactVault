@@ -114,6 +114,7 @@ class Contact
     public function __construct(?int $id, ?int $user_id, string $first_name, ?string $last_name, ?string $phone_number, ?string $email_address, ?string $avatar_url, ?string $bio, ?string $description)
     {
         $this->id = $id;
+        $this->user_id = $user_id;
         $this->first_name = $first_name;
         $this->last_name = $last_name;
         $this->phone_number = $phone_number;
