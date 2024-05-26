@@ -1,8 +1,12 @@
+//http://localhost/swagger-ui
+
 const form = document.querySelector('.sign-in-form');
+
 const url = new URL(window.location.href);
 const hostname = url.hostname;
 const port = url.port;
 const urlBase = url.protocol + '//' + (port ? `${hostname}:${port}` : hostname);
+
 const extension = 'php';
 const usernameRegex = /^[a-zA-Z0-9_]+$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -10,7 +14,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 
 function isValidPassword(password) {
-
+	console.log("validating password:");
 	let passwordRequieres = "";
 
 	const minLength = 8;
@@ -33,10 +37,12 @@ function isValidPassword(password) {
 	if (!hasSpecialChar)
 		passwordRequieres += "Password must contain atleast 1 special character<br>"
 
+	console.log("done validating password: "+passwordRequieres);
 	return passwordRequieres;
 }
 
 function isValidRegister() {
+	console.log("validating registter");
 
 	//if the user has input a field incorrectly, message will let the user know what is wrong
 	let message = "";
@@ -74,14 +80,13 @@ function isValidRegister() {
 		message += passReq + "<br>";
 		flag = false;
 	}
-
+	
+	console.log("done validating register: "+message);
 	return message;
 }
 
 //not complete
 function register() {
-
-	console.log("Bob");
 
 	let first_name = document.getElementById("first-name").value;
 	let last_name = document.getElementById("last-name").value;
@@ -93,33 +98,34 @@ function register() {
 	let tmp = { authentication_provider: "USERNAME_PASSWORD", username: userName, password: password };
 
 	let jsonPayload = JSON.stringify(tmp);
-	let url = urlBase + "api/register" + extension;
+	let url = urlBase + "/api/register." + extension;
 
 	let xhr = new XMLHttpRequest();
 
 	xhr.open("POST", url, true);
-
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 
 	try {
 		xhr.onreadystatechange = function () {
 
-			if (this.status != 200) {
+		if(this.readyState == 4){ //ensure the request is complete
+			if (this.status == 200) {
 
-				let jsonObject = JSON.parse(xhr.responseText);
-				document.getElementById("registerResult").innerHTML = "An error has occured";
-				console.log(jsonObject);
-			}
-			else {
-				
+				console.log("no errors should redirect");
 				document.getElementById("registerResult").innerHTML = "Successfully registered!";
 				window.location.href = "../contacts-page/index.html";
+				
 			}
-		};
+			else {
+				console.log("An error occurred");
+			}
+		}
+	};
 		xhr.send(jsonPayload);
 	}
 	catch (err) {
 		document.getElementById("registerResult").innerHTML = err.message;
+		console.log(err.message);
 	}
 }
 
@@ -132,4 +138,3 @@ form.addEventListener('submit', function signUp(e) {
 	if (res == "")
 		register();
 });
-
