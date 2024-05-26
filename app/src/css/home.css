@@ -244,6 +244,7 @@ body {
     border-radius: 0.75rem;
     padding-top: 10px;
     padding-bottom: 10px;
+    margin-top: -10px;
 
     display: flex;
     justify-content: center;

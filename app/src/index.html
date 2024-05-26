@@ -71,33 +71,38 @@
             <h5>Get Started With Your 30 Day Free Trial</h5>
             <div class="form-group">
                 <label for="first-name">First Name</label>
-                <input type="name" class="form-control" id="first-name" aria-describedby="emailHelp"
-                    placeholder="First Name">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                    else.</small>
+                <input type="name" class="form-control" id="first-name" aria-describedby="first-name"
+                    placeholder="First Name" required>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">Last Name</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                    placeholder="Last Name">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                    else.</small>
+                <label for="last-name">Last Name</label>
+                <input type="name" class="form-control" id="last-name" aria-describedby="last-name"
+                    placeholder="Last Name" required>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                    placeholder="Enter email">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                    else.</small>
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                    placeholder="Enter Email" required>
+
             </div>
             <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                <label for="user-name">Username</label>
+                <input type="name" class="form-control" id="user-name" aria-describedby="user-name"
+                    placeholder="Enter Username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Password" required>
+                <small id="emailHelp" class="form-text text-muted">We'll never share your personal data with
+                    anyone.</small>
             </div>
             <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">I agree to the Terms of Service and Privacy
-                    Policy</label>
+                <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
+                <label class="form-check-label" for="exampleCheck1">
+                    I agree to the 
+                    <a href="">Terms of Service</a> and
+                    <a href="">Privacy Policy</a>
+                </label>
             </div>
             <button type="submit" class="btn btn-primary">Get Started</button>
             <div class="sign-up-footer">
