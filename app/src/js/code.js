@@ -1,19 +1,16 @@
+//change hosting
 const urlBase = 'http://localhost/';
 const extension = 'php';
+
 let userId = 0;
 let firstName = "";
 let lastName = "";
 
 //redirects from home page to log in page
-function toLogin() {
+function toLoginPage() {
 	//must be updated to redirect to the loginPage
     window.location.href = "contacts-page/index.html";
 }
-
-// document.addEventListener("DOMContentLoaded", function (){
-// 	var loginPageButton= document.getElementById("loginPageButton");
-// 	loginPageButton.addEventListener("click", toLogin);
-// })
 
 function doLogout()
 {
@@ -24,11 +21,7 @@ function doLogout()
 	window.location.href = "../../index.html";
 }
 
-// document.addEventListener("DOMContentLoaded", function (){
-// 	var doLogout= document.getElementById("doLogout");
-// 	doLogout.addEventListener("click", doLogout);
-// })
-
+//noty working error 404
 function doLogin()
 {
 	userId = 0;
@@ -41,7 +34,7 @@ function doLogin()
 	
 	document.getElementById("loginResult").innerHTML = "";
 
-	let tmp = {login:login,password:password};
+	let tmp = {username:login,password:password};
 //	var tmp = {login:login,password:hash};
 	let jsonPayload = JSON.stringify( tmp );
 	
@@ -71,7 +64,8 @@ function doLogin()
 				
 				firstName = jsonObject.firstName;
 				lastName = jsonObject.lastName;
-
+				
+				userId= jsonObject.
 				saveCookie();
 	
 				window.location.href = "contacts-page/index.html";
@@ -124,5 +118,90 @@ function readCookie()
 	else
 	{
 //		document.getElementById("userName").innerHTML = "Logged in as " + firstName + " " + lastName;
+	}
+}
+
+//not completed needs jwt token
+function addContact()
+{
+
+	let firstName= document.getElementById("FirstName").value;
+	let lastName= document.getElementById("LastName").value;
+	//let phoneNumber= document.getElementById("PhoneNumber").value;
+	let emailAdress= document.getElementById("EmailAdress").value;
+	//let avaratUrl= document.getElementById("AvatarUrl").value;
+	//let bio= document.getElementById("Bio").value;
+	//let description= document.getElementById("Description").value;
+
+	//validate contact?
+
+	//clear
+	document.getElementById("FirstName").value= "";
+	document.getElementById("LastName").value= "";
+	//document.getElementById("PhoneNumber").value= "";
+	document.getElementById("EmailAdress").value= "";
+	//document.getElementById("AvatarUrl").value= "";
+	//document.getElementById("Bio").value= "";
+	//document.getElementById("Description").value= "";
+
+	//let tmp = {firstName:firstName, lastName: lastName, phoneNumber:phoneNumber,
+	//emailAdress:emailAdress, avaratUrl:avaratUrl, bio:bio,description:description};
+
+	let tmp= {first_name: firstName, last_name: lastName, email: emailAdress}
+	
+	let jsonPayload = JSON.stringify( tmp );
+
+	let url = urlBase + '../api/add_contact.' + extension;
+
+	let jwt= '';
+	
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	xhr.setRequestHeader("Authorization", "bearer "+jwt);
+	try
+	{
+		xhr.onreadystatechange = function() 
+		{
+			if (this.readyState == 4 && this.status == 200) 
+			{
+				document.getElementById("contactAddResult").innerHTML = "Contact has been added";
+			}
+		};
+		xhr.send(jsonPayload);
+	}
+	catch(err)
+	{
+		document.getElementById("contactAddResult").innerHTML = err.message;
+	}
+}
+//not complete needs jwt token
+function delete_contact(contactID){
+
+	let tmp={contact_id: contactID};
+	let jsonPayload= JSON.stringify(tmp);
+
+	let url= urlBase+ '../api/delete_contact.'+extension;
+
+	let xhr= new XMLHttpRequest();
+
+	let jwt= '';
+
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	xhr.setRequestHeader("Authorization", "bearer "+jwt);
+
+	try
+	{
+		xhr.onreadystatechange = function(){
+			if(this.readyState==4 && this.status==200){
+				document.getElementById("deleteContactResult").innerHTML= "Contact has been added"
+			}
+		}
+		xhr.send(jsonPayload);	
+	}
+
+	catch(err){
+		document.getElementById("contactAddResult").innerHTML = err.message;
 	}
 }
