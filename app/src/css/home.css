@@ -1,0 +1,274 @@
+body {
+    height: 100vh;
+}
+
+.btn-primary {
+    background-color: lightseagreen;
+    min-width: 150px;
+    border-radius: 1rem;
+}
+
+.btn-primary:hover {
+    background-color: red;
+    box-shadow: 0px 25px 20px -20px rgba(0, 0, 0, 0.45);
+    transform: translateY(-5px);
+}
+
+.sign-up-btn {
+    background-color: #fff;
+    color: lightseagreen;
+    border-color: lightseagreen;
+}
+
+.navbar {
+    height: 100px;
+    margin-left: 0px;
+    margin-right: 0px;
+    width: 100%;
+    border-bottom: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+}
+
+.logo {
+    width: 250px;
+    height: 250px;
+    margin-left: -50px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: baseline;
+    margin-bottom: 30px;
+}
+
+.btn {
+    text-transform: uppercase;
+}
+
+.navbar>* {
+    margin-top: -70px;
+}
+
+.heading {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2rem;
+    background-image: linear-gradient(white, skyblue);
+}
+
+.carousel {
+    flex: 1;
+}
+
+.carousel-item img {
+    max-width: 676px;
+    max-height: 447px;
+    object-fit: cover;
+}
+
+.heading-list {
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+}
+
+.description {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    height: 75vh;
+    flex: 1;
+}
+
+.sign-up-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.sign-up-footer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
+    margin-top: 1.2rem;
+}
+
+.google-btn {
+    width: 75px;
+    border-radius: 3rem;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.google-icon {
+    width: 25px;
+    height: 25px;
+}
+
+.footer {
+    text-align: center;
+    background-color: whitesmoke;
+    min-height: 350px;  
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.company-input {
+    display: flex;
+    margin-bottom: 0px;
+}
+
+.company-input {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    justify-content: center;
+    width: 70%;
+    min-height: 400px;
+    background-color: whitesmoke;
+    padding: 2rem;
+    border-radius: 1.5%;
+}
+
+.github-logo {
+    width: 30px;
+    height: 30px;
+}
+
+.github-logo:hover {
+    transform: translateY(-5px);
+}
+
+.division {
+    min-height: 750px;
+}
+
+.list-div {
+    background-color: blue;
+    color: white;
+    padding: 2rem;
+    width: 70%;
+    height: 400px;
+    border-radius: 1.5%;
+    text-transform: capitalize;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.list-header {
+    display: flex;
+    margin-bottom: 75px;
+    align-items: baseline;
+    justify-content: space-around;
+}
+
+.list-header>li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.margin {
+    margin-top: 4rem;
+}
+
+.icons {
+    width: 60px;
+    height: 60px;
+    color: black;
+    background-color: yellow;
+    border-radius: 7.5%;
+    margin-bottom: 1.25rem;
+    padding: 1rem;
+
+    
+}
+
+.customer-input-header {
+    background-image: linear-gradient(skyblue, white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    
+}
+
+.company-owner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 40px;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+}
+
+.navbar-fixed-top {
+    top: 0;
+    z-index: 100;
+    position: fixed;
+    width: 100%;
+    transition: 2s;
+  }
+
+  .carousel-img {
+    border-radius: 5%;
+  }
+
+  .google-btn {
+    width: 100%;
+    background-color: white;
+    cursor: pointer;
+    border: 1px solid black;
+    border-radius: 0.75rem;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-self: flex-start;
+    gap: 2rem;
+    flex: 1;
+}
+
+.google-btn:hover {
+    box-shadow: 0px 25px 20px -20px rgba(0, 0, 0, 0.45);
+    transform: translateY(-5px);
+}
+
+.google-icon {
+    width: 25px;
+    height: 25px;
+}
+
+.footer > button {
+    margin-top: 2rem;
+}
+
+/* X-Large Screen Sizes */
+@media (min-width: 1500px) {
+    .sign-up-form {
+        margin-right: 3rem;
+    }
+}
