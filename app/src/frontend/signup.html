@@ -41,12 +41,12 @@
                     placeholder="Enter Email" required>
 
             </div>
-            <div class="form-group">
+            <div class="form-group username">
                 <label for="user-name">Username</label>
                 <input type="name" class="form-control" id="user-name" aria-describedby="user-name"
                     placeholder="Enter Username" required>
             </div>
-            <div class="form-group">
+            <div class="form-group password">
                 <label for="password">Password</label>
                 <input type="password" class="form-control" id="password" placeholder="Password" required>
                 <small id="emailHelp" class="form-text text-muted">We'll never share your personal data with
@@ -73,6 +73,7 @@
                         <p>Already have an account ?</p>
                         <a href="login.html">Sign-in</a>
                     </small>
+                    <div id="validRegisterResult"></div>
                 </div>
 
         </form>
@@ -88,6 +89,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
+    <!-- <script src="../js/loginValidation.js"></script> -->
+    <script src="../js/loginAuth.js"></script>
+
 </body>
 
 </html>

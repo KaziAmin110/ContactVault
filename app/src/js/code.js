@@ -1,8 +1,12 @@
 //change hosting
-const urlBase = 'http://localhost/';
 const extension = 'php';
 const usernameRegex = /^[a-zA-Z0-9_]+$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const url = new URL(window.location.href);
+const hostname = url.hostname;
+const port = url.port;
+const urlBase = url.protocol + '//' + (port ? `${hostname}:${port}` : hostname);
 
 let userId = 0;
 let firstName = "";
@@ -112,10 +116,10 @@ function register(){
 	let password = document.getElementById("password").value
 
 	//needs to be updated to use google
-	let tmp={enum: "USERNAME_PASSWORD",username:userName,password:password};
+	let tmp={authentication_provider: "USERNAME_PASSWORD", username:userName,password:password};
 
 	let jsonPayload= JSON.stringify(tmp);
-	let url= urlBase + "api/register"+extension;
+	let url= urlBase + "api/register"+ extension;
 	
 	let xhr = new XMLHttpRequest();
 
