@@ -10,32 +10,22 @@ const urlBase = url.protocol + '//' + (port ? `${hostname}:${port}` : hostname);
 const extension = 'php';
 
 let userId = 0;
-let firstName = "";
-let lastName = "";
 
 form.addEventListener('submit', function signUp(e) {
 	e.preventDefault();
-	let res = isValidRegister();
-
-	document.getElementById("validRegisterResult").value = res;
-
-	if (res == "")
-		register();
+	doLogin();
 });
 
 function doLogin()
 {
-	userId = 0;
-	firstName = "";
-	lastName = "";
 	
-	let login = document.getElementById("user-name").value;
+	let username = document.getElementById("user-name").value;
 	let password = document.getElementById("password").value;
 //	var hash = md5( password );
 	
-	document.getElementById("loginResult").innerHTML = "";
+	//document.getElementById("loginResult").innerHTML = "";
 
-	let tmp = {authentication_provider:"USERNAME_PASSWORD",username:login,password:password};
+	let tmp = {authentication_provider:"USERNAME_PASSWORD",username:username,password:password};
 //	var tmp = {login:login,password:hash};
 	let jsonPayload = JSON.stringify( tmp );
 	
@@ -48,28 +38,30 @@ function doLogin()
 	{
 		xhr.onreadystatechange = function() 
 		{
+            let jsonObject=JSON.parse(this.responseText);
+            userId = jsonObject.user_id;
 			//if server responded succesfully
 			//4 = request has been completed
 			//200 = request was sucessful
 			if (this.readyState == 4){
 
                 if(this.status == 200){
-                    let jsonObject = JSON.parse( xhr.responseText );
-                    user_id = jsonObject.user_id;
-                    jwtToken= jsonObject.token;
-
+                    
+                    
+                    //creating cookie
                     Cookies.remove('jwtToken');
-                    Cookies.set('jwtToken', jwtToken, {expires: 1, secure: true, sameSite:'strict'});
-        
-                    window.location.href = "contacts-page/index.html";
+				    Cookies.set('jwtToken', jsonObject.token, {expires: 1, secure: true, sameSite:'strict'});
+
+                    window.location.href = "../contacts-page/index.html";
                 }
 
-                if(this.readyState==400){
-                    document.getElementById("validRegisterResult").value="invalid input";
+                if(this.status==400){
+                    //document.getElementById("validRegisterResult").value="invalid input";
+                    console.log("ERROR 400: "+jsonObject.error);
                 }
-                
-                if(this.readyState==500){
-                    document.getElementById("validRegisterResult").value="Invalid credentials or authentication provider";
+                if(this.status==401){
+                    //document.getElementById("validRegisterResult").value="Invalid credentials or authentication provider";
+                    console.log("ERROR 401: "+jsonObject.error);
                 }
         }
 		};
@@ -77,7 +69,8 @@ function doLogin()
 	}
 	catch(err)
 	{
-		document.getElementById("loginResult").innerHTML = err.message;
+		//document.getElementById("loginResult").innerHTML = err.message;
+		console.log(err.message);
 	}
 
 }
