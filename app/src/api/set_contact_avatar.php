@@ -36,12 +36,12 @@ function uploadFile(): string
             exit;
         }
 
-        $fileName = Uuid::uuid4() . "." . $file_extension;
+        do {
+            $fileName = Uuid::uuid4() . "." . $file_extension;
+            $uploadFile = $UPLOAD_DIR . $fileName;
+        } while (file_exists($uploadFile));
 
         error_log("fileName=" . $fileName);
-
-        $uploadFile = $UPLOAD_DIR . $fileName;
-
         error_log("uploadFile=" . $uploadFile);
 
         // Move the uploaded file to the uploads directory
