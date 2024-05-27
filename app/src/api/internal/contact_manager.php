@@ -27,7 +27,7 @@ class ContactManager
         }
     }
 
-    public function getContact($id): ?Contact
+    public function getContact(int $id): ?Contact
     {
         $query = "SELECT * FROM contacts WHERE id = ?";
         $stmt = $this->connection->prepare($query);
@@ -43,7 +43,7 @@ class ContactManager
         }
     }
 
-    public function updateContact($contact)
+    public function updateContact(Contact $contact): bool
     {
         $fields = [];
         $params = [];
