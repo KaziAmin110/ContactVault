@@ -1,6 +1,6 @@
 const username = document.querySelector('#user-name');
 const password = document.querySelector('#password');
-const form = document.querySelector('.sign-in-form');
+const formSelect = document.querySelector('.sign-in-form');
 const userForm = document.querySelector('.username');
 const passForm = document.querySelector('.password');
 
@@ -20,8 +20,10 @@ const clearElements = () => {
 }
 
 
-form.addEventListener("submit", (e) => {
+formSelect.addEventListener("submit", (e) => {
     e.preventDefault();
+    e.stopPropagation();
+    
     clearElements();
     
     let numbers = /[0-9]/g;

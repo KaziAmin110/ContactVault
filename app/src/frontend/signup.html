@@ -24,7 +24,7 @@
             <h5>to access ContactVault Home</h3>
         </div>
 
-        <form action="" class="sign-in-form">
+        <form action="/api/register.php" class="sign-in-form" method="POST">
             <div class="form-group">
                 <label for="first-name">First Name</label>
                 <input type="name" class="form-control" id="first-name" aria-describedby="first-name"
@@ -73,7 +73,7 @@
                         <p>Already have an account ?</p>
                         <a href="login.html">Sign-in</a>
                     </small>
-                    <div id="validRegisterResult"></div>
+                    <div id="registerResult"></div>
                 </div>
 
         </form>
@@ -89,7 +89,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
-    <!-- <script src="../js/loginValidation.js"></script> -->
+    <!-- <script src="../js/loginValidation.js" defer></script> -->
     <script src="../js/loginAuth.js"></script>
 
 </body>
