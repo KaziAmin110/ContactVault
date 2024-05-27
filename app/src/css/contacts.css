@@ -1,5 +1,7 @@
 body {
     height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .navbar {
@@ -44,10 +46,11 @@ body {
     height: 100%;
 }
 
-.contacts-list-header {    
+.contacts-list-header {
     display: flex;
     flex-direction: column;
     border-right: 1px solid #ddd;
+    width: 30%;
 }
 
 .contact-actions {
@@ -71,8 +74,8 @@ body {
     justify-content: start;
     align-items: center;
     border: none;
-    padding: 10px 0;
     cursor: pointer;
+    margin-right: 10px;
 }
 
 .list-group-item .contact-checkbox {
@@ -92,10 +95,23 @@ body {
     vertical-align: middle;
 }
 
-.contact-details {
+.contact-description {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid green;
+    flex: 1;
+
+}
+
+.contact-desc-container {
     display: flex;
     flex-direction: column;
+    border: 1px solid red;
+
     justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
 .contact-name {
@@ -103,6 +119,13 @@ body {
     font-size: 1.2em;
 }
 
+.contact-body {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    border: 1px solid orange;
+    height: fit-content;
+}
 
 .contact-actions button {
     margin-right: 10px;
@@ -115,7 +138,15 @@ body {
 .contact-header {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    border: 1px solid purple;
+    width: 50%;
+}
+
+.contact-header-edit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .avatar-large {
@@ -156,6 +187,12 @@ body {
     margin-bottom: 5px;
 }
 
+.edit-btn {
+    display: flex;
+    justify-content: center;
+    margin-left: -40px;
+}
+
 .editable-field {
     border: none;
     outline: none;
@@ -173,7 +210,7 @@ body {
 }
 
 .editable-field:not([readonly]) {
-    border-bottom: 1px solid rgb(0,0,0,0.15);
+    border-bottom: 1px solid rgb(0, 0, 0, 0.15);
 }
 
 #edit-mode input {
@@ -196,7 +233,9 @@ body {
 
 .search-bar-actions {
     display: flex;
+    justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .search-bar-actions input {
@@ -256,7 +295,7 @@ body {
     border-color: #dc3545;
 }
 
-.is-invalid ~ .invalid-feedback {
+.is-invalid~.invalid-feedback {
     display: block;
 }
 

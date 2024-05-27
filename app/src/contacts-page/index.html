@@ -48,30 +48,35 @@
         </div>
 
        <!-- Contact Description Section -->
-        <div class="col-md-8 contact-details" id="contact-details" style="display: none;">
-            <div class="contact-header">
-                <img src="avatar1.jpg" alt="Profile Picture" class="avatar-large" id="contact-avatar">
-                <div style="display: flex; align-items: center;">
-                    <input type="text" id="contact-name" class="editable-field" readonly>
-                    <img src="edit.jpg" alt="Edit" class="edit-icon" onclick="modifySelected()">
+        <div class="contact-description container-fluid" id="contact-details" style="display: none;">
+            <div class="contact-desc-container container-fluid">
+                <div class="contact-header">
+                    <img src="avatar1.jpg" alt="Profile Picture" class="avatar-large" id="contact-avatar">
+                    <div class="contact-header-edit">
+                        <input type="text" id="contact-name" class="editable-field" readonly>
+                        <button class="btn-primary d-flex edit-btn">
+                            <h6 class="d-inline">Edit</h6>
+                            <img src="edit.svg" alt="Edit" class="edit-icon" onclick="modifySelected()">
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="contact-body">
-                <div id="display-mode">
-                    <textarea id="contact-bio" class="editable-field bio-field" rows="2" cols="60" readonly></textarea>
-                    <br>
-                    <label for="contact-email">Email:</label>
-                    <input type="text" id="contact-email" class="editable-field" readonly>
-                    <br>
-                    <label for="contact-phone">Phone:</label>
-                    <input type="text" id="contact-phone" class="editable-field" readonly>
-                    <br>
-                    <label for="contact-linkedin">LinkedIn Profile:</label>
-                    <input type="text" id="contact-linkedin" class="editable-field" readonly>
-                    <br>
+                <div class="contact-body">
+                    <div id="display-mode">
+                        <textarea id="contact-bio" class="editable-field bio-field" rows="2" cols="60" readonly></textarea>
+                        <br>
+                        <label for="contact-email">Email:</label>
+                        <input type="text" id="contact-email" class="editable-field" readonly>
+                        <br>
+                        <label for="contact-phone">Phone:</label>
+                        <input type="text" id="contact-phone" class="editable-field" readonly>
+                        <br>
+                        <label for="contact-linkedin">LinkedIn Profile:</label>
+                        <input type="text" id="contact-linkedin" class="editable-field" readonly>
+                        <br>
+                    </div>
+                    <button class="btn btn-primary save-button" onclick="saveContactDetails()"
+                        style="display: none;">Save</button>
                 </div>
-                <button class="btn btn-primary save-button" onclick="saveContactDetails()"
-                    style="display: none;">Save</button>
             </div>
         </div>
     </div>
