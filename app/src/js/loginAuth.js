@@ -110,14 +110,19 @@ function register() {
 
 		if(this.readyState == 4){ //ensure the request is complete
 			if (this.status == 200) {
-
 				console.log("no errors should redirect");
 				document.getElementById("registerResult").innerHTML = "Successfully registered!";
 				window.location.href = "../contacts-page/index.html";
-				
 			}
 			else {
-				console.log("An error occurred");
+				if(this.status==400)
+					console.log("error 400: Username is taken");
+
+				//THIS HAS TO BE FIXED 
+				if(this.status==500){
+					console.log("ERROR");
+					window.location.href = "../contacts-page/index.html";
+				}
 			}
 		}
 	};
@@ -125,7 +130,7 @@ function register() {
 	}
 	catch (err) {
 		document.getElementById("registerResult").innerHTML = err.message;
-		console.log(err.message);
+		console.log(response.JSON().error);
 	}
 }
 
