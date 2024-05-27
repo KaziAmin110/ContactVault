@@ -29,9 +29,9 @@
 
     <!-- Contact List Section -->
     <!-- row -->
-    <div class="row contacts"> 
-        <div class="col-md-4 contacts-list">
-            <div class="contact-actions mt-3 mb-3">
+    <div class="contacts container-fluid"> 
+        <div class="contacts-list-header">
+            <div class="contact-actions">
                 <div class="search-bar-actions">
                     <input type="text" class="form-control" placeholder="Search for a contact">
                     <button class="btn btn-search" onclick="searchSelected()">Search</button>
@@ -39,10 +39,12 @@
                     <button class="btn btn-danger" onclick="deleteSelected()">Delete</button>
                 </div>
             </div>
-            <ul class="list-group" id="contact-list">
-                <li class="list-group-item no-contacts">No contacts added</li>
-            </ul>
-
+            <div class="contact-list-group">
+                <ul class="list-group" id="contact-list">
+                    <li class="list-group-item no-contacts">No contacts added</li>
+                </ul>
+            </div>
+    
         </div>
 
        <!-- Contact Description Section -->
@@ -52,7 +54,6 @@
                 <div style="display: flex; align-items: center;">
                     <input type="text" id="contact-name" class="editable-field" readonly>
                     <img src="edit.jpg" alt="Edit" class="edit-icon" onclick="modifySelected()">
-                    <h1>hello</h1>
                 </div>
             </div>
             <div class="contact-body">

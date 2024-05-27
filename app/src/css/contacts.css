@@ -39,14 +39,28 @@ body {
     margin-left: -50px;
 }
 
+.contacts {
+    display: flex;
+    height: 100%;
+}
 
-.contacts-list {
-    background-color: #FFFFFF;
-    padding: 20px;
-    height: calc(100vh - 60px);
+.contacts-list-header {    
+    display: flex;
+    flex-direction: column;
     border-right: 1px solid #ddd;
 }
 
+.contact-actions {
+    display: flex;
+    margin-top: 10px;
+}
+
+.contact-list-group {
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 10px;
+}
 
 .list-group {
     width: 100%;
@@ -89,11 +103,6 @@ body {
     font-size: 1.2em;
 }
 
-.contact-actions {
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 20px;
-}
 
 .contact-actions button {
     margin-right: 10px;
