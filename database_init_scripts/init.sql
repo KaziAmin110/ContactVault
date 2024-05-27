@@ -3,6 +3,8 @@ USE contact_manager;
 CREATE TABLE
   `users` (
     `id` int NOT NULL AUTO_INCREMENT,
+    `first_name` VARCHAR(64) NOT NULL,
+    `last_name` VARCHAR(64) NOT NULL,
     `date_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `date_last_logged_in` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `authentication_provider` ENUM ('GITHUB', 'GOOGLE', 'USERNAME_PASSWORD') NOT NULL,
