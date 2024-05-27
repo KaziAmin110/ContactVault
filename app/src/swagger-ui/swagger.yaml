@@ -136,14 +136,22 @@ paths:
                   contact:
                     type: object
                     properties:
-                      contact_id:
+                      id:
                         type: integer
                       first_name:
                         type: string
                       last_name:
                         type: string
-                      email:
+                      email_address:
                         type: string
+                      avatar_url:
+                        type: string
+                      bio:
+                        type: string
+                      description:
+                        type: string
+                      user_id:
+                        type: integer
         "400":
           description: Invalid input
           content:
@@ -257,14 +265,105 @@ paths:
                   contact:
                     type: object
                     properties:
-                      contact_id:
-                        type: string
+                      id:
+                        type: integer
                       first_name:
                         type: string
                       last_name:
                         type: string
-                      email:
+                      email_address:
                         type: string
+                      avatar_url:
+                        type: string
+                      bio:
+                        type: string
+                      description:
+                        type: string
+                      user_id:
+                        type: integer
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "404":
+          description: Contact not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/update_contact.php:
+    post:
+      summary: Update a contact
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                contact:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    email_address:
+                      type: string
+                    avatar_url:
+                      type: string
+                    bio:
+                      type: string
+                    description:
+                      type: string
+      responses:
+        "200":
+          description: Contact deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contact:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      email_address:
+                        type: string
+                      avatar_url:
+                        type: string
+                      bio:
+                        type: string
+                      description:
+                        type: string
+                      user_id:
+                        type: integer
         "400":
           description: Invalid input
           content:
@@ -338,7 +437,7 @@ paths:
                         description:
                           type: string
                         user_id:
-                          type: int
+                          type: integer
         "400":
           description: Invalid input
           content:
