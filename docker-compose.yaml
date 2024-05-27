@@ -33,3 +33,5 @@ services:
       - ./secrets/.env
     volumes:
       - "./secrets:/secrets"
+      - "./avatars:/var/www/html/avatars"
+
