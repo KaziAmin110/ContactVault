@@ -33,8 +33,16 @@ document.getElementById('uploadForm').addEventListener('submit', function(e) {
     .then(response => response.json())
     .then(result => {
         console.log('Success:', result);
+        if (result.contact && result.contact.avatar_url) {
+            let imageUrl = result.contact.avatar_url;
+            let imgElement = document.getElementById('avatarImage');
+            imgElement.src = urlBase + '/' + imageUrl;
+        } else {
+            console.error('avatar_url not found in result');
+        }
     })
     .catch(error => {
         console.error('Error:', error);
     });
+
 });
