@@ -107,7 +107,6 @@ body {
 .contact-desc-container {
     display: flex;
     flex-direction: column;
-    border: 1px solid red;
 
     justify-content: center;
     align-items: center;
@@ -122,9 +121,10 @@ body {
 .contact-body {
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: 75%;
     border: 1px solid orange;
     height: fit-content;
+    padding: 2rem;
 }
 
 .contact-actions button {
@@ -137,16 +137,20 @@ body {
 
 .contact-header {
     display: flex;
-    align-items: center;
+    justify-content: flex-start;
     border: 1px solid purple;
-    width: 50%;
+    width: 75%;
+    padding: 2rem;
 }
 
 .contact-header-edit {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-around;
     text-align: center;
+
+    border: 1px solid blue;
 }
 
 .avatar-large {
