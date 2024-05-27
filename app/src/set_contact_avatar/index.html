@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload</title>
+    <style>
+        form {
+            display: block;
+            margin-top: 0em;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label for="jwt">JWT:</label>
+        <input type="text" name="JWT" id="jwt">
+        <label for="contact_id">Contact ID:</label>
+        <input type="number" name="Contact ID" id="contact_id">
+        <label for="image">Avatar Image:</label>
+        <input type="file" name="image" id="image" accept="image/*">
+        <input type="submit" value="Upload">
+    </form>
+    <script src="upload.js"></script>
+</body>
+
+</html>
