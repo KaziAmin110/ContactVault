@@ -19,9 +19,8 @@ FILE_PATH=$2
 # Obtain the JWT token
 jwt=$(bash ./login.sh | jq -r .token)
 
-
 # Perform the curl request
 curl -X POST http://localhost:80/api/set_contact_avatar.php \
 -H "Authorization: Bearer $jwt" \
 -F "image=@$FILE_PATH" \
--F "json={\"key1\":\"value1\", \"key2\":\"value2\"}"
+-F "json={\"contact_id\":$CONTACT_ID}"
