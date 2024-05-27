@@ -5,27 +5,7 @@ require_once './internal/user_manager.php';
 require_once './internal/jwt.php';
 require_once './internal/types.php';
 
-if (!preg_match('/Bearer\s(\S+)/', $_SERVER['HTTP_AUTHORIZATION'], $matches)) {
-    http_response_code(400);
-    echo json_encode(['error' => 'You must pass a valid JWT in the Authorization header!']);
-    exit;
-}
-
-$jwt = $matches[1];
-if (!$jwt) {
-    // No token was able to be extracted from the authorization header
-    http_response_code(400);
-    echo json_encode(['error' => 'You must pass a valid JWT in the Authorization header!']);
-    exit;
-}
-
-$loggedInUser = verifyJwt($jwt);
-if ($loggedInUser == null) {
-    http_response_code(401);
-    echo json_encode(['error' => 'Your JWT is expired or malformed!']);
-    exit;
-}
-
+$loggedInUser = extractLoggedInUser();
 
 $input = file_get_contents('php://input');
 
