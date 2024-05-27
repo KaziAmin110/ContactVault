@@ -111,6 +111,17 @@ class DeleteContactPayload
 
 }
 
+class SetContactAvatarPayload
+{
+    public int $contact_id;
+
+    public function __construct(int $contact_id)
+    {
+        $this->contact_id = $contact_id;
+    }
+
+}
+
 class User
 {
     public int $id;
