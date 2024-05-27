@@ -1,4 +1,5 @@
 //http://localhost/swagger-ui
+//import Cookies from 'js-cookie';
 
 const form = document.querySelector('.sign-in-form');
 
@@ -10,8 +11,6 @@ const urlBase = url.protocol + '//' + (port ? `${hostname}:${port}` : hostname);
 const extension = 'php';
 const usernameRegex = /^[a-zA-Z0-9_]+$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-
 
 function isValidPassword(password) {
 	console.log("validating password:");
@@ -55,30 +54,25 @@ function isValidRegister() {
 
 	if (first_name.length == 0) {
 		message += "First name cannot be empty<br>";
-		flag = false;
 	}
 
 	if (last_name.length == 0) {
 		message += "Last name cannot be empty<br>";
-		flag = false;
 	}
 
 	if (!usernameRegex.test(userName)) {
 		message += "Invalid username<br>";
 		message += "please make sure the username is between 3-20 characters and has only numbers, letters, and _<br>";
-		flag = false;
 	}
 
 	if (!emailRegex.test(email)) {
 		message += "Invalid email<br>";
-		flag = false;
 	}
 
 	let passReq = isValidPassword(password);
 
 	if (passReq != "") {
 		message += passReq + "<br>";
-		flag = false;
 	}
 	
 	console.log("done validating register: "+message);
@@ -110,18 +104,19 @@ function register() {
 
 		if(this.readyState == 4){ //ensure the request is complete
 			if (this.status == 200) {
-				console.log("no errors should redirect");
-				document.getElementById("registerResult").innerHTML = "Successfully registered!";
+				
+				//creating cookie
+				jsonObject=JSON.parse(this.responseText);
+				Cookies.set('jwtToken', jsonObject.token, {expires: 1, secure: true, sameSite:'strict'});
+
 				window.location.href = "../contacts-page/index.html";
 			}
 			else {
 				if(this.status==400)
-					console.log("error 400: Username is taken");
+					console.log("ERROR 400: Username is taken");
 
-				//THIS HAS TO BE FIXED 
 				if(this.status==500){
-					console.log("ERROR");
-					window.location.href = "../contacts-page/index.html";
+					console.log("ERROR 500");
 				}
 			}
 		}
@@ -129,8 +124,8 @@ function register() {
 		xhr.send(jsonPayload);
 	}
 	catch (err) {
-		document.getElementById("registerResult").innerHTML = err.message;
-		console.log(response.JSON().error);
+		jsonObject=JSON.parse(this.responseText);
+		console.log(jsonObject.error);
 	}
 }
 
@@ -138,7 +133,7 @@ form.addEventListener('submit', function signUp(e) {
 	e.preventDefault();
 	let res = isValidRegister();
 
-	document.getElementById("validRegisterResult").value = res;
+	//document.getElementById("validRegisterResult").value = res;
 
 	if (res == "")
 		register();
