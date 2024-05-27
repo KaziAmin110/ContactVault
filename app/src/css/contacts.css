@@ -1,14 +1,15 @@
 body {
     height: 100vh;
-    display: flex;
-    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    
 }
 
 .navbar {
     height: 100px;
-    margin-left: 0px;
-    margin-right: 0px;
     width: 100%;
+    margin-left: 0;
+    margin-right: 0;
     border-bottom: 1px solid black;
     display: flex;
     justify-content: space-between;
@@ -38,7 +39,9 @@ body {
 .logo {
     width: 250px;
     height: 250px;
+    padding: 0px;
     margin-left: -50px;
+    object-fit: scale-down;
 }
 
 .contacts {
@@ -113,6 +116,8 @@ body {
     height: 100%;
 }
 
+
+
 .contact-name {
     font-weight: bold;
     font-size: 1.2em;
@@ -156,7 +161,7 @@ body {
 .avatar-large {
     width: 120px;
     height: 120px;
-    border-radius: 50%;
+    border-radius: 25%;
     margin-right: 20px;
 }
 
@@ -168,6 +173,10 @@ body {
     width: 100%;
     height: auto;
     min-height: 150px;
+}
+
+.notes {
+    border: 1px solid black;
 }
 
 .contact-info-list {
