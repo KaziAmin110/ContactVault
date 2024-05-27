@@ -7,18 +7,31 @@ require_once './internal/types.php';
 
 $loggedInUser = extractLoggedInUser();
 
-$input = file_get_contents('php://input');
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    echo "Unsupported request method.";
+    exit;
+}
 
+// Extracting query parameters
+$queryParams = $_GET;
+
+// Convert the query parameters to a JSON string
+$jsonString = json_encode($queryParams);
+
+error_log("jsonString=" . $jsonString);
+
+// Using the JSON mapper as before
 $mapper = (new \JsonMapper\JsonMapperFactory())->bestFit();
-
-$get_user_payload = $mapper->mapToClassFromString($input, GetUserPayload::class);
+$get_user_payload = $mapper->mapToClassFromString($jsonString, GetUserPayload::class);
 
 // Validate the mapped data
 if (!isset($get_user_payload->user_id)) {
     http_response_code(400);
-    echo json_encode(['error' => 'The contact field is required.']);
+    echo json_encode(['error' => 'The user_id field is required.']);
     exit;
 }
+
+error_log(json_encode(['get_user_payload->user_id' => $get_user_payload->user_id, 'loggedInUser->user_id' => $loggedInUser->user_id]));
 
 if ($loggedInUser->user_id != $get_user_payload->user_id) {
     http_response_code(401);

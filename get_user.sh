@@ -15,9 +15,6 @@ user_id=$1
 
 jwt=$(bash ./login.sh | jq -r .token) 
 
-curl -X GET http://localhost:80/api/get_user.php \
+curl -X GET http://localhost:80/api/get_user.php?user_id=$user_id \
 -H "Content-Type: application/json" \
--H "Authorization: Bearer $jwt" \
--d "{
-    \"user_id\": $user_id
-}"
+-H "Authorization: Bearer $jwt" -s

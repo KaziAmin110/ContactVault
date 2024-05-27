@@ -15,9 +15,6 @@ contact_id=$1
 
 jwt=$(bash ./login.sh | jq -r .token) 
 
-curl -X GET http://localhost:80/api/get_contact.php \
+curl -X GET http://localhost:80/api/get_contact.php?contact_id=$contact_id \
 -H "Content-Type: application/json" \
--H "Authorization: Bearer $jwt" \
--d "{
-    \"contact_id\": $contact_id
-}"
+-H "Authorization: Bearer $jwt" -s

@@ -7,11 +7,20 @@ require_once './internal/types.php';
 
 $loggedInUser = extractLoggedInUser();
 
-$input = file_get_contents('php://input');
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    echo "Unsupported request method.";
+    exit;
+}
 
+// Extracting query parameters
+$queryParams = $_GET;
+
+// Convert the query parameters to a JSON string
+$jsonString = json_encode($queryParams);
+
+// Using the JSON mapper as before
 $mapper = (new \JsonMapper\JsonMapperFactory())->bestFit();
-
-$get_contact_payload = $mapper->mapToClassFromString($input, GetContactPayload::class);
+$get_contact_payload = $mapper->mapToClassFromString($jsonString, GetContactPayload::class);
 
 // Validate the mapped data
 if (!isset($get_contact_payload->contact_id)) {
