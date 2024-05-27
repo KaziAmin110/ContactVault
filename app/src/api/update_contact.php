@@ -61,7 +61,6 @@ try {
     $contact->last_name = $update_contact_payload->contact->last_name ?? $contact->last_name;
     $contact->phone_number = $update_contact_payload->contact->phone_number ?? $contact->phone_number;
     $contact->email_address = $update_contact_payload->contact->email_address ?? $contact->email_address;
-    $contact->avatar_url = $update_contact_payload->contact->avatar_url ?? $contact->avatar_url;
     $contact->bio = $update_contact_payload->contact->bio ?? $contact->bio;
     $contact->description = $update_contact_payload->contact->description ?? $contact->description;
 
