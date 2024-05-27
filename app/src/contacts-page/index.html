@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<!-- Required meta tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
-	
-	<!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> 
+    <title>Contact Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
-	
-	 <title>Contact Management</title>
 </head>
-
 <body>
+
+	<!-- Scripts to help support the popout during add a contact -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+
     <div class="container-fluid">
         <div class="row">
-			<!-- Top menu bar -->
             <div class="col-12 top-bar">
                 <div class="top-bar-left">
                     <span class="top-bar-title">Contact Management</span>
@@ -24,96 +24,105 @@
                 <div class="top-bar-right">
                     <a href="#" class="top-bar-link">Home</a>
                     <a href="#" class="top-bar-link">Description</a>
-                    <a href="#" class="top-bar-link">Login</a>
+                    <a href="https://github.com/LockedThread" class="top-bar-link">GitHub</a>
                 </div>
             </div>
         </div>
         <div class="row">
-            <!-- Left side columns and rows for contacts -->
             <div class="col-md-4 contacts-list">
                 <div class="contact-actions mt-3 mb-3">
-                    <button class="btn btn-success" onclick="addContact()">Add</button>
-                    <button class="btn btn-primary" onclick="modifySelected()">Modify</button>
-                    <button class="btn btn-danger" onclick="deleteSelected()">Delete</button>
+                    <div class="search-bar-actions">
+                        <input type="text" class="form-control" placeholder="Search for a contact">
+                        <button class="btn btn-search" onclick="searchSelected()">Search</button>
+                        <button class="btn btn-success" data-toggle="modal" data-target="#addContactModal">Add</button>
+                        <button class="btn btn-danger" onclick="deleteSelected()">Delete</button>
+                    </div>
                 </div>
-                <div class="search-bar">
-                    <input type="text" class="form-control" placeholder="Search for a contact">
-                </div>
-				<!-- Contacts themselves -->
                 <ul class="list-group" id="contact-list">
-                    <li class="list-group-item">
-                        <input type="checkbox" class="contact-checkbox" onchange="toggleSelection(this)">
-                        <div class="contact-info">
-                            <img src="avatar1.jpg" alt="John Doe" class="avatar">
-                            <div>
-                                <h5>John Doe</h5>
-                                <p>johndoe@gmail.com</p>
-                            </div>
-                        </div>
-                    </li>
-					<!-- Every other contact gets a grey-background -->
-                    <li class="list-group-item grey-background">
-                        <input type="checkbox" class="contact-checkbox" onchange="toggleSelection(this)">
-                        <div class="contact-info">
-                            <img src="avatar2.jpg" alt="Jane Smith" class="avatar">
-                            <div>
-                                <h5>Jane Smith</h5>
-                                <p>janesmith@gmail.com</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <input type="checkbox" class="contact-checkbox" onchange="toggleSelection(this)">
-                        <div class="contact-info">
-                            <img src="avatar3.jpg" alt="Neil Marshall" class="avatar">
-                            <div>
-                                <h5>Neil Marshall</h5>
-                                <p>neilmarshall@gmail.com</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item grey-background">
-                        <input type="checkbox" class="contact-checkbox" onchange="toggleSelection(this)">
-                        <div class="contact-info">
-                            <img src="avatar4.jpg" alt="Tammy Sam" class="avatar">
-                            <div>
-                                <h5>Tammy Sam</h5>
-                                <p>tammysam@gmail.com</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <input type="checkbox" class="contact-checkbox" onchange="toggleSelection(this)">
-                        <div class="contact-info">
-                            <img src="avatar5.jpg" alt="Cyndi Lauper" class="avatar">
-                            <div>
-                                <h5>Cyndi Lauper</h5>
-                                <p>cyndilauper@gmail.com</p>
-                            </div>
-                        </div>
-                    </li>
+                    <li class="list-group-item no-contacts">No contacts added</li>
                 </ul>
             </div>
-
-            <!-- Contact Details when clicked -->
-            <div class="col-md-8 contact-details">
+			
+			<!-- Right Side Contact -->
+            <div class="col-md-8 contact-details" id="contact-details" style="display: none;">
                 <div class="contact-header">
-                    <img src="avatar1.jpg" alt="John Doe" class="avatar-large">
-                    <div>
-                        <h2>John Doe</h2>
+                    <img src="avatar1.jpg" alt="Profile Picture" class="avatar-large" id="contact-avatar">
+                    <div style="display: flex; align-items: center;">
+                        <input type="text" id="contact-name" class="editable-field" readonly>
+                        <img src="edit.jpg" alt="Edit" class="edit-icon" onclick="modifySelected()">
                     </div>
                 </div>
                 <div class="contact-body">
-                    <p class="bio">Sample test to see how long descriptions can go for and how itll look. The FitnessGram™ Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues.The 20 meter pacer test will begin in 30 seconds. Line up at the start.The running speed starts slowly, but gets faster each minute after you hear this signal. A single lap should be completed each time you hear this sound. Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start. [Level 1] Feel it One Two Three Four Five Six Seven; end of level one [Level 2] Eight Feel it Nine Ten Eleven Twelve Thirteen Fourteen Fifteen; end of level two [Level 3] High rollers Sixteen High rollers Seventeen High rollers Eighteen Nineteen Twenty Twenty-one High rollers Twenty-two High rollers Twenty-three; end of level three [Level 4] High rollers Twenty-four Twenty-five Twenty-six Twenty-seven High rollers Twenty-eight Twenty-nine High rollers Thirty High rollers Thirty-one Thirty-two; end of level four [Level 5] Thirty-three Thirty-four Thirty-five Thirty-six Thirty-seven Thirty-eight Thirty-nine Forty Forty-one; end of level five ... Two hundred fifteen; end of level nineteen ... ... Two hundred forty-seven; end of level twenty-one, end of test</p>
-                    <ul class="contact-info-list">
-                        <li>Email: <span>johndoe@gmail.com</span></li>
-                        <li>Phone: <span>123-456-7890</span></li>
-                        <li>LinkedIn Profile: <a href="https://linkedin.com" target="_blank">linkedin.com/JohnDoe</a></li>
-                    </ul>
+                    <div id="display-mode">
+                        <textarea id="contact-bio" class="editable-field bio-field" rows="2" cols="60" readonly></textarea>
+                        <br>
+                        <label for="contact-email">Email:</label>
+                        <input type="text" id="contact-email" class="editable-field" readonly>
+                        <br>
+                        <label for="contact-phone">Phone:</label>
+                        <input type="text" id="contact-phone" class="editable-field" readonly>
+                        <br>
+                        <label for="contact-linkedin">LinkedIn Profile:</label>
+                        <input type="text" id="contact-linkedin" class="editable-field" readonly>
+                        <br>
+                    </div>
+                    <button class="btn btn-primary save-button" onclick="saveContactDetails()" style="display: none;">Save</button>
                 </div>
             </div>
-			
         </div>
     </div>
+
+    <!-- Add Contact Popout -->
+    <div class="modal fade" id="addContactModal" tabindex="-1" role="dialog" aria-labelledby="addContactModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addContactModalLabel">Add Contact</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-contact-form">
+                        <div class="form-group">
+							<label for="new-contact-firstname">First Name</label>
+							<input type="text" class="form-control" id="new-contact-firstname" required>
+							<div class="invalid-feedback">First name is required.</div>
+						</div>
+						<div class="form-group">
+							<label for="new-contact-lastname">Last Name</label>
+							<input type="text" class="form-control" id="new-contact-lastname" required>
+							<div class="invalid-feedback">Last name is required.</div>
+						</div>
+                        <div class="form-group">
+							<label for="new-contact-email">Email</label>
+							<input type="email" class="form-control" id="new-contact-email" required>
+							<div class="invalid-feedback">Enter a valid email address.</div>
+						</div>
+                        <div class="form-group">
+							<label for="new-contact-phone">Phone</label>
+							<input type="text" class="form-control phone-field" id="new-contact-phone" required>
+							<div class="invalid-feedback">Enter the phone number in the format xxx-xxx-xxxx.</div>
+						</div>
+						<div class="form-group">
+							<label for="new-contact-avatar">Profile Picture</label>
+							<input type="file" class="form-control-file" id="new-contact-avatar" required>
+							<div class="invalid-feedback">A profile picture is required.</div>
+						</div>
+                        <div class="form-group">
+                            <label for="new-contact-bio">Bio</label>
+                            <textarea class="form-control bio-field" id="new-contact-bio" rows="10" cols="60" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-contact-linkedin">LinkedIn Profile</label>
+                            <input type="url" class="form-control" id="new-contact-linkedin" required>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="addNewContact()">Add Contact</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

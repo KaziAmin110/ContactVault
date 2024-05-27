@@ -1,7 +1,6 @@
-
 body {
-    background-color: #f7f8fc;
-    font-family: 'Arial', sans-serif;
+    background-color: #FFFFFF;
+    font-family: 'Courier New', Courier, monospace;
     margin: 0;
     padding: 0;
 }
@@ -11,8 +10,8 @@ body {
 }
 
 .top-bar {
-    background-color: #333;
-    padding: 20px 10px;
+    background-color: #414069;
+    padding: 10px 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -20,20 +19,19 @@ body {
 
 .top-bar-left {
     flex: 1;
-	padding-left: 20px;
+    padding-left: 20px;
 }
 
 .top-bar-title {
     color: #fff;
     font-size: 24px;
     font-weight: bold;
-	padding-left: 15px;
 }
 
 .top-bar-right {
     flex: 1;
     text-align: right;
-	margin-right: 50px;
+    margin-right: 50px;
 }
 
 .top-bar-link {
@@ -44,36 +42,31 @@ body {
 
 .top-bar-link:hover {
     text-decoration: underline;
-	color: #fff;
 }
 
 .contacts-list {
-    background-color: #fff;
+    background-color: #FFFFFF;
     padding: 20px;
     height: calc(100vh - 60px);
     border-right: 1px solid #ddd;
 }
 
-.search-bar {
-    margin-bottom: 20px;
-	padding-left: 15px;
+
+.list-group {
+    width: 100%;
 }
 
 .list-group-item {
     display: flex;
-    justify-content: space;
+    justify-content: start;
     align-items: center;
     border: none;
-    padding: 15px 0;
-	padding-left: 15px;
+    padding: 10px 0;
+    cursor: pointer;
 }
 
 .list-group-item .contact-checkbox {
     margin-right: 15px;
-}
-
-.grey-background {
-    background-color: #f0f0f0;
 }
 
 .contact-info {
@@ -82,17 +75,28 @@ body {
 }
 
 .avatar {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     margin-right: 15px;
+    vertical-align: middle;
+}
+
+.contact-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.contact-name {
+    font-weight: bold;
+    font-size: 1.2em;
 }
 
 .contact-actions {
     display: flex;
     justify-content: flex-start;
     margin-bottom: 20px;
-	padding-left: 15px;
 }
 
 .contact-actions button {
@@ -106,21 +110,24 @@ body {
 .contact-header {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
-	padding-top: 125px;
+    margin-bottom: 10px;
 }
 
 .avatar-large {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     margin-right: 20px;
 }
 
-.bio {
+.bio-field {
     font-style: italic;
     color: #666;
-	padding-right: 150px;
+    resize: none;
+    overflow: hidden;
+    width: 100%;
+    height: auto;
+    min-height: 150px;
 }
 
 .contact-info-list {
@@ -133,5 +140,117 @@ body {
 }
 
 .selected {
-    background-color: #d3d3d3;
+    background-color: #D3D3D3;
+}
+
+.edit-icon {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
+.editable-field {
+    border: none;
+    outline: none;
+    width: auto;
+    display: inline-block;
+    margin-left: 10px;
+    border-radius: 5px;
+    background-color: transparent;
+    color: #000;
+    font-size: 1em;
+}
+
+.editable-field[readonly] {
+    border-bottom: 1px solid transparent;
+}
+
+.editable-field:not([readonly]) {
+    border-bottom: 1px solid rgb(0,0,0,0.15);
+}
+
+#edit-mode input {
+    margin-bottom: 5px;
+}
+
+.save-button {
+    margin-top: 10px;
+    background-color: #678A8E;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.save-button:hover {
+    background-color: #57777E;
+}
+
+.search-bar-actions {
+    display: flex;
+    align-items: center;
+}
+
+.search-bar-actions input {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.btn-success {
+    background-color: #678A8E;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-success:hover {
+    background-color: #57777E;
+}
+
+.btn-danger {
+    background-color: #678A8E;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background-color: #57777E;
+}
+
+.btn-search {
+    background-color: #678A8E;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-search:hover {
+    background-color: #57777E;
+}
+
+.no-contacts {
+    text-align: center;
+    color: #666;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 100%;
+}
+
+.is-invalid {
+    border-color: #dc3545;
+}
+
+.is-invalid ~ .invalid-feedback {
+    display: block;
 }
