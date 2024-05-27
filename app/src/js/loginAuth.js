@@ -71,8 +71,8 @@ const ids = [];
 //Allows User to Register using JST token and allows access to the contacts-page
 function register() {
 
-	let username = document.getElementById("user-name").value;
-	let password = document.getElementById("password").value
+	const username = document.getElementById("user-name").value;
+	const password = document.getElementById("password").value
 
 	//needs to be updated to use google needs updating
 	let tmp = {
@@ -96,13 +96,21 @@ function register() {
 		};
 		try {
 			const fetchResponse = await fetch(url, settings);
-			const data = await fetchResponse.json();
-			console.log(data);
-			setCookie("jwt", jwtPrivateKey, 15) // 15 minutes expiration
-			
-		} catch (e) {
-			console.log(e);
-		}    
+
+			if (fetchResponse.ok) {
+				const data = await fetchResponse.json();
+				console.log('Registration Succesfull: ', data);
+				setCookie("jwt", jwtPrivateKey, 15) // 15 minutes expiration
+			}
+			else {
+				const error = await fetchResponse.json();
+				console.error('Registration Failed: ', error);
+			}
+
+
+		} catch (error) {
+			console.error('Error', error);
+		}
 	}
 
 	registration();
