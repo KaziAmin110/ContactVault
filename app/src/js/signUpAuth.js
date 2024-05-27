@@ -1,5 +1,4 @@
 //http://localhost/swagger-ui
-//import Cookies from 'js-cookie';
 
 const form = document.querySelector('.sign-in-form');
 
@@ -89,7 +88,7 @@ function register() {
 	let password = document.getElementById("password").value
 
 	//needs to be updated to use google needs updating
-	let tmp = { authentication_provider: "USERNAME_PASSWORD", username: userName, password: password };
+	let tmp = { authentication_provider: "USERNAME_PASSWORD", username: userName, password: password, first_name:first_name,last_name:last_name };
 
 	let jsonPayload = JSON.stringify(tmp);
 	let url = urlBase + "/api/register." + extension;
