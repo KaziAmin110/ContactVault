@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <nav>
+            <button id="login-tab" class="active">Login</button>
+            <button id="register-tab">Register</button>
+        </nav>
+        <div id="form-container">
+            <div id="login-form" class="form active">
+                <h2>Login</h2>
+                <form>
+                    <label for="login-username">Username:</label>
+                    <input type="text" id="login-username" name="username" required>
+
+                    <label for="login-password">Password:</label>
+                    <input type="password" id="login-password" name="password" required>
+
+                    <button type="submit">Login</button>
+                </form>
+                <div id="login-message"></div>
+            </div>
+            <div id="register-form" class="form">
+                <h2>Register</h2>
+                <form>
+                    <label for="register-username">Username:</label>
+                    <input type="text" id="register-username" name="username" required>
+
+                    <label for="register-password">Password:</label>
+                    <input type="password" id="register-password" name="password" required>
+
+                    <label for="register-first-name">First Name:</label>
+                    <input type="text" id="register-first-name" name="first_name" required>
+
+                    <label for="register-last-name">Last Name:</label>
+                    <input type="text" id="register-last-name" name="last_name" required>
+
+                    <button type="submit">Register</button>
+                </form>
+                <div id="register-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/api.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
