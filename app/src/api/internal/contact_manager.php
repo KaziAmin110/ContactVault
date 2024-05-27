@@ -27,7 +27,7 @@ class ContactManager
         }
     }
 
-    public function getContact($id)
+    public function getContact($id): ?Contact
     {
         $query = "SELECT * FROM contacts WHERE id = ?";
         $stmt = $this->connection->prepare($query);
