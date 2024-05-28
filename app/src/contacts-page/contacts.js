@@ -31,6 +31,40 @@ function deleteSelected() {
 
     // Clear the contact details section (right side) when a profile is deleted
     clearContactDetails();
+
+    //for front end people: please make sure to add in the element 'delete-contact-id' that holds the id of the contacts to be deleted
+    //then uncomment the following line
+    //const contactId = document.getElementById('delete-contact-id').value;
+
+    //change 12 to contactId
+    deleteContact(Cookies.get("jwtToken"),12);
+
+}
+
+async function deleteContact(token, contactId) {
+    const response = await fetch(`${urlBase}/api/delete_contact.php`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ contact_id: contactId }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
+    return new Contact(
+        data.contact.id,
+        data.contact.first_name,
+        data.contact.last_name,
+        data.contact.email_address,
+        data.contact.avatar_url,
+        data.contact.bio,
+        data.contact.description,
+        data.contact.user_id
+    );
 }
 
 function clearContactDetails() {
@@ -181,7 +215,15 @@ function addNewContact() {
     };
     reader.readAsDataURL(avatarFile);
 
-    addContactToDatabase(firstname,lastname,email,bio,linkedin);
+    //will return the id of the contact, this id is used for all other processes
+    //involving that contact such as: updating, getting, deleting
+    let contactId = addContactToDatabase(firstname,lastname,email,bio,linkedin);
+    
+    //element 'contact-id' holds the contacts id, doesnt have to be displayed to the user
+    //but is necessary for other processes
+    //once element 'contact-id' is created uncomment this line:
+    //document.getElementById('contact-id').value = contactId;
+    
 }
 
 
@@ -229,16 +271,9 @@ async function addContact(token, contact) {
     if (!response.ok) {
         throw new Error(data.error);
     }
-    return new Contact(
-        data.contact.id,
-        data.contact.first_name,
-        data.contact.last_name,
-        data.contact.email_address,
-        data.contact.avatar_url,
-        data.contact.bio,
-        data.contact.description,
-        data.contact.user_id
-    );
+
+    console.log(data.contact.id);
+    return data.contact.id;
 }
 
 // Phone number & name validation
