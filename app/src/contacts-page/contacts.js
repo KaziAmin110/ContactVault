@@ -1,6 +1,26 @@
 let isEditing = false;
 let selectedContactIds = new Set();
 
+const url = new URL(window.location.href);
+const hostname = url.hostname;
+const port = url.port;
+const urlBase = url.protocol + '//' + (port ? `${hostname}:${port}` : hostname);
+
+const extension = 'php';
+
+class Contact {
+    constructor(id, firstName, lastName, emailAddress, avatarUrl, bio, description, userId) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.emailAddress = emailAddress;
+        this.avatarUrl = avatarUrl;
+        this.bio = bio;
+        this.description = description;
+        this.userId = userId;
+    }
+}
+
 function deleteSelected() {
     const selectedContacts = document.querySelectorAll('.list-group-item.selected');
     if (selectedContacts.length === 0) {
@@ -160,6 +180,65 @@ function addNewContact() {
         document.getElementById('add-contact-form').reset();
     };
     reader.readAsDataURL(avatarFile);
+
+    addContactToDatabase(firstname,lastname,email,bio,linkedin);
+}
+
+
+function addContactToDatabase(first_name, last_name, email,bio,description){
+
+   
+    if (typeof Cookies !== 'undefined') {
+        console.log('Cookies library is loaded and available');
+    } else {
+        console.error('Cookies library is not loaded');
+    }
+
+
+    console.log(first_name+"|"+last_name+"|"+email+"|"+bio+"|"+description);
+
+
+    const contact = {
+        first_name: first_name,
+        last_name: last_name,
+        email_address: email,
+        bio: bio,
+        description:description
+    };
+
+
+    let res= addContact(Cookies.get("jwtToken"), contact);
+}
+
+
+async function addContact(token, contact) {
+
+    console.log(`${urlBase}/api/add_contact.php`);
+
+    const response = await fetch(`${urlBase}/api/add_contact.php`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ contact }),
+    });
+
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
+    return new Contact(
+        data.contact.id,
+        data.contact.first_name,
+        data.contact.last_name,
+        data.contact.email_address,
+        data.contact.avatar_url,
+        data.contact.bio,
+        data.contact.description,
+        data.contact.user_id
+    );
 }
 
 // Phone number & name validation
