@@ -106,9 +106,12 @@ function register() {
 				
 				//creating cookie
 				jsonObject=JSON.parse(this.responseText);
+				Cookies.remove('jwtToken');
 				Cookies.set('jwtToken', jsonObject.token, {expires: 1, secure: true, sameSite:'strict'});
 
 				window.location.href = "../contacts-page/index.html";
+				///workspaces/contact-manager/app/src/contacts-page/index.html
+				///workspaces/contact-manager/app/src/js/signUpAuth.js
 			}
 			else {
 				if(this.status==400)
