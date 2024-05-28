@@ -97,13 +97,12 @@ async function addContact(token, contact) {
 }
 
 async function getContact(token, contactId) {
-    const response = await fetch(`${API_BASE_URL}/api/get_contact.php`, {
+    const response = await fetch(`${API_BASE_URL}/api/get_contact.php?contact_id=${encodeURIComponent(contactId)}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({ contact_id: contactId }),
+        }
     });
 
     const data = await response.json();
@@ -136,7 +135,16 @@ async function deleteContact(token, contactId) {
     if (!response.ok) {
         throw new Error(data.error);
     }
-    return data;
+    return new Contact(
+        data.contact.id,
+        data.contact.first_name,
+        data.contact.last_name,
+        data.contact.email_address,
+        data.contact.avatar_url,
+        data.contact.bio,
+        data.contact.description,
+        data.contact.user_id
+    );
 }
 
 async function updateContact(token, contact) {
@@ -166,13 +174,12 @@ async function updateContact(token, contact) {
 }
 
 async function searchContacts(token, query, page = 1) {
-    const response = await fetch(`${API_BASE_URL}/api/search_contacts.php`, {
+    const response = await fetch(`${API_BASE_URL}/api/search_contacts.php?query=${encodeURIComponent(query)}&page=${encodeURIComponent(page)}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({ query, page }),
+        }
     });
 
     const data = await response.json();
@@ -192,13 +199,12 @@ async function searchContacts(token, query, page = 1) {
 }
 
 async function getUser(token, userId) {
-    const response = await fetch(`${API_BASE_URL}/api/get_user.php`, {
+    const response = await fetch(`${API_BASE_URL}/api/get_user.php?user_id=${encodeURIComponent(userId)}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({ user_id: userId }),
+        }
     });
 
     const data = await response.json();
