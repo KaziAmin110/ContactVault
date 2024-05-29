@@ -129,6 +129,21 @@ body {
     margin-top: 33px;
     font-size: large;
 }
+
+.search-form {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem;
+}
+
+.search-bar {
+    flex: 1;
+}
+
+.submit-button {
+    width: 30px;
+    height: 30px;
+}
 /* Contacts List End */
 .contact-description {
     flex: 1;

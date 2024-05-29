@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/contacts.css">
     <title>ContactVault | Home</title>
 </head>
@@ -13,58 +14,75 @@
     <nav class="navbar">
         <div class="website-logo button-move">
             <a href="../index.html">
-                <img src="shield.svg" alt="Website Logo" class="logo">
+                <img src="contact-images/shield.svg" alt="Website Logo" class="logo">
             </a>
         </div>
 
         <div class="bottom-icons">
 
             <a href="../frontend/login.html" class="button-move">
-                <img src="members.svg" alt="Exit Button" class="members">
+                <img src="contact-images/members.svg" alt="Exit Button" class="members">
             </a>
 
 
             <a href="../frontend/login.html" class="button-move">
-                <img src="exit.svg" alt="Exit Button" class="exit">
+                <img src="contact-images/exit.svg" alt="Exit Button" class="exit">
             </a>
         </div>
     </nav>
 
     <!-- Contacts Section Start -->
-    <section class="contacts-list">
+    <section class="contacts-list-container">
         <div class="contacts-header">
             <div class="contacts-toggle">
-
-                <div class="toggle-button list-button button-move">
-                    <a href="../frontend/login.html" class="button-move">
-                        <img src="toggle.svg" alt="Exit Button" class="exit">
-                    </a>
-                </div>
-
-                <h3 class="list-button contacts-name">Contacts</h3>
+                <h3 class="list-button contacts-name">ContactVault | Home</h3>
             </div>
 
             <div class="contacts-navigation">
                 <div class="page-nav button-move">
                     <a href="../frontend/login.html" class="list-button">
-                        <img src="left.svg" alt="Exit Button" class="exit">
+                        <img src="contact-images/left.svg" alt="Exit Button" class="exit">
                     </a>
                 </div>
 
                 <div class="page-nav button-move">
                     <a href="../frontend/login.html" class="list-button">
-                        <img src="right.svg" alt="Exit Button" class="exit">
+                        <img src="contact-images/right.svg" alt="Exit Button" class="exit">
                     </a>
                 </div>
 
             </div>
+        </div>
+
+        <div class="contacts-body">
+            <form action="" class="search-form">
+                <input type="text" placeholder="Search for a contact" class="search-bar">
+                <button type="submit" class="submit-button">
+                    <img src="contact-images/search.svg" alt="Search Button Icon">
+                </button>
+            </form>
+
+            <ul class="contacts-list">
+
+            </ul>
         </div>
     </section>
     <!-- Contacts Section End -->
 
     <!-- Contact Description Section Start -->
     <section class="contact-description">
+        <div class="user-header">
+            <div class="add-container button-move">
+                <a class="add-contact">
+                    <img src="contact-images/add-user.svg" alt="Add Image Button" class="add-image">
+                </a>
+            </div>
 
+
+            <a class="profile-image button-move user-profile">
+                <img src="contact-images/Default_pfp.svg" alt="Default Profile Picture Image" class="profile-image">
+            </a>
+        </div>
     </section>
     <!-- Contact Description Section End -->
 
