@@ -138,6 +138,7 @@ body {
 
 .search-bar {
     flex: 1;
+    padding: 2px;
 }
 
 .submit-button {
