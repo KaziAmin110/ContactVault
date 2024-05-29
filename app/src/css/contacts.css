@@ -127,7 +127,7 @@ body {
 
 .contacts-name {
     margin-top: 33px;
-    font-size: large;
+    font-size: larger;
 }
 
 .search-form {
@@ -162,6 +162,10 @@ body {
     justify-content: space-between;
     align-items: center;
     gap: 2rem;
+}
+
+.add-container {
+    display: flex;
 }
 
 .add-contact {
