@@ -268,7 +268,7 @@ document.addEventListener('input', function (event) {
     }
 }, false);
 
-document.addEventListener('DOMContentLoaded', function() {
-    const textareas = document.querySelectorAll('textarea');
-    textareas.forEach(textarea => adjustTextareaHeight(textarea));
-});
+// document.addEventListener('DOMContentLoaded', function() {
+//     const textareas = document.querySelectorAll('textarea');
+//     textareas.forEach(textarea => adjustTextareaHeight(textarea));
+// });
