@@ -123,7 +123,13 @@ paths:
                       type: string
                     last_name:
                       type: string
-                    email:
+                    email_address:
+                      type: string
+                    phone_number:
+                      type: string
+                    bio:
+                      type: string
+                    description:
                       type: string
       responses:
         "200":
@@ -143,6 +149,8 @@ paths:
                       last_name:
                         type: string
                       email_address:
+                        type: string
+                      phone_number:
                         type: string
                       avatar_url:
                         type: string
@@ -203,6 +211,8 @@ paths:
                       last_name:
                         type: string
                       email_address:
+                        type: string
+                      phone_number:
                         type: string
                       avatar_url:
                         type: string
@@ -273,6 +283,8 @@ paths:
                         type: string
                       email_address:
                         type: string
+                      phone_number:
+                        type: string
                       avatar_url:
                         type: string
                       bio:
@@ -331,12 +343,16 @@ paths:
                       type: string
                     email_address:
                       type: string
+                    phone_number:
+                      type: string
                     avatar_url:
                       type: string
                     bio:
                       type: string
                     description:
                       type: string
+                    user_id:
+                      type: integer
       responses:
         "200":
           description: Contact deleted successfully
@@ -355,6 +371,8 @@ paths:
                       last_name:
                         type: string
                       email_address:
+                        type: string
+                      phone_number:
                         type: string
                       avatar_url:
                         type: string
