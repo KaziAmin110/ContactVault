@@ -6,8 +6,6 @@ const hostname = url.hostname;
 const port = url.port;
 const urlBase = url.protocol + '//' + (port ? `${hostname}:${port}` : hostname);
 
-const extension = 'php';
-
 class Contact {
     constructor(id, firstName, lastName, emailAddress, avatarUrl, bio, description, userId) {
         this.id = id;
@@ -120,8 +118,65 @@ function saveContactDetails() {
     saveButton.style.display = 'none';
 
     isEditing = false;
+
+    updatContactToDatabase();
 }
 
+//incomplete
+function updatContactToDatabase(){
+    
+    //api endpoint doesnt accept phone number
+
+    //front end: need to store each contacts id. this is the id of contact to be edited
+    //let id = document.getElementById('update-contact-id').value,
+
+    const str= document.getElementById('contact-name').value;
+    const split= str.split(' ');
+
+    first_name= split[0];
+
+    if(split[1])
+        last_name=split[1];
+    else last_name="";
+
+    //front end: avatar url isnt avaialble to edit
+    //id is hardcoded
+    let updatedContact = {
+        id: 30,
+        first_name: first_name,
+        last_name: last_name,
+        email_address: document.getElementById('contact-email').value,
+        avatar_url:"https://thispersondoesnotexist.com/" ,
+        bio: document.getElementById('contact-bio').value,
+        description: document.getElementById('contact-linkedin').value
+    };
+        //avatar_url: contact_avatar ,
+        //phone: contact_phone
+
+    console.log(updateContact(Cookies.get("jwtToken"), updatedContact));
+}
+
+async function updateContact(token, contact) {
+
+    const response = await fetch(`${urlBase}/api/update_contact.php`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ contact }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
+
+    console.log(data.contact.id);
+    return data.contact.id;
+       
+    
+}
 function addNewContact() {
     const firstname = document.getElementById('new-contact-firstname').value;
     const lastname = document.getElementById('new-contact-lastname').value;
@@ -229,16 +284,11 @@ function addNewContact() {
 
 function addContactToDatabase(first_name, last_name, email,bio,description){
 
-   
     if (typeof Cookies !== 'undefined') {
         console.log('Cookies library is loaded and available');
     } else {
         console.error('Cookies library is not loaded');
     }
-
-
-    console.log(first_name+"|"+last_name+"|"+email+"|"+bio+"|"+description);
-
 
     const contact = {
         first_name: first_name,
@@ -248,14 +298,11 @@ function addContactToDatabase(first_name, last_name, email,bio,description){
         description:description
     };
 
-
-    let res= addContact(Cookies.get("jwtToken"), contact);
+    return addContact(Cookies.get("jwtToken"), contact);
 }
 
 
 async function addContact(token, contact) {
-
-    console.log(`${urlBase}/api/add_contact.php`);
 
     const response = await fetch(`${urlBase}/api/add_contact.php`, {
         method: 'POST',
@@ -266,13 +313,11 @@ async function addContact(token, contact) {
         body: JSON.stringify({ contact }),
     });
 
-
     const data = await response.json();
     if (!response.ok) {
         throw new Error(data.error);
     }
 
-    console.log(data.contact.id);
     return data.contact.id;
 }
 
