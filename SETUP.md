@@ -51,7 +51,7 @@ docker compose down
 ### Deleting Database
 If you make a change to the `init.sql` file, and want to test it end-to-end, you can delete the databse by running the following:
 ```bash
-rm -rf .cache
+sudo rm -rf .cache
 ```
 
 ### Accessing Website

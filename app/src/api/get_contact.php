@@ -5,32 +5,22 @@ require_once './internal/contact_manager.php';
 require_once './internal/jwt.php';
 require_once './internal/types.php';
 
-if (!preg_match('/Bearer\s(\S+)/', $_SERVER['HTTP_AUTHORIZATION'], $matches)) {
-    http_response_code(400);
-    echo json_encode(['error' => 'You must pass a valid JWT in the Authorization header!']);
+$loggedInUser = extractLoggedInUser();
+
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    echo "Unsupported request method.";
     exit;
 }
 
-$jwt = $matches[1];
-if (!$jwt) {
-    // No token was able to be extracted from the authorization header
-    http_response_code(400);
-    echo json_encode(['error' => 'You must pass a valid JWT in the Authorization header!']);
-    exit;
-}
+// Extracting query parameters
+$queryParams = $_GET;
 
-$loggedInUser = verifyJwt($jwt);
-if ($loggedInUser == null) {
-    http_response_code(401);
-    echo json_encode(['error' => 'Your JWT is expired or malformed!']);
-    exit;
-}
+// Convert the query parameters to a JSON string
+$jsonString = json_encode($queryParams);
 
-$input = file_get_contents('php://input');
-
+// Using the JSON mapper as before
 $mapper = (new \JsonMapper\JsonMapperFactory())->bestFit();
-
-$get_contact_payload = $mapper->mapToClassFromString($input, GetContactPayload::class);
+$get_contact_payload = $mapper->mapToClassFromString($jsonString, GetContactPayload::class);
 
 // Validate the mapped data
 if (!isset($get_contact_payload->contact_id)) {
@@ -39,9 +29,14 @@ if (!isset($get_contact_payload->contact_id)) {
     exit;
 }
 
-$contact_manager = new ContactManager(new Database());
+$database = new Database();
 
-$contact = $contact_manager->getContact($get_contact_payload->contact_id);
+$contact_manager = new ContactManager($database);
+try {
+    $contact = $contact_manager->getContact($get_contact_payload->contact_id);
+} finally {
+    $database->closeConnection();
+}
 
 if ($contact == null) {
     http_response_code(404);

@@ -1,0 +1,79 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+nav button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+nav button.active {
+  background-color: #007BFF;
+  color: white;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.form {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.form h2 {
+  margin-top: 0;
+}
+
+.form label {
+  display: block;
+  margin-top: 10px;
+}
+
+.form input, .form textarea {
+  width: calc(100% - 22px);
+  padding: 10px;
+  margin-top: 5px;
+}
+
+.form button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.form.active {
+  display: block;
+}
+
+.form:not(.active) {
+  display: none;
+}
+
+/* Styles for the message box */
+.message-box {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  max-width: 100%;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}

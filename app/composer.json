@@ -4,7 +4,8 @@
     "require": {
         "firebase/php-jwt": "^6.10",
         "google/auth": "^1.39",
-        "json-mapper/json-mapper": "^2.22"
+        "json-mapper/json-mapper": "^2.22",
+        "ramsey/uuid": "^4.7"
     },
     "authors": [
         {

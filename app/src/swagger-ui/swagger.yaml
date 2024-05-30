@@ -22,7 +22,7 @@ paths:
                 password:
                   type: string
       responses:
-        '200':
+        "200":
           description: Successful login
           content:
             application/json:
@@ -33,7 +33,7 @@ paths:
                     type: string
                   user_id:
                     type: string
-        '400':
+        "400":
           description: Invalid input
           content:
             application/json:
@@ -42,7 +42,7 @@ paths:
                 properties:
                   error:
                     type: string
-        '401':
+        "401":
           description: Invalid credentials or authentication provider
           content:
             application/json:
@@ -69,8 +69,12 @@ paths:
                   type: string
                 password:
                   type: string
+                first_name:
+                  type: string
+                last_name:
+                  type: string
       responses:
-        '200':
+        "200":
           description: Successful registration
           content:
             application/json:
@@ -81,7 +85,7 @@ paths:
                     type: string
                   user_id:
                     type: string
-        '400':
+        "400":
           description: Invalid input or duplicate entry
           content:
             application/json:
@@ -90,7 +94,7 @@ paths:
                 properties:
                   error:
                     type: string
-        '500':
+        "500":
           description: Unexpected error
           content:
             application/json:
@@ -122,7 +126,7 @@ paths:
                     email:
                       type: string
       responses:
-        '200':
+        "200":
           description: Contact added successfully
           content:
             application/json:
@@ -132,15 +136,23 @@ paths:
                   contact:
                     type: object
                     properties:
-                      contact_id:
-                        type: string
+                      id:
+                        type: integer
                       first_name:
                         type: string
                       last_name:
                         type: string
-                      email:
+                      email_address:
                         type: string
-        '400':
+                      avatar_url:
+                        type: string
+                      bio:
+                        type: string
+                      description:
+                        type: string
+                      user_id:
+                        type: integer
+        "400":
           description: Invalid input
           content:
             application/json:
@@ -149,7 +161,7 @@ paths:
                 properties:
                   error:
                     type: string
-        '401':
+        "401":
           description: Unauthorized
           content:
             application/json:
@@ -160,7 +172,7 @@ paths:
                     type: string
 
   /api/get_contact.php:
-    post:
+    get:
       summary: Get a contact
       security:
         - bearerAuth: []
@@ -172,9 +184,9 @@ paths:
               type: object
               properties:
                 contact_id:
-                  type: string
+                  type: integer
       responses:
-        '200':
+        "200":
           description: Contact retrieved successfully
           content:
             application/json:
@@ -184,15 +196,23 @@ paths:
                   contact:
                     type: object
                     properties:
-                      contact_id:
-                        type: string
+                      id:
+                        type: integer
                       first_name:
                         type: string
                       last_name:
                         type: string
-                      email:
+                      email_address:
                         type: string
-        '400':
+                      avatar_url:
+                        type: string
+                      bio:
+                        type: string
+                      description:
+                        type: string
+                      user_id:
+                        type: integer
+        "400":
           description: Invalid input
           content:
             application/json:
@@ -201,7 +221,7 @@ paths:
                 properties:
                   error:
                     type: string
-        '401':
+        "401":
           description: Unauthorized
           content:
             application/json:
@@ -210,7 +230,7 @@ paths:
                 properties:
                   error:
                     type: string
-        '404':
+        "404":
           description: Contact not found
           content:
             application/json:
@@ -235,7 +255,7 @@ paths:
                 contact_id:
                   type: string
       responses:
-        '200':
+        "200":
           description: Contact deleted successfully
           content:
             application/json:
@@ -245,15 +265,23 @@ paths:
                   contact:
                     type: object
                     properties:
-                      contact_id:
-                        type: string
+                      id:
+                        type: integer
                       first_name:
                         type: string
                       last_name:
                         type: string
-                      email:
+                      email_address:
                         type: string
-        '400':
+                      avatar_url:
+                        type: string
+                      bio:
+                        type: string
+                      description:
+                        type: string
+                      user_id:
+                        type: integer
+        "400":
           description: Invalid input
           content:
             application/json:
@@ -262,7 +290,7 @@ paths:
                 properties:
                   error:
                     type: string
-        '401':
+        "401":
           description: Unauthorized
           content:
             application/json:
@@ -271,7 +299,90 @@ paths:
                 properties:
                   error:
                     type: string
-        '404':
+        "404":
+          description: Contact not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/update_contact.php:
+    post:
+      summary: Update a contact
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                contact:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    email_address:
+                      type: string
+                    avatar_url:
+                      type: string
+                    bio:
+                      type: string
+                    description:
+                      type: string
+      responses:
+        "200":
+          description: Contact deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contact:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      email_address:
+                        type: string
+                      avatar_url:
+                        type: string
+                      bio:
+                        type: string
+                      description:
+                        type: string
+                      user_id:
+                        type: integer
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "404":
           description: Contact not found
           content:
             application/json:
@@ -282,7 +393,7 @@ paths:
                     type: string
 
   /api/search_contacts.php:
-    post:
+    get:
       summary: Search contacts
       security:
         - bearerAuth: []
@@ -299,7 +410,7 @@ paths:
                   type: integer
                   default: 1
       responses:
-        '200':
+        "200":
           description: Contacts retrieved successfully
           content:
             application/json:
@@ -311,15 +422,23 @@ paths:
                     items:
                       type: object
                       properties:
-                        contact_id:
-                          type: string
+                        id:
+                          type: integer
                         first_name:
                           type: string
                         last_name:
                           type: string
-                        email:
+                        email_address:
                           type: string
-        '400':
+                        avatar_url:
+                          type: string
+                        bio:
+                          type: string
+                        description:
+                          type: string
+                        user_id:
+                          type: integer
+        "400":
           description: Invalid input
           content:
             application/json:
@@ -328,7 +447,7 @@ paths:
                 properties:
                   error:
                     type: string
-        '401':
+        "401":
           description: Unauthorized
           content:
             application/json:
@@ -337,7 +456,76 @@ paths:
                 properties:
                   error:
                     type: string
-
+  /get_user.php:
+    get:
+      summary: Get user information
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+              required:
+                - user_id
+      responses:
+        "200":
+          description: Successful retrieval of user information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        first_name:
+                          type: string
+                        last_name:
+                          type: string
+                        date_created:
+                          type: string
+                        date_last_logged_in:
+                          type: string
+                        authentication_id:
+                          type: string
+                        authentication_provider:
+                          type: string
+        "400":
+          description: Invalid input or missing JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "401":
+          description: Unauthorized due to invalid or expired JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
 components:
   securitySchemes:
     bearerAuth:

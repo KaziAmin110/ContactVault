@@ -11,10 +11,10 @@ if ! [[ $1 =~ ^-?[0-9]+$ ]]; then
     exit 1
 fi
 
-contact_id=$1
+user_id=$1
 
 jwt=$(bash ./login.sh | jq -r .token) 
 
-curl -X GET http://localhost:80/api/get_contact.php?contact_id=$contact_id \
+curl -X GET http://localhost:80/api/get_user.php?user_id=$user_id \
 -H "Content-Type: application/json" \
 -H "Authorization: Bearer $jwt" -s

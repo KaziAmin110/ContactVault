@@ -5,26 +5,7 @@ require_once './internal/contact_manager.php';
 require_once './internal/jwt.php';
 require_once './internal/types.php';
 
-if (!preg_match('/Bearer\s(\S+)/', $_SERVER['HTTP_AUTHORIZATION'], $matches)) {
-    http_response_code(400);
-    echo json_encode(['error' => 'You must pass a valid JWT in the Authorization header!']);
-    exit;
-}
-
-$jwt = $matches[1];
-if (!$jwt) {
-    // No token was able to be extracted from the authorization header
-    http_response_code(400);
-    echo json_encode(['error' => 'You must pass a valid JWT in the Authorization header!']);
-    exit;
-}
-
-$loggedInUser = verifyJwt($jwt);
-if ($loggedInUser == null) {
-    http_response_code(401);
-    echo json_encode(['error' => 'Your JWT is expired or malformed!']);
-    exit;
-}
+$loggedInUser = extractLoggedInUser();
 
 $input = file_get_contents('php://input');
 
@@ -39,23 +20,29 @@ if (!isset($delete_contact_payload->contact_id)) {
     exit;
 }
 
-$contact_manager = new ContactManager(new Database());
+$database = new Database();
 
-$contact = $contact_manager->getContact($delete_contact_payload->contact_id);
+$contact_manager = new ContactManager($database);
 
-if ($contact == null) {
-    http_response_code(404);
-    echo json_encode(['error' => 'Contact not found.']);
-    exit;
+try {
+    $contact = $contact_manager->getContact($delete_contact_payload->contact_id);
+
+    if ($contact == null) {
+        http_response_code(404);
+        echo json_encode(['error' => 'Contact not found.']);
+        exit;
+    }
+
+    if ($contact->user_id != $loggedInUser->user_id) {
+        http_response_code(401);
+        echo json_encode(['error' => 'You do not own the requested contact.']);
+        exit;
+    }
+
+    $contact_manager->deleteContact($contact->id);
+} finally {
+    $database->closeConnection();
 }
-
-if ($contact->user_id != $loggedInUser->user_id) {
-    http_response_code(401);
-    echo json_encode(['error' => 'You do not own the requested contact.']);
-    exit;
-}
-
-$contact_manager->deleteContact($contact->id);
 
 http_response_code(200);
 echo json_encode(['contact' => $contact]);

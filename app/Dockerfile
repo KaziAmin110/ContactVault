@@ -16,6 +16,8 @@ RUN groupadd -g 1000 webserver && \
     useradd -u 1000 -g webserver -m -s /bin/bash webserver
 
 # Set the user and group to own the document root directory
+
+RUN mkdir -p /var/www/html/avatars
 RUN chown -R webserver:webserver /var/www/html
 
 FROM setup-user AS install-dependencies
@@ -27,6 +29,12 @@ RUN cd /var/www/html/
 RUN composer install
 
 FROM install-dependencies AS final
+USER root
+RUN chown -R webserver:webserver /var/www/html
+USER webserver
+
 COPY ./httpd.conf /usr/local/apache2/conf/httpd.conf
 
 COPY ./src/ /var/www/html/
+
+USER webserver

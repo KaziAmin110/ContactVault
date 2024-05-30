@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <button id="login-tab" class="active">Login</button>
+            <button id="register-tab">Register</button>
+        </nav>
+        <div id="form-container" class="form-grid">
+            <div id="login-form" class="form active">
+                <h2>Login</h2>
+                <form>
+                    <label for="login-username">Username:</label>
+                    <input type="text" id="login-username" name="username" required>
+                    <label for="login-password">Password:</label>
+                    <input type="password" id="login-password" name="password" required>
+                    <button type="submit">Login</button>
+                </form>
+                <div id="login-message" class="message-box"></div>
+            </div>
+            <div id="register-form" class="form">
+                <h2>Register</h2>
+                <form>
+                    <label for="register-username">Username:</label>
+                    <input type="text" id="register-username" name="username" required>
+                    <label for="register-password">Password:</label>
+                    <input type="password" id="register-password" name="password" required>
+                    <label for="register-first-name">First Name:</label>
+                    <input type="text" id="register-first-name" name="first_name" required>
+                    <label for="register-last-name">Last Name:</label>
+                    <input type="text" id="register-last-name" name="last_name" required>
+                    <button type="submit">Register</button>
+                </form>
+                <div id="register-message" class="message-box"></div>
+            </div>
+            <div id="add-contact-form" class="form">
+                <h2>Add Contact</h2>
+                <form>
+                    <label for="contact-first-name">First Name:</label>
+                    <input type="text" id="contact-first-name" name="first_name" required>
+                    <label for="contact-last-name">Last Name:</label>
+                    <input type="text" id="contact-last-name" name="last_name" required>
+                    <label for="contact-email">Email:</label>
+                    <input type="email" id="contact-email" name="email">
+                    <label for="contact-bio">Bio:</label>
+                    <textarea id="contact-bio" name="bio"></textarea>
+                    <label for="contact-description">Description:</label>
+                    <textarea id="contact-description" name="description"></textarea>
+                    <button type="submit">Add Contact</button>
+                </form>
+                <div id="add-contact-message" class="message-box"></div>
+            </div>
+            <div id="get-contact-form" class="form">
+                <h2>Get Contact</h2>
+                <form>
+                    <label for="get-contact-id">Contact ID:</label>
+                    <input type="text" id="get-contact-id" name="contact_id" required>
+                    <button type="submit">Get Contact</button>
+                </form>
+                <div id="get-contact-message" class="message-box"></div>
+            </div>
+            <div id="delete-contact-form" class="form">
+                <h2>Delete Contact</h2>
+                <form>
+                    <label for="delete-contact-id">Contact ID:</label>
+                    <input type="text" id="delete-contact-id" name="contact_id" required>
+                    <button type="submit">Delete Contact</button>
+                </form>
+                <div id="delete-contact-message" class="message-box"></div>
+            </div>
+            <div id="update-contact-form" class="form">
+                <h2>Update Contact</h2>
+                <form>
+                    <label for="update-contact-id">Contact ID:</label>
+                    <input type="text" id="update-contact-id" name="contact_id" required>
+                    <label for="update-contact-first-name">First Name:</label>
+                    <input type="text" id="update-contact-first-name" name="first_name">
+                    <label for="update-contact-last-name">Last Name:</label>
+                    <input type="text" id="update-contact-last-name" name="last_name">
+                    <label for="update-contact-email">Email:</label>
+                    <input type="email" id="update-contact-email" name="email">
+                    <label for="update-contact-bio">Bio:</label>
+                    <textarea id="update-contact-bio" name="bio"></textarea>
+                    <label for="update-contact-description">Description:</label>
+                    <textarea id="update-contact-description" name="description"></textarea>
+                    <button type="submit">Update Contact</button>
+                </form>
+                <div id="update-contact-message" class="message-box"></div>
+            </div>
+            <div id="search-contacts-form" class="form">
+                <h2>Search Contacts</h2>
+                <form>
+                    <label for="search-query">Query:</label>
+                    <input type="text" id="search-query" name="query">
+                    <button type="submit">Search Contacts</button>
+                </form>
+                <div id="search-contacts-message" class="message-box"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

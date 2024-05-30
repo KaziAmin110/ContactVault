@@ -44,19 +44,34 @@ class UserManager
         return $stmt->execute();
     }
 
-    public function registerUser($username, $password): ?int
+    public function registerUser(string $username, string $password, string $first_name, string $last_name): ?int
     {
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-        $stmt = $this->connection->prepare("INSERT INTO users (authentication_id, authentication_provider, password) VALUES (?, 'USERNAME_PASSWORD', ?)");
-        $stmt->bind_param("ss", $username, $hashedPassword);
+        $stmt = $this->connection->prepare("INSERT INTO users (authentication_id, authentication_provider, password, first_name, last_name) VALUES (?, 'USERNAME_PASSWORD', ?, ?, ?)");
+        $stmt->bind_param("ssss", $username, $hashedPassword, $first_name, $last_name);
         if ($stmt->execute()) {
             return $stmt->insert_id;
         }
 
         return null;
     }
+
+
+    public function getUser(int $id): ?User
+    {
+        $query = "SELECT * FROM users WHERE id = ?";
+        $stmt = $this->connection->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            $contact = new User($row['id'], $row['first_name'], $row['last_name'], $row['date_created'], $row['date_last_logged_in'], $row['authentication_id'], $row['authentication_provider']);
+            return $contact;
+        } else {
+            return null;
+        }
+    }
 }
-
-
 ?>

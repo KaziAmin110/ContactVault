@@ -12,8 +12,10 @@ $mapper = (new \JsonMapper\JsonMapperFactory())->bestFit();
 $login_payload = $mapper->mapToClassFromString($input, LoginPayload::class);
 
 if ($login_payload->authentication_provider == 'USERNAME_PASSWORD') {
-    $user_manager = new UserManager(new Database());
+    $database = new Database();
+    $user_manager = new UserManager($database);
     $user_id = $user_manager->verifyPassword($login_payload->username, $login_payload->password);
+    $database->closeConnection();
 } else {
     http_response_code(401);
     echo json_encode(['error' => 'Invalid authentication_provider. We only support the following: [GOOGLE, USERNAME_PASSWORD]']);
