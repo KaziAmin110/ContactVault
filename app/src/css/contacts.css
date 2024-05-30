@@ -167,7 +167,10 @@ body {
 
 .add-container {
     display: flex;
+    cursor: pointer;
+    
 }
+
 
 .add-contact {
     margin-left: 25px;
