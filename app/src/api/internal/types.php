@@ -1,5 +1,4 @@
 <?php
-use JsonMapper\Middleware\Constructor\Constructor;
 
 $JSON_MAPPER = (new \JsonMapper\JsonMapperFactory())->default();
 

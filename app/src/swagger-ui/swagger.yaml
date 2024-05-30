@@ -1,11 +1,13 @@
 openapi: 3.0.1
 info:
-  title: Authentication API
-  description: API for user authentication and registration
+  title: Contact Vault API
+  description: The API that handles the Contact Vault system
   version: 1.0.0
 paths:
   /api/login.php:
     post:
+      tags:
+        - Authentication
       summary: User login
       requestBody:
         required: true
@@ -21,6 +23,10 @@ paths:
                   type: string
                 password:
                   type: string
+            example:
+              authentication_provider: "USERNAME_PASSWORD"
+              username: "johndoe"
+              password: "securepassword123"
       responses:
         "200":
           description: Successful login
@@ -54,6 +60,8 @@ paths:
 
   /api/register.php:
     post:
+      tags:
+        - Authentication
       summary: User registration
       requestBody:
         required: true
@@ -73,6 +81,12 @@ paths:
                   type: string
                 last_name:
                   type: string
+            example:
+              authentication_provider: "USERNAME_PASSWORD"
+              username: "johndoe"
+              password: "securepassword123"
+              first_name: "John"
+              last_name: "Doe"
       responses:
         "200":
           description: Successful registration
@@ -106,6 +120,8 @@ paths:
 
   /api/add_contact.php:
     post:
+      tags:
+        - Contacts
       summary: Add a new contact
       security:
         - bearerAuth: []
@@ -123,8 +139,22 @@ paths:
                       type: string
                     last_name:
                       type: string
-                    email:
+                    email_address:
                       type: string
+                    phone_number:
+                      type: string
+                    bio:
+                      type: string
+                    description:
+                      type: string
+            example:
+              contact:
+                first_name: "Jane"
+                last_name: "Doe"
+                email_address: "jane.doe@example.com"
+                phone_number: "123-456-7890"
+                bio: "Software engineer with 5 years of experience."
+                description: "Friend from college."
       responses:
         "200":
           description: Contact added successfully
@@ -143,6 +173,8 @@ paths:
                       last_name:
                         type: string
                       email_address:
+                        type: string
+                      phone_number:
                         type: string
                       avatar_url:
                         type: string
@@ -173,6 +205,8 @@ paths:
 
   /api/get_contact.php:
     get:
+      tags:
+        - Contacts
       summary: Get a contact
       security:
         - bearerAuth: []
@@ -185,6 +219,8 @@ paths:
               properties:
                 contact_id:
                   type: integer
+            example:
+              contact_id: 1
       responses:
         "200":
           description: Contact retrieved successfully
@@ -203,6 +239,8 @@ paths:
                       last_name:
                         type: string
                       email_address:
+                        type: string
+                      phone_number:
                         type: string
                       avatar_url:
                         type: string
@@ -242,6 +280,8 @@ paths:
 
   /api/delete_contact.php:
     post:
+      tags:
+        - Contacts
       summary: Delete a contact
       security:
         - bearerAuth: []
@@ -253,7 +293,9 @@ paths:
               type: object
               properties:
                 contact_id:
-                  type: string
+                  type: integer
+            example:
+              contact_id: 1
       responses:
         "200":
           description: Contact deleted successfully
@@ -272,6 +314,8 @@ paths:
                       last_name:
                         type: string
                       email_address:
+                        type: string
+                      phone_number:
                         type: string
                       avatar_url:
                         type: string
@@ -308,8 +352,11 @@ paths:
                 properties:
                   error:
                     type: string
+
   /api/update_contact.php:
     post:
+      tags:
+        - Contacts
       summary: Update a contact
       security:
         - bearerAuth: []
@@ -331,15 +378,30 @@ paths:
                       type: string
                     email_address:
                       type: string
+                    phone_number:
+                      type: string
                     avatar_url:
                       type: string
                     bio:
                       type: string
                     description:
                       type: string
+                    user_id:
+                      type: integer
+            example:
+              contact:
+                id: 1
+                first_name: "Jane"
+                last_name: "Doe"
+                email_address: "jane.doe@example.com"
+                phone_number: "123-456-7890"
+                avatar_url: "http://example.com/avatar.jpg"
+                bio: "Software engineer with 5 years of experience."
+                description: "Friend from college."
+                user_id: 1
       responses:
         "200":
-          description: Contact deleted successfully
+          description: Contact updated successfully
           content:
             application/json:
               schema:
@@ -355,6 +417,8 @@ paths:
                       last_name:
                         type: string
                       email_address:
+                        type: string
+                      phone_number:
                         type: string
                       avatar_url:
                         type: string
@@ -394,6 +458,8 @@ paths:
 
   /api/search_contacts.php:
     get:
+      tags:
+        - Contacts
       summary: Search contacts
       security:
         - bearerAuth: []
@@ -409,6 +475,9 @@ paths:
                 page:
                   type: integer
                   default: 1
+            example:
+              query: "Jane"
+              page: 1
       responses:
         "200":
           description: Contacts retrieved successfully
@@ -458,6 +527,8 @@ paths:
                     type: string
   /get_user.php:
     get:
+      tags:
+        - Users
       summary: Get user information
       security:
         - bearerAuth: []
@@ -472,6 +543,8 @@ paths:
                   type: integer
               required:
                 - user_id
+            example:
+              user_id: 1
       responses:
         "200":
           description: Successful retrieval of user information
