@@ -109,7 +109,7 @@ function showContactDetails(firstname, lastname, email, phone, avatar, bio, desc
     document.getElementById('contact-descriptionInfo').value = description;
     document.getElementById('contact-details').style.display = 'flex';
     adjustTextareaHeight(document.getElementById('contact-bio'));
-    adjustTextareaHeight(document.getElementById("contact-description"));
+    adjustTextareaHeight(document.getElementById("contact-descriptionInfo"));
 }
 
 function modifySelected() {
@@ -265,7 +265,7 @@ function addNewContact() {
         const newContactItem = document.createElement('li');
         newContactItem.classList.add('list-group-item');
         newContactItem.setAttribute('data-id', contactId);
-        newContactItem.setAttribute('onclick', `selectContact(this, '${firstname}', '${lastname}', '${email}', '${phone}', '${avatarDataUrl}', '${bio}', '${description}')`);
+        newContactItem.setAttribute('onclick', `selectContact(this, '${firstname}', '${lastname}', '${email}', '${phone}', '${avatarDataUrl}', '${bio}', '${description.value}')`);
         newContactItem.innerHTML = `
             <div class="contact-info">
                 <img src="${avatarDataUrl}" alt="${firstname} ${lastname}" class="avatar">
