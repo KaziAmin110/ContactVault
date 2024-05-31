@@ -212,10 +212,15 @@ body {
 
 .is-invalid {
     border-color: #dc3545;
+    border: 1px solid;
 }
 
 .is-invalid~.invalid-feedback {
     display: block;
+}
+
+.is-valid {
+    border: 1px solid green;
 }
 
 .button-container {

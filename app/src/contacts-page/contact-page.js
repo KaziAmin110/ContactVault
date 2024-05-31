@@ -2,6 +2,8 @@ const modal = document.querySelector(".modal");
 const addContactSubmit = document.querySelector(".add-contact-submit");
 const addMembers = document.querySelector(".add-image");
 const exitModal = document.querySelector(".exit-modal");
+const addContactForm = document.querySelector("#add-contact-form");
+const contactList = document.querySelector(".contacts-list");
 
 // Frontend + Backend Code to add a new Contact
 function addNewContact() {
@@ -81,7 +83,7 @@ function addNewContact() {
         const newContactItem = document.createElement('li');
         newContactItem.classList.add('list-group-item');
         newContactItem.setAttribute('data-id', contactId);
-        newContactItem.setAttribute('onclick', `selectContact(this, '${firstname}', '${lastname}', '${email}', '${phone}', '${avatarDataUrl}', '${bio}', '${linkedin}')`);
+        newContactItem.setAttribute('onclick', `selectContact(this, '${firstname}', '${lastname}', '${email}', '${phone}', '${avatarDataUrl}', '${bio}')`);
         newContactItem.innerHTML = `
             <div class="contact-info">
                 <img src="${avatarDataUrl}" alt="${firstname} ${lastname}" class="avatar">
@@ -97,7 +99,7 @@ function addNewContact() {
     };
     reader.readAsDataURL(avatarFile);
 
-    addContactToDatabase(firstname, lastname, email, bio, linkedin);
+    addContactToDatabase(firstname, lastname, email, bio, description);
 }
 
 
@@ -157,6 +159,11 @@ async function addContact(token, contact) {
     );
 }
 
+addContactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    addNewContact()
+})
 
 
 
