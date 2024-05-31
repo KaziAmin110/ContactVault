@@ -227,3 +227,31 @@ body {
     display: flex;
     justify-content: center;
 }
+
+.list-group {
+    display: flex;
+    margin: 1.5rem;
+    justify-content: center;
+    border: 1px solid red;
+    gap: 1rem;
+}
+
+.contact-info {
+    display: flex;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    gap: 2rem;
+}
+
+.contact-name {
+    display: flex;
+    flex-direction: column;
+    text-transform: capitalize;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}

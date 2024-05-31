@@ -185,9 +185,8 @@ async function updateContact(token, contact) {
 
     console.log(data.contact.id);
     return data.contact.id;
-       
-    
 }
+
 function addNewContact() {
     const firstname = document.getElementById('new-contact-firstname').value;
     const lastname = document.getElementById('new-contact-lastname').value;
@@ -252,8 +251,8 @@ function addNewContact() {
     const reader = new FileReader();
     reader.onload = function(event) {
         const avatarDataUrl = event.target.result;
-        const contactList = document.querySelector('.contacts-list');
-        const contactId = addContactToDatabase(firstname.value,lastname.value,email.value,bio.value,description.value);
+        const contactList = document.querySelector('#contact-list');
+        // const contactId = addContactToDatabase(firstname.value,lastname.value,email.value,bio.value,description.value);
 
         const noContactsMessage = document.querySelector('.no-contacts');
         if (noContactsMessage) {
@@ -264,14 +263,14 @@ function addNewContact() {
 		// Creates a dynamic instance of a contact using all of the information from the popout
         const newContactItem = document.createElement('li');
         newContactItem.classList.add('list-group-item');
-        newContactItem.setAttribute('data-id', contactId);
-        newContactItem.setAttribute('onclick', `selectContact(this, '${firstname}', '${lastname}', '${email}', '${phone}', '${avatarDataUrl}', '${bio}', '${linkedin}')`);
+        // newContactItem.setAttribute('data-id', contactId);
+        newContactItem.setAttribute('onclick', `selectContact(this, '${firstname}', '${lastname}', '${email}', '${phone}', '${avatarDataUrl}', '${bio}', '${description})`);
         newContactItem.innerHTML = `
             <div class="contact-info">
                 <img src="${avatarDataUrl}" alt="${firstname} ${lastname}" class="avatar">
                 <div class="contact-details">
                     <h5 class="contact-name">${firstname} ${lastname}</h5>
-                    <p>${email}</p>
+                    <small>${phone}</small>
                 </div>
             </div>
         `;
@@ -279,16 +278,7 @@ function addNewContact() {
         $('#addContactModal').modal('hide');
         document.getElementById('add-contact-form').reset();
     };
-    reader.readAsDataURL(avatarFile);
-
-    //will return the id of the contact, this id is used for all other processes
-    //involving that contact such as: updating, getting, deleting
-    
-    //element 'contact-id' holds the contacts id, doesnt have to be displayed to the user
-    //but is necessary for other processes
-    //once element 'contact-id' is created uncomment this line:
-    //document.getElementById('contact-id').value = contactId;
-    
+    reader.readAsDataURL(avatarFile);    
 }
 
 
