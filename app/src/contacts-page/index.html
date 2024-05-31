@@ -88,20 +88,30 @@
             </a>
         </div>
 
-        <div class="contact-description-header" id="contact-details" style="display: none;">
+        <div class="contact-description-header" id="contact-details" style="display: flex;">
             <div class="contact-desc-container">
                 <div class="contact-header">
 
-                    <div class="avatar-container">
-                        <img src="contact-images/Default_pfp.svg" alt="Profile Picture" class="avatar-large"
-                            id="contact-avatar">
+                    <div class="avatar-info">
+                        <div class="avatar-container">
+                            <img src="contact-images/Default_pfp.svg" alt="Profile Picture" class="avatar-large"
+                                id="contact-avatar">
+                        </div>
+
+                        <div class="contact-header-edit">
+                            <input type="text" id="contact-name" class="editable-field" readonly>
+                            <button class="btn-primary edit-btn" onclick="modifySelected()">
+                                <label for="edit-img">Edit</label>
+                                <img src="contact-images/edit.svg" alt="Edit" class="edit-icon" id="edit-img">
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="contact-header-edit">
-                        <input type="text" id="contact-name" class="editable-field" readonly>
-                        <button class="btn-primary edit-btn" onclick="modifySelected()">
-                            <label for="edit-img">Edit</label>
-                            <img src="contact-images/edit.svg" alt="Edit" class="edit-icon" id="edit-img">
+                    <div class="delete-container">
+                        <button type="button" class="delete-btn">
+                            <img src="contact-images/trash.svg" alt="Remove Selected Contact" id="delete-img"
+                                class="close-img">
+                            <label for="delete-img">Delete</label>
                         </button>
                     </div>
 

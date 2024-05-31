@@ -207,8 +207,8 @@ body {
 }
 
 .close-img {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
 }
 
 .is-invalid {
@@ -290,7 +290,7 @@ body {
     border: 2px solid black;
 
     width: 85%;
-    height: 75%;
+    height: 85%;
 
     padding: 1.5rem;
     border-radius: 1rem;
@@ -299,14 +299,28 @@ body {
 .contact-header {
     display: flex;
     flex-direction: row;
+    border: 1px solid green;
+    justify-content: space-between;
     gap: 2rem;
     padding: 2rem;
+}
+
+.avatar-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
 }
 
 .contact-header-edit {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+}
+
+.delete-container {
+    display: flex;
+    flex-direction: column;
 }
 
 .contact-body {
@@ -320,6 +334,12 @@ body {
     display: flex;
     justify-content: center;
     gap: 1rem;
+}
+
+.delete-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .selected {
@@ -340,6 +360,11 @@ body {
     background-color: lavender;
     border-radius: 1rem;
     padding: 0.25rem;
+}
+
+.delete-btn:hover {
+    cursor: pointer;
+    transform: translateY(-5px);
 }
 
 .btn-primary:hover {
