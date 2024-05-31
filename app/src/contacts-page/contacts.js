@@ -6,6 +6,7 @@ const hostname = url.hostname;
 const port = url.port;
 const urlBase = url.protocol + '//' + (port ? `${hostname}:${port}` : hostname);
 
+
 class Contact {
     constructor(id, firstName, lastName, emailAddress, avatarUrl, bio, description, userId) {
         this.id = id;
@@ -86,11 +87,11 @@ function clearContactDetails() {
 }
 
 function selectContact(element, firstname, lastname, email, phone, avatar, bio, description) {
+    console.log("Arrived");
     if (isEditing) {
         alert("Please save your changes before selecting another profile.");
         return;
     }
-
     const allContacts = document.querySelectorAll('.list-group-item');
     allContacts.forEach(contact => contact.classList.remove('selected'));
 
@@ -106,7 +107,7 @@ function showContactDetails(firstname, lastname, email, phone, avatar, bio, desc
     document.getElementById('contact-avatar').src = avatar;
     document.getElementById('contact-bio').value = bio;
     document.getElementById('contact-descriptionInfo').value = description;
-    document.getElementById('contact-details').style.display = 'block';
+    document.getElementById('contact-details').style.display = 'flex';
     adjustTextareaHeight(document.getElementById('contact-bio'));
     adjustTextareaHeight(document.getElementById("contact-description"));
 }
@@ -253,7 +254,7 @@ function addNewContact() {
         const avatarDataUrl = event.target.result;
         const contactList = document.querySelector('#contact-list');
         // const contactId = addContactToDatabase(firstname.value,lastname.value,email.value,bio.value,description.value);
-
+        const contactId = 13;
         const noContactsMessage = document.querySelector('.no-contacts');
         if (noContactsMessage) {
             noContactsMessage.remove();
@@ -263,7 +264,7 @@ function addNewContact() {
 		// Creates a dynamic instance of a contact using all of the information from the popout
         const newContactItem = document.createElement('li');
         newContactItem.classList.add('list-group-item');
-        // newContactItem.setAttribute('data-id', contactId);
+        newContactItem.setAttribute('data-id', contactId);
         newContactItem.setAttribute('onclick', `selectContact(this, '${firstname}', '${lastname}', '${email}', '${phone}', '${avatarDataUrl}', '${bio}', '${description})`);
         newContactItem.innerHTML = `
             <div class="contact-info">
@@ -279,6 +280,8 @@ function addNewContact() {
         document.getElementById('add-contact-form').reset();
     };
     reader.readAsDataURL(avatarFile);    
+    console.log("passed");
+
 }
 
 
@@ -342,4 +345,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const textareas = document.querySelectorAll('textarea');
     textareas.forEach(textarea => adjustTextareaHeight(textarea));
 });
+
+
+
 

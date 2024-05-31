@@ -269,25 +269,28 @@ body {
 
 .contact-description-header {
     display: flex;
-    background-color: aliceblue;
-    flex: 1;
-    border: 5px solid purple;
-
     justify-content: center;
     align-items: center;
+    border: 3px solid green;
+    flex: 1;
+
 }
 
 .contact-desc-container {
     display: flex;
     flex-direction: column;
-    flex: 1;
 
-    width: 70%;
-    height: 60%;
+    width: 75%;
+    height: 65%;
+
+    padding: 1.5rem;
+    border: 3px solid purple;
+    border-radius: 1rem;
 }
 
 .contact-header {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     border: 1px solid red;
 }
@@ -295,5 +298,6 @@ body {
 .contact-body {
     display: flex;
     flex-direction: column;
+    flex: 1;
     border: 1px solid green;
 }
