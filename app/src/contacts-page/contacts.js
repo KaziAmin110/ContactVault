@@ -6,6 +6,55 @@ const hostname = url.hostname;
 const port = url.port;
 const urlBase = url.protocol + '//' + (port ? `${hostname}:${port}` : hostname);
 
+document.getElementById('add_Contact').addEventListener('click', function(e) {
+    e.preventDefault();
+
+    let formData = new FormData();
+
+    let jwtField = Cookies.get('jwtToken');
+    console.log("jwtField.value=" + jwtField);
+
+    let contactIdField = 1;
+    console.log("contactIdField.value=" + contactIdField);
+
+    let fileField = document.querySelector('input[type="file"]');
+
+    formData.append('image', fileField.files[0]);
+
+    // Adding JSON-encoded data
+    let jsonData = {
+        contact_id: contactIdField,
+    };
+
+    formData.append('json', JSON.stringify(jsonData));
+
+    console.log("AAAAAAA"+urlBase + '/api/set_contact_avatar.php');
+
+    fetch(urlBase + '/api/set_contact_avatar.php', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Authorization': 'Bearer ' + jwtField
+        }
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log('Success:', result);
+        if (result.contact && result.contact.avatar_url) {
+            let imageUrl = result.contact.avatar_url;
+            let imgElement = document.getElementById('avatarImage');
+            imgElement.src = urlBase + '/' + imageUrl;
+        } else {
+            console.error('avatar_url not found in result');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+});
+
+
 class Contact {
     constructor(id, firstName, lastName, emailAddress, avatarUrl, bio, description, userId) {
         this.id = id;
@@ -122,10 +171,8 @@ function saveContactDetails() {
     updatContactToDatabase();
 }
 
-//incomplete
+//incomplete id is harcoded
 function updatContactToDatabase(){
-    
-    //api endpoint doesnt accept phone number
 
     //front end: need to store each contacts id. this is the id of contact to be edited
     //let id = document.getElementById('update-contact-id').value,
@@ -139,19 +186,17 @@ function updatContactToDatabase(){
         last_name=split[1];
     else last_name="";
 
-    //front end: avatar url isnt avaialble to edit
     //id is hardcoded
     let updatedContact = {
-        id: 30,
+        id: 1,
         first_name: first_name,
         last_name: last_name,
         email_address: document.getElementById('contact-email').value,
+        phone_number: document.getElementById('contact-phone').value,
         avatar_url:"https://thispersondoesnotexist.com/" ,
         bio: document.getElementById('contact-bio').value,
         description: document.getElementById('contact-linkedin').value
     };
-        //avatar_url: contact_avatar ,
-        //phone: contact_phone
 
     console.log(updateContact(Cookies.get("jwtToken"), updatedContact));
 }
@@ -173,10 +218,9 @@ async function updateContact(token, contact) {
     }
 
     console.log(data.contact.id);
-    return data.contact.id;
-       
-    
+    return data.contact.id; 
 }
+
 function addNewContact() {
     const firstname = document.getElementById('new-contact-firstname').value;
     const lastname = document.getElementById('new-contact-lastname').value;
@@ -272,7 +316,8 @@ function addNewContact() {
 
     //will return the id of the contact, this id is used for all other processes
     //involving that contact such as: updating, getting, deleting
-    let contactId = addContactToDatabase(firstname,lastname,email,bio,linkedin);
+
+    let contactId = addContactToDatabase(firstname,lastname,email,phone,bio,linkedin);
     
     //element 'contact-id' holds the contacts id, doesnt have to be displayed to the user
     //but is necessary for other processes
@@ -282,7 +327,7 @@ function addNewContact() {
 }
 
 
-function addContactToDatabase(first_name, last_name, email,bio,description){
+function addContactToDatabase(first_name, last_name, email, phone, bio, description){
 
     if (typeof Cookies !== 'undefined') {
         console.log('Cookies library is loaded and available');
@@ -294,13 +339,13 @@ function addContactToDatabase(first_name, last_name, email,bio,description){
         first_name: first_name,
         last_name: last_name,
         email_address: email,
+        phone_number: phone,
         bio: bio,
         description:description
     };
 
     return addContact(Cookies.get("jwtToken"), contact);
 }
-
 
 async function addContact(token, contact) {
 
