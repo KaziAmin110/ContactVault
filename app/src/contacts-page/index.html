@@ -75,9 +75,9 @@
     <section class="contact-description">
         <div class="user-header">
             <div class="add-container button-move">
-                <a class="add-contact">
+                <button type="button" class="add-contact" data-toggle="modal" data-target="#exampleModalCenter">
                     <img src="contact-images/add-user.svg" alt="Add Contact Button" class="add-image">
-                </a>
+                </button>
             </div>
 
 
@@ -89,7 +89,7 @@
     <!-- Contact Description Section End -->
 
     <!-- Pop Up Modal For Add Contact -->
-    <dialog class="modal">
+    <!-- <dialog class="modal">
         <div class="exit-header">
             <a href="" class="exit-modal">
                 <img src="contact-images/close.svg" alt="Close Modal" class="close-img">
@@ -128,12 +128,67 @@
             <button type="button" class="add-contact-submit">Add Contact</button>
         </form>
 
-    </dialog>
+    </dialog> -->
+    <!-- Button trigger modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Add Contacts</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <img src="contact-images/close.svg" alt="Close Modal" class="close-img">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-contact-form">
+                        <div class="form-group">
+                            <label for="new-contact-firstname">First Name</label>
+                            <input type="text" class="form-control" id="new-contact-firstname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-contact-lastname">Last Name</label>
+                            <input type="text" class="form-control" id="new-contact-lastname" required>
+                        </div>
+                        <div class="form-group email-group">
+                            <label for="new-contact-email">Email</label>
+                            <input type="email" class="form-control" id="new-contact-email" required>
+                        </div>
+                        <div class="form-group phone-group">
+                            <label for="new-contact-phone">Phone</label>
+                            <input type="text" class="form-control phone-field" id="new-contact-phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-contact-avatar">Profile Picture</label>
+                            <input type="file" class="form-control-file d-block" id="new-contact-avatar">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-contact-bio">Bio</label>
+                            <textarea class="form-control bio-field" id="new-contact-bio" rows="10" cols="60"
+                                required></textarea>
+                        </div>
+
+                        <div class="button-container">
+                            <button type="Submit" class="btn btn-primary add-contact-submit">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Scripts to help support the popout during add a contact -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
         crossorigin="anonymous"></script>
     <script src="contact-page.js" defer></script>
+    <script src="contactValidation.js" defer></script>
 </body>
 
 </html>

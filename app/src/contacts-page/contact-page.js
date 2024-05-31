@@ -157,11 +157,6 @@ async function addContact(token, contact) {
     );
 }
 
-addMembers.addEventListener('click', () => {
-    modal.showModal();
-})
 
-exitModal.addEventListener('click', () => {
-    modal.close();
-})
+
 

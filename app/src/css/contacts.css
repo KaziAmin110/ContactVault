@@ -195,14 +195,9 @@ body {
     height: 35px;
 }
 
-
-.modal {
-    top:50%;
-    left:50%;
-    translate: -50% -50%;
-    z-index: 10;
-    padding: 2rem;
-    
+.modal-header {
+    display: flex;
+    justify-content: space-between;
 }
 
 .exit-header {
@@ -221,4 +216,9 @@ body {
 
 .is-invalid~.invalid-feedback {
     display: block;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
 }
