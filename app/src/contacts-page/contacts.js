@@ -6,8 +6,6 @@ const hostname = url.hostname;
 const port = url.port;
 const urlBase = url.protocol + '//' + (port ? `${hostname}:${port}` : hostname);
 
-const extension = 'php';
-
 class Contact {
     constructor(id, firstName, lastName, emailAddress, avatarUrl, bio, description, userId) {
         this.id = id;
@@ -31,6 +29,40 @@ function deleteSelected() {
 
     // Clear the contact details section (right side) when a profile is deleted
     clearContactDetails();
+
+    //for front end people: please make sure to add in the element 'delete-contact-id' that holds the id of the contacts to be deleted
+    //then uncomment the following line
+    //const contactId = document.getElementById('delete-contact-id').value;
+
+    //change 12 to contactId
+    deleteContact(Cookies.get("jwtToken"),12);
+
+}
+
+async function deleteContact(token, contactId) {
+    const response = await fetch(`${urlBase}/api/delete_contact.php`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ contact_id: contactId }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
+    return new Contact(
+        data.contact.id,
+        data.contact.first_name,
+        data.contact.last_name,
+        data.contact.email_address,
+        data.contact.avatar_url,
+        data.contact.bio,
+        data.contact.description,
+        data.contact.user_id
+    );
 }
 
 function clearContactDetails() {
@@ -86,8 +118,65 @@ function saveContactDetails() {
     saveButton.style.display = 'none';
 
     isEditing = false;
+
+    updatContactToDatabase();
 }
 
+//incomplete
+function updatContactToDatabase(){
+    
+    //api endpoint doesnt accept phone number
+
+    //front end: need to store each contacts id. this is the id of contact to be edited
+    //let id = document.getElementById('update-contact-id').value,
+
+    const str= document.getElementById('contact-name').value;
+    const split= str.split(' ');
+
+    first_name= split[0];
+
+    if(split[1])
+        last_name=split[1];
+    else last_name="";
+
+    //front end: avatar url isnt avaialble to edit
+    //id is hardcoded
+    let updatedContact = {
+        id: 30,
+        first_name: first_name,
+        last_name: last_name,
+        email_address: document.getElementById('contact-email').value,
+        avatar_url:"https://thispersondoesnotexist.com/" ,
+        bio: document.getElementById('contact-bio').value,
+        description: document.getElementById('contact-linkedin').value
+    };
+        //avatar_url: contact_avatar ,
+        //phone: contact_phone
+
+    console.log(updateContact(Cookies.get("jwtToken"), updatedContact));
+}
+
+async function updateContact(token, contact) {
+
+    const response = await fetch(`${urlBase}/api/update_contact.php`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ contact }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
+
+    console.log(data.contact.id);
+    return data.contact.id;
+       
+    
+}
 function addNewContact() {
     const firstname = document.getElementById('new-contact-firstname').value;
     const lastname = document.getElementById('new-contact-lastname').value;
@@ -181,22 +270,25 @@ function addNewContact() {
     };
     reader.readAsDataURL(avatarFile);
 
-    addContactToDatabase(firstname,lastname,email,bio,linkedin);
+    //will return the id of the contact, this id is used for all other processes
+    //involving that contact such as: updating, getting, deleting
+    let contactId = addContactToDatabase(firstname,lastname,email,bio,linkedin);
+    
+    //element 'contact-id' holds the contacts id, doesnt have to be displayed to the user
+    //but is necessary for other processes
+    //once element 'contact-id' is created uncomment this line:
+    //document.getElementById('contact-id').value = contactId;
+    
 }
 
 
 function addContactToDatabase(first_name, last_name, email,bio,description){
 
-   
     if (typeof Cookies !== 'undefined') {
         console.log('Cookies library is loaded and available');
     } else {
         console.error('Cookies library is not loaded');
     }
-
-
-    console.log(first_name+"|"+last_name+"|"+email+"|"+bio+"|"+description);
-
 
     const contact = {
         first_name: first_name,
@@ -206,14 +298,11 @@ function addContactToDatabase(first_name, last_name, email,bio,description){
         description:description
     };
 
-
-    let res= addContact(Cookies.get("jwtToken"), contact);
+    return addContact(Cookies.get("jwtToken"), contact);
 }
 
 
 async function addContact(token, contact) {
-
-    console.log(`${urlBase}/api/add_contact.php`);
 
     const response = await fetch(`${urlBase}/api/add_contact.php`, {
         method: 'POST',
@@ -224,21 +313,12 @@ async function addContact(token, contact) {
         body: JSON.stringify({ contact }),
     });
 
-
     const data = await response.json();
     if (!response.ok) {
         throw new Error(data.error);
     }
-    return new Contact(
-        data.contact.id,
-        data.contact.first_name,
-        data.contact.last_name,
-        data.contact.email_address,
-        data.contact.avatar_url,
-        data.contact.bio,
-        data.contact.description,
-        data.contact.user_id
-    );
+
+    return data.contact.id;
 }
 
 // Phone number & name validation
@@ -268,7 +348,7 @@ document.addEventListener('input', function (event) {
     }
 }, false);
 
-// document.addEventListener('DOMContentLoaded', function() {
-//     const textareas = document.querySelectorAll('textarea');
-//     textareas.forEach(textarea => adjustTextareaHeight(textarea));
-// });
+document.addEventListener('DOMContentLoaded', function() {
+    const textareas = document.querySelectorAll('textarea');
+    textareas.forEach(textarea => adjustTextareaHeight(textarea));
+});
