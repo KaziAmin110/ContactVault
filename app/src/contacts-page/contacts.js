@@ -82,11 +82,10 @@ function clearContactDetails() {
     document.getElementById('contact-phone').value = '';
     document.getElementById('contact-avatar').src = '';
     document.getElementById('contact-bio').value = '';
-    document.getElementById('contact-linkedin').value = '';
     document.getElementById('contact-details').style.display = 'none';
 }
 
-function selectContact(element, firstname, lastname, email, phone, avatar, bio, linkedin) {
+function selectContact(element, firstname, lastname, email, phone, avatar, bio, description) {
     if (isEditing) {
         alert("Please save your changes before selecting another profile.");
         return;
@@ -97,18 +96,19 @@ function selectContact(element, firstname, lastname, email, phone, avatar, bio, 
 
     element.classList.add('selected');
 
-    showContactDetails(firstname, lastname, email, phone, avatar, bio, linkedin);
+    showContactDetails(firstname, lastname, email, phone, avatar, bio, description);
 }
 
-function showContactDetails(firstname, lastname, email, phone, avatar, bio, linkedin) {
+function showContactDetails(firstname, lastname, email, phone, avatar, bio, description) {
     document.getElementById('contact-name').value = firstname + ' ' + lastname;
     document.getElementById('contact-email').value = email;
     document.getElementById('contact-phone').value = phone;
     document.getElementById('contact-avatar').src = avatar;
     document.getElementById('contact-bio').value = bio;
-    document.getElementById('contact-linkedin').value = linkedin;
+    document.getElementById('contact-descriptionInfo').value = description;
     document.getElementById('contact-details').style.display = 'block';
     adjustTextareaHeight(document.getElementById('contact-bio'));
+    adjustTextareaHeight(document.getElementById("contact-description"));
 }
 
 function modifySelected() {
@@ -159,7 +159,7 @@ function updatContactToDatabase(){
         email_address: document.getElementById('contact-email').value,
         avatar_url:"https://thispersondoesnotexist.com/" ,
         bio: document.getElementById('contact-bio').value,
-        description: document.getElementById('contact-linkedin').value
+        description: document.getElementById('contact-description').value
     };
         //avatar_url: contact_avatar ,
         //phone: contact_phone

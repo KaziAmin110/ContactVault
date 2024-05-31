@@ -87,6 +87,52 @@
                 <img src="contact-images/Default_pfp.svg" alt="Default Profile Picture Image" class="profile-image">
             </a>
         </div>
+
+        <div class="contact-description-header" id="contact-details" style="display: block;">
+            <div class="contact-desc-container">
+                <div class="contact-header">
+                    <img src="contact-images/toggle.svg" alt="Profile Picture" class="avatar-large" id="contact-avatar">
+                    <div class="contact-header-edit">
+                        <input type="text" id="contact-name" class="editable-field" readonly>
+                        <button class="btn-primary d-flex edit-btn" onclick="modifySelected()">
+                            <h6 class="d-inline">Edit</h6>
+                            <img src="contact-images/edit.svg" alt="Edit" class="edit-icon">
+                        </button>
+                    </div>
+                </div>
+                <div class="contact-body">
+                    <div id="display-mode">
+
+                        <div class="email">
+                            <label for="contact-email">Email:</label>
+                            <input type="text" id="contact-email" class="editable-field" readonly>
+                        </div>
+
+                        <div class="phone">
+                            <label for="contact-phone">Phone:</label>
+                            <input type="text" id="contact-phone" class="editable-field" readonly>
+                        </div>
+
+                        <div class="bio d-flex">
+                            <label for="contact-bio">Bio: </label>
+                            <textarea id="contact-bio" class="editable-field bio-field" rows="2" cols="60"
+                                readonly></textarea>
+                        </div>
+
+                        <div class="description d-flex">
+                            <label for="contact-descriptionInfo">Description: </label>
+                            <textarea id="contact-descriptionInfo" class="editable-field description-field" rows="2" cols="60"
+                                readonly></textarea>
+                        </div>
+
+
+                    </div>
+                    <button class="btn btn-primary save-button" onclick="saveContactDetails()"
+                        style="display: none;">Save</button>
+                </div>
+            </div>
+        </div>
+
     </section>
     <!-- Contact Description Section End -->
 
@@ -126,7 +172,7 @@
                         </div>
                         <div class="form-group">
                             <label for="new-contact-avatar">Profile Picture</label>
-                            <input type="file" class="form-control-file" id="new-contact-avatar" required>
+                            <input type="file" class="form-control-file d-block" id="new-contact-avatar" required>
                             <div class="invalid-feedback">A profile picture is required.</div>
                         </div>
                         <div class="form-group">
@@ -139,7 +185,7 @@
                             <textarea class="form-control bio-field" id="new-contact-description" rows="10" cols="60"
                                 required></textarea>
                         </div>
-                        
+
                         <button type="button" class="btn btn-primary" onclick="addNewContact()">Add Contact</button>
                     </form>
                 </div>
