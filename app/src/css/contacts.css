@@ -256,11 +256,18 @@ body {
     object-fit: cover;
 }
 
-.avatar-large {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
+.avatar-container {
+    border: 1px solid green;
+    border-radius: 25%;
     object-fit: cover;
+    object-position: center;
+}
+
+.avatar-large {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    object-position: center;
 }
 
 .selected {
@@ -280,24 +287,63 @@ body {
     display: flex;
     flex-direction: column;
 
-    width: 75%;
-    height: 65%;
+    border: 2px solid black;
+
+    width: 85%;
+    height: 75%;
 
     padding: 1.5rem;
-    border: 3px solid purple;
     border-radius: 1rem;
 }
 
 .contact-header {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    border: 1px solid red;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.contact-header-edit {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .contact-body {
     display: flex;
     flex-direction: column;
     flex: 1;
-    border: 1px solid green;
+    padding: 2rem;
 }
+
+.edit-btn {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.selected {
+    border: 1px solid green;
+    background-color: lightgrey;
+}
+
+.bio {
+    display: flex;
+    flex-direction: column;
+}
+
+.margin-top {
+    margin-top: 25px;
+}
+
+.btn-primary {
+    background-color: lavender;
+    border-radius: 1rem;
+    padding: 0.25rem;
+}
+
+.btn-primary:hover {
+    transform: translateY(-5px);
+}
+
+
