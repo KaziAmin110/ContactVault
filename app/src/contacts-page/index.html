@@ -65,7 +65,7 @@
             </form>
 
             <ul class="contacts-list">
-
+                <small class="no-contacts">No Contacts to Show</small>
             </ul>
         </div>
     </section>
@@ -128,6 +128,12 @@
                                 required></textarea>
                         </div>
 
+                        <div class="form-group">
+                            <label for="new-contact-bio">Description</label>
+                            <textarea class="form-control bio-field" id="new-contact-description" rows="10" cols="60"
+                                required></textarea>
+                        </div>
+
                         <div class="button-container">
                             <button type="Submit" class="btn btn-primary add-contact-submit" data-dismiss="modal">Add</button>
                         </div>
@@ -147,7 +153,6 @@
         integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
         crossorigin="anonymous"></script>
     <script src="contacts.js" defer></script>
-    <script src="contactValidation.js" defer></script>
 </body>
 
 </html>

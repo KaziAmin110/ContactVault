@@ -19,6 +19,17 @@ class Contact {
     }
 }
 
+// Phone number & name validation
+function validatePhoneNumber(phone) {
+    const phonePattern = /^\d{3}-\d{3}-\d{4}$/;
+    return phonePattern.test(phone);
+}
+
+function validateEmail(email) {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+}
+
 function deleteSelected() {
     const selectedContacts = document.querySelectorAll('.list-group-item.selected');
     if (selectedContacts.length === 0) {
@@ -184,7 +195,7 @@ function addNewContact() {
     const phone = document.getElementById('new-contact-phone').value;
     const avatarFile = document.getElementById('new-contact-avatar').files[0];
     const bio = document.getElementById('new-contact-bio').value;
-    const linkedin = document.getElementById('new-contact-linkedin').value;
+    const description = document.querySelector('#new-contact-description');
 
     let isValid = true;
 
@@ -241,8 +252,8 @@ function addNewContact() {
     const reader = new FileReader();
     reader.onload = function(event) {
         const avatarDataUrl = event.target.result;
-        const contactList = document.getElementById('contact-list');
-        const contactId = `contact-${Date.now()}`;
+        const contactList = document.querySelector('.contacts-list');
+        const contactId = addContactToDatabase(firstname.value,lastname.value,email.value,bio.value,description.value);
 
         const noContactsMessage = document.querySelector('.no-contacts');
         if (noContactsMessage) {
@@ -272,7 +283,6 @@ function addNewContact() {
 
     //will return the id of the contact, this id is used for all other processes
     //involving that contact such as: updating, getting, deleting
-    let contactId = addContactToDatabase(firstname,lastname,email,bio,linkedin);
     
     //element 'contact-id' holds the contacts id, doesnt have to be displayed to the user
     //but is necessary for other processes
@@ -321,16 +331,6 @@ async function addContact(token, contact) {
     return data.contact.id;
 }
 
-// Phone number & name validation
-function validatePhoneNumber(phone) {
-    const phonePattern = /^\d{3}-\d{3}-\d{4}$/;
-    return phonePattern.test(phone);
-}
-
-function validateEmail(email) {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailPattern.test(email);
-}
 
 // Adjusted text area for the description with event listeners to make the description go further down as the user inputs more
 function adjustTextareaHeight(textarea) {
@@ -352,3 +352,4 @@ document.addEventListener('DOMContentLoaded', function() {
     const textareas = document.querySelectorAll('textarea');
     textareas.forEach(textarea => adjustTextareaHeight(textarea));
 });
+
