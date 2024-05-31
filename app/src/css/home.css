@@ -5,6 +5,7 @@ body {
 .btn-primary {
     background-color: lightseagreen;
     min-width: 150px;
+	border: 2px solid black;
     border-radius: 1rem;
 }
 
