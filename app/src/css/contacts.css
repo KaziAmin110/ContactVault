@@ -216,5 +216,9 @@ body {
 }
 
 .is-invalid {
+    border-color: #dc3545;
+}
 
+.is-invalid~.invalid-feedback {
+    display: block;
 }
