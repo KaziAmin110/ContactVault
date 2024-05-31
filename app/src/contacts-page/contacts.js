@@ -265,7 +265,7 @@ function addNewContact() {
         const newContactItem = document.createElement('li');
         newContactItem.classList.add('list-group-item');
         newContactItem.setAttribute('data-id', contactId);
-        newContactItem.setAttribute('onclick', `selectContact(this, '${firstname}', '${lastname}', '${email}', '${phone}', '${avatarDataUrl}', '${bio}', '${description})`);
+        newContactItem.setAttribute('onclick', `selectContact(this, '${firstname}', '${lastname}', '${email}', '${phone}', '${avatarDataUrl}', '${bio}', '${description}')`);
         newContactItem.innerHTML = `
             <div class="contact-info">
                 <img src="${avatarDataUrl}" alt="${firstname} ${lastname}" class="avatar">
