@@ -74,7 +74,7 @@
         <div class="user-header">
             <div class="add-container button-move">
                 <a class="add-contact">
-                    <img src="contact-images/add-user.svg" alt="Add Image Button" class="add-image">
+                    <img src="contact-images/add-user.svg" alt="Add Contact Button" class="add-image">
                 </a>
             </div>
 
@@ -86,8 +86,49 @@
     </section>
     <!-- Contact Description Section End -->
 
+    <!-- Pop Up Modal For Add Contact -->
+    <dialog class="modal">
+        <div class="exit-header">
+            <a href="" class="exit-modal">
+                <img src="contact-images/close.svg" alt="Close Modal" class="close-img">
+            </a>
+        </div>
+        <form id="add-contact-form">
+            <div class="form-group">
+                <label for="new-contact-firstname">First Name</label>
+                <input type="text" class="form-control" id="new-contact-firstname" required>
+                <div class="invalid-feedback">First name is required.</div>
+            </div>
+            <div class="form-group">
+                <label for="new-contact-lastname">Last Name</label>
+                <input type="text" class="form-control" id="new-contact-lastname" required>
+                <div class="invalid-feedback">Last name is required.</div>
+            </div>
+            <div class="form-group">
+                <label for="new-contact-email">Email</label>
+                <input type="email" class="form-control" id="new-contact-email" required>
+                <div class="invalid-feedback">Enter a valid email address.</div>
+            </div>
+            <div class="form-group">
+                <label for="new-contact-phone">Phone</label>
+                <input type="text" class="form-control phone-field" id="new-contact-phone" required>
+                <div class="invalid-feedback">Enter the phone number in the format xxx-xxx-xxxx.</div>
+            </div>
+            <div class="form-group">
+                <label for="new-contact-avatar">Profile Picture</label>
+                <input type="file" class="form-control-file" id="new-contact-avatar" required>
+                <div class="invalid-feedback">A profile picture is required.</div>
+            </div>
+            <div class="form-group">
+                <label for="new-contact-bio">Bio</label>
+                <textarea class="form-control bio-field" id="new-contact-bio" rows="10" cols="60" required></textarea>
+            </div>
+            <button type="button" class="add-contact-submit">Add Contact</button>
+        </form>
+
+    </dialog>
     <!-- Scripts to help support the popout during add a contact -->
-    <script src="contacts.js" defer></script>
+    <script src="contact-page.js" defer></script>
 
 </body>
 

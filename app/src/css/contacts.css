@@ -194,3 +194,27 @@ body {
     width: 35px;
     height: 35px;
 }
+
+
+.modal {
+    top:50%;
+    left:50%;
+    translate: -50% -50%;
+    z-index: 10;
+    padding: 2rem;
+    
+}
+
+.exit-header {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.close-img {
+    width: 20px;
+    height: 20px;
+}
+
+.is-invalid {
+
+}
