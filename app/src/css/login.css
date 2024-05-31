@@ -17,9 +17,8 @@ body {
     margin-top: -40px;
 }
 
-
 .login-container {
-    border: 1px solid black;
+    border: 2px solid black;
     background-color: #fff;
     width: 75%;
     min-height: 60%;
@@ -77,17 +76,27 @@ body {
 .btn-primary {
     background-color: lightseagreen;
     width: 100%;
+	border: 2px solid black;
     border-radius: 1rem;
+    color: white;
 }
 
 .btn-primary:hover {
     background-color: red;
     box-shadow: 0px 25px 20px -20px rgba(0, 0, 0, 0.45);
     transform: translateY(-5px);
+    color: white;
 }
 
 .sign-up {
     display: flex;
     flex-direction: row;
     gap: 2rem;
+}
+
+a {
+    color: darkblue;
+
+a:hover {
+    color: blue;
 }
