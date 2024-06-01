@@ -6,52 +6,6 @@ const hostname = url.hostname;
 const port = url.port;
 const urlBase = url.protocol + '//' + (port ? `${hostname}:${port}` : hostname);
 
-document.querySelector('.add-contact-modal').addEventListener('click', function(e) {
-    e.preventDefault();
-
-    let formData = new FormData();
-
-    let jwtField = Cookies.get('jwtToken');
-    console.log("jwtField.value=" + jwtField);
-
-    let contactIdField = 1;
-    console.log("contactIdField.value=" + contactIdField);
-
-    let fileField = document.querySelector('input[type="file"]');
-
-    formData.append('image', fileField.files[0]);
-
-    // Adding JSON-encoded data
-    let jsonData = {
-        contact_id: contactIdField,
-    };
-
-    formData.append('json', JSON.stringify(jsonData));
-
-    fetch(urlBase + '/api/set_contact_avatar.php', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'Authorization': 'Bearer ' + jwtField
-        }
-    })
-    .then(response => response.json())
-    .then(result => {
-        console.log('Success:', result);
-        if (result.contact && result.contact.avatar_url) {
-            let imageUrl = result.contact.avatar_url;
-            let imgElement = document.getElementById('avatarImage');
-            imgElement.src = urlBase + '/' + imageUrl;
-        } else {
-            console.error('avatar_url not found in result');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-
-});
-
 
 class Contact {
     constructor(id, firstName, lastName, emailAddress, avatarUrl, bio, description, userId) {
@@ -232,6 +186,7 @@ function addNewContact() {
         addContactToDatabase(firstname, lastname, email, phone, bio, description.value)
         .then(contactId => {
             // Creates a dynamic instance of a contact using all of the information from the popout
+            uploadAvatar(contactId);
             const newContactItem = document.createElement('li');
             newContactItem.setAttribute('data-id', contactId);
             const idDiv = document.createElement('div');
@@ -275,7 +230,51 @@ function updatContactToDatabase(){
         description: document.getElementById('update-contact-description').value
     };
 
+    //uploadAvatar(parseInt(document.querySelector('.selected').getAttribute('data-id')));
     console.log("UPDATING CONTACT: "+ updateContact(Cookies.get("jwtToken"), updatedContact));
+}
+
+function uploadAvatar(id){
+
+    let formData = new FormData();
+
+    let jwtField = Cookies.get('jwtToken');
+    console.log("jwtField.value=" + jwtField);
+
+    let contactIdField = id;
+    console.log("contactIdField.value=" + contactIdField);
+
+    let fileField = document.querySelector('input[type="file"]');
+
+    formData.append('image', fileField.files[0]);
+
+    // Adding JSON-encoded data
+    let jsonData = {
+        contact_id: contactIdField,
+    };
+
+    formData.append('json', JSON.stringify(jsonData));
+
+    fetch(urlBase + '/api/set_contact_avatar.php', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Authorization': 'Bearer ' + jwtField
+        }
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log('Success:', result);
+        if (result.contact && result.contact.avatar_url) {
+            let imageUrl = result.contact.avatar_url;
+        } else {
+            console.error('avatar_url not found in result');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
 }
 
 async function updateContact(token, contact) {
