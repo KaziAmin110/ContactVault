@@ -68,14 +68,29 @@ class Contact {
     }
 }
 
+// Phone number & name validation
+function validatePhoneNumber(phone) {
+    const phonePattern = /^\d{3}-\d{3}-\d{4}$/;
+    return phonePattern.test(phone);
+}
+
+function validateEmail(email) {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+}
+
 function deleteSelected() {
     const selectedContacts = document.querySelectorAll('.list-group-item.selected');
     if (selectedContacts.length === 0) {
         alert("Error: No contacts were selected for deletion.");
         return;
     }
-    selectedContacts.forEach(contact => contact.remove());
+    let confirmDeletion = confirm("Are you sure you want to delete this contact?");
 
+    if (!confirmDeletion)
+        return;
+
+    selectedContacts.forEach(contact => contact.remove());
     // Clear the contact details section (right side) when a profile is deleted
     clearContactDetails();
 
@@ -120,33 +135,33 @@ function clearContactDetails() {
     document.getElementById('contact-phone').value = '';
     document.getElementById('contact-avatar').src = '';
     document.getElementById('contact-bio').value = '';
-    document.getElementById('contact-linkedin').value = '';
     document.getElementById('contact-details').style.display = 'none';
 }
 
-function selectContact(element, firstname, lastname, email, phone, avatar, bio, linkedin) {
+function selectContact(element, firstname, lastname, email, phone, avatar, bio, description) {
+    console.log("Arrived");
     if (isEditing) {
         alert("Please save your changes before selecting another profile.");
         return;
     }
-
     const allContacts = document.querySelectorAll('.list-group-item');
     allContacts.forEach(contact => contact.classList.remove('selected'));
 
     element.classList.add('selected');
 
-    showContactDetails(firstname, lastname, email, phone, avatar, bio, linkedin);
+    showContactDetails(firstname, lastname, email, phone, avatar, bio, description);
 }
 
-function showContactDetails(firstname, lastname, email, phone, avatar, bio, linkedin) {
+function showContactDetails(firstname, lastname, email, phone, avatar, bio, description) {
     document.getElementById('contact-name').value = firstname + ' ' + lastname;
     document.getElementById('contact-email').value = email;
     document.getElementById('contact-phone').value = phone;
     document.getElementById('contact-avatar').src = avatar;
     document.getElementById('contact-bio').value = bio;
-    document.getElementById('contact-linkedin').value = linkedin;
-    document.getElementById('contact-details').style.display = 'block';
+    document.getElementById('contact-descriptionInfo').value = description;
+    document.getElementById('contact-details').style.display = 'flex';
     adjustTextareaHeight(document.getElementById('contact-bio'));
+    adjustTextareaHeight(document.getElementById("contact-descriptionInfo"));
 }
 
 function modifySelected() {
@@ -228,7 +243,7 @@ function addNewContact() {
     const phone = document.getElementById('new-contact-phone').value;
     const avatarFile = document.getElementById('new-contact-avatar').files[0];
     const bio = document.getElementById('new-contact-bio').value;
-    const linkedin = document.getElementById('new-contact-linkedin').value;
+    const description = document.querySelector('#new-contact-description');
 
     let isValid = true;
 
@@ -285,9 +300,9 @@ function addNewContact() {
     const reader = new FileReader();
     reader.onload = function(event) {
         const avatarDataUrl = event.target.result;
-        const contactList = document.getElementById('contact-list');
-        const contactId = `contact-${Date.now()}`;
-
+        const contactList = document.querySelector('#contact-list');
+        // const contactId = addContactToDatabase(firstname.value,lastname.value,email.value,bio.value,description.value);
+        const contactId = 13;
         const noContactsMessage = document.querySelector('.no-contacts');
         if (noContactsMessage) {
             noContactsMessage.remove();
@@ -298,13 +313,13 @@ function addNewContact() {
         const newContactItem = document.createElement('li');
         newContactItem.classList.add('list-group-item');
         newContactItem.setAttribute('data-id', contactId);
-        newContactItem.setAttribute('onclick', `selectContact(this, '${firstname}', '${lastname}', '${email}', '${phone}', '${avatarDataUrl}', '${bio}', '${linkedin}')`);
+        newContactItem.setAttribute('onclick', `selectContact(this, '${firstname}', '${lastname}', '${email}', '${phone}', '${avatarDataUrl}', '${bio}', '${description.value}')`);
         newContactItem.innerHTML = `
             <div class="contact-info">
                 <img src="${avatarDataUrl}" alt="${firstname} ${lastname}" class="avatar">
                 <div class="contact-details">
                     <h5 class="contact-name">${firstname} ${lastname}</h5>
-                    <p>${email}</p>
+                    <small>${phone}</small>
                 </div>
             </div>
         `;
@@ -312,7 +327,8 @@ function addNewContact() {
         $('#addContactModal').modal('hide');
         document.getElementById('add-contact-form').reset();
     };
-    reader.readAsDataURL(avatarFile);
+    reader.readAsDataURL(avatarFile);    
+    console.log("passed");
 
     //will return the id of the contact, this id is used for all other processes
     //involving that contact such as: updating, getting, deleting
@@ -366,16 +382,6 @@ async function addContact(token, contact) {
     return data.contact.id;
 }
 
-// Phone number & name validation
-function validatePhoneNumber(phone) {
-    const phonePattern = /^\d{3}-\d{3}-\d{4}$/;
-    return phonePattern.test(phone);
-}
-
-function validateEmail(email) {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailPattern.test(email);
-}
 
 // Adjusted text area for the description with event listeners to make the description go further down as the user inputs more
 function adjustTextareaHeight(textarea) {
@@ -397,3 +403,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const textareas = document.querySelectorAll('textarea');
     textareas.forEach(textarea => adjustTextareaHeight(textarea));
 });
+
+
+
+

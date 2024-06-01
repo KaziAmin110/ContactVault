@@ -6,80 +6,141 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="../css/reset.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/contacts.css">
     <title>ContactVault | Home</title>
 </head>
 
-<body class="container-fluid">
-
-    <nav class="navbar navbar-inverse container-fluid" id="nav_bar">
-        <div class="logo-header">
-            <a class="navbar-brand" href="index.html">
-                <img src="../images/logo.svg" class="img-fluid logo" alt="">
+<body>
+    <nav class="navbar">
+        <div class="website-logo button-move">
+            <a href="../index.html">
+                <img src="contact-images/shield.svg" alt="Home Button and Logo" class="logo">
             </a>
         </div>
-        <div class="nav-links">
-            <a href="https://github.com/KaziAmin110/contact-manager">
-                <img src="../images/github-mark.svg" alt="github logo link" class="github-logo">
+
+        <div class="bottom-icons">
+
+            <a href="../frontend/login.html" class="button-move">
+                <img src="contact-images/members.svg" alt="Show Creators Button" class="members">
             </a>
-            <a href="../frontend/signup.html" class="btn btn-primary sign-up-btn">Log Out</a>
+
+
+            <a href="../frontend/login.html" class="button-move">
+                <img src="contact-images/exit.svg" alt="Exit Button" class="exit">
+            </a>
         </div>
     </nav>
 
-    <!-- Contact List Section -->
-    <!-- row -->
-    <div class="contacts container-fluid">
-        <div class="contacts-list-header">
-            <div class="contact-actions">
-                <input type="text" class="form-control" placeholder="Search for a contact">
-                <button class="btn btn-search" onclick="searchSelected()">Search</button>
-                <button class="btn btn-success" data-toggle="modal" data-target="#addContactModal">Add</button>
-                <button class="btn btn-danger" onclick="deleteSelected()">Delete</button>
+    <!-- Contacts Section Start -->
+    <section class="contacts-list-container">
+        <div class="contacts-header">
+            <div class="contacts-toggle">
+                <h3 class="list-button contacts-name">ContactVault | Home</h3>
             </div>
+
+            <div class="contacts-navigation">
+                <div class="page-nav button-move">
+                    <a href="../frontend/login.html" class="list-button">
+                        <img src="contact-images/left.svg" alt="Previous Page Button" class="exit">
+                    </a>
+                </div>
+
+                <div class="page-nav button-move">
+                    <a href="../frontend/login.html" class="list-button">
+                        <img src="contact-images/right.svg" alt="Next Page Button" class="exit">
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="contacts-body">
+            <form action="" class="search-form">
+                <input type="text" placeholder="Search for a contact" class="search-bar">
+                <button type="submit" class="submit-button button-move">
+                    <img src="contact-images/search.svg" alt="Search Button Icon">
+                </button>
+            </form>
+
             <div class="contact-list-group">
                 <ul class="list-group" id="contact-list">
                     <li class="list-group-item no-contacts">No contacts added</li>
                 </ul>
             </div>
+        </div>
+    </section>
+    <!-- Contacts Section End -->
 
+    <!-- Contact Description Section Start -->
+    <section class="contact-description">
+        <div class="user-header">
+            <div class="add-container button-move">
+                <button type="button" class="add-contact" data-toggle="modal" data-target="#addContactModal">
+                    <img src="contact-images/add-user.svg" alt="Add Contact Button" class="add-image">
+                </button>
+            </div>
+
+
+            <a class="profile-image button-move user-profile">
+                <img src="contact-images/Default_pfp.svg" alt="Default Profile Picture Image" class="profile-image">
+            </a>
         </div>
 
-        <!-- Contact Description Section -->
-        <div class="contact-description container-fluid" id="contact-details" style="display: none;">
-            <div class="contact-desc-container container-fluid">
+        <div class="contact-description-header" id="contact-details" style="display: none;">
+            <div class="contact-desc-container">
                 <div class="contact-header">
-                    <img src="avatar1.jpg" alt="Profile Picture" class="avatar-large" id="contact-avatar">
-                    <div class="contact-header-edit">
-                        <input type="text" id="contact-name" class="editable-field" readonly>
-                        <button class="btn-primary d-flex edit-btn" onclick="modifySelected()">
-                            <h6 class="d-inline">Edit</h6>
-                            <img src="edit.svg" alt="Edit" class="edit-icon">
+
+                    <div class="avatar-info">
+                        <div class="avatar-container">
+                            <img src="contact-images/Default_pfp.svg" alt="Profile Picture" class="avatar-large"
+                                id="contact-avatar">
+                        </div>
+
+                        <div class="contact-header-edit">
+                            <input type="text" id="contact-name" class="editable-field" readonly>
+                            <button class="btn-primary edit-btn" onclick="modifySelected()">
+                                <label for="edit-img">Edit</label>
+                                <img src="contact-images/edit.svg" alt="Edit" class="edit-icon" id="edit-img">
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="delete-container">
+                        <button type="button" class="btn delete-btn" onclick="deleteSelected()">
+                            <label for="delete-img">Delete</label>
+                            <img src="contact-images/trash.svg" alt="Remove Selected Contact" id="delete-img"
+                                class="close-img">
                         </button>
                     </div>
+
                 </div>
                 <div class="contact-body">
                     <div id="display-mode">
 
-                        <div class="email">
+                        <div class="email margin-top">
                             <label for="contact-email">Email:</label>
                             <input type="text" id="contact-email" class="editable-field" readonly>
                         </div>
 
-                        <div class="phone">
+                        <div class="phone margin-top">
                             <label for="contact-phone">Phone:</label>
                             <input type="text" id="contact-phone" class="editable-field" readonly>
                         </div>
 
-                        <div class="notes d-flex">
-                            <label for="contact-bio">Notes: </label>
-                            <textarea id="contact-bio" class="editable-field bio-field" rows="2" cols="60"
+                        <div class="bio margin-top">
+                            <label for="contact-bio">Bio: </label>
+                            <textarea id="contact-bio" class="editable-field bio-field d-block" rows="2" cols="20"
                                 readonly></textarea>
                         </div>
 
-                        <label for="contact-linkedin">LinkedIn Profile:</label>
-                        <input type="text" id="contact-linkedin" class="editable-field" readonly>
+                        <div class="bio margin-top">
+                            <label for="contact-descriptionInfo" class="d-block">Description: </label>
+                            <textarea id="contact-descriptionInfo" class="editable-field bio-field" rows="2" cols="20"
+                                readonly></textarea>
+                        </div>
+
 
                     </div>
                     <button class="btn btn-primary save-button" onclick="saveContactDetails()"
@@ -87,9 +148,12 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Add Contact Popout -->
+    </section>
+    <!-- Contact Description Section End -->
+
+    <!-- Button trigger modal -->
+    <!-- Pop Up Modal for Add Contact-->
     <div class="modal fade" id="addContactModal" tabindex="-1" role="dialog" aria-labelledby="addContactModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -124,7 +188,7 @@
                         </div>
                         <div class="form-group">
                             <label for="new-contact-avatar">Profile Picture</label>
-                            <input type="file" class="form-control-file" id="new-contact-avatar" required>
+                            <input type="file" class="form-control-file d-block" id="new-contact-avatar" required>
                             <div class="invalid-feedback">A profile picture is required.</div>
                         </div>
                         <div class="form-group">
@@ -133,29 +197,28 @@
                                 required></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="new-contact-linkedin">LinkedIn Profile</label>
-                            <input type="url" class="form-control" id="new-contact-linkedin" required>
+                            <label for="new-contact-description">Description</label>
+                            <textarea class="form-control bio-field" id="new-contact-description" rows="10" cols="60"
+                                required></textarea>
                         </div>
+
                         <button type="button" class="btn btn-primary" onclick="addNewContact()">Add Contact</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Scripts to help support the popout during add a contact -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
         crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
         crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
-        <script src="contacts.js" defer></script>
-    
+    <script src="contacts.js" defer></script>
 </body>
 
 </html>
