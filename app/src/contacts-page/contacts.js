@@ -54,11 +54,12 @@ document.querySelector('.add-contact-modal').addEventListener('click', function(
 
 
 class Contact {
-    constructor(id, firstName, lastName, emailAddress, avatarUrl, bio, description, userId) {
+    constructor(id, firstName, lastName, emailAddress, phone, avatarUrl, bio, description, userId) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
+        this.phone= phone;
         this.avatarUrl = avatarUrl;
         this.bio = bio;
         this.description = description;
@@ -261,31 +262,21 @@ function addNewContact() {
     reader.readAsDataURL(avatarFile);    
     console.log("passed");
 }
-//needs review
+//AVATAR URL NEEDS FIX
 function updatContactToDatabase(){
 
-    const str= document.getElementById('contact-name').value;
-    const split= str.split(' ');
-
-    first_name= split[0];
-
-    if(split[1])
-        last_name=split[1];
-    else last_name="";
-
-    //id is hardcoded
     let updatedContact = {
-        id: 1,
-        first_name: first_name,
-        last_name: last_name,
-        email_address: document.getElementById('contact-email').value,
-        phone_number: document.getElementById('contact-phone').value,
-        avatar_url:"https://thispersondoesnotexist.com/" ,
-        bio: document.getElementById('contact-bio').value,
-        description: document.getElementById('contact-linkedin').value
+        id: parseInt(document.querySelector('.selected').getAttribute('data-id')),
+        first_name: document.getElementById('update-contact-firstname').value,
+        last_name: document.getElementById('update-contact-lastname').value,
+        email_address: document.getElementById('update-contact-email').value,
+        phone_number: document.getElementById('update-contact-phone').value,
+        avatar_url:document.getElementById('update-contact-avatar').value ,
+        bio: document.getElementById('update-contact-bio').value,
+        description: document.getElementById('update-contact-description').value
     };
 
-    console.log(updateContact(Cookies.get("jwtToken"), updatedContact));
+    console.log("UPDATING CONTACT: "+ updateContact(Cookies.get("jwtToken"), updatedContact));
 }
 
 async function updateContact(token, contact) {
@@ -372,6 +363,7 @@ async function deleteContact(token, contactId) {
         data.contact.user_id
     );
 }
+
 async function getContact(contactId) {
     let token= Cookies.get("jwtToken");
     const response = await fetch(`${urlBase}/api/get_contact.php?contact_id=${encodeURIComponent(contactId)}`, {
@@ -392,6 +384,7 @@ async function getContact(contactId) {
         data.contact.first_name,
         data.contact.last_name,
         data.contact.email_address,
+        data.contact.phone_number,
         data.contact.avatar_url,
         data.contact.bio,
         data.contact.description,
@@ -419,7 +412,3 @@ document.addEventListener('DOMContentLoaded', function() {
     const textareas = document.querySelectorAll('textarea');
     textareas.forEach(textarea => adjustTextareaHeight(textarea));
 });
-
-
-
-
