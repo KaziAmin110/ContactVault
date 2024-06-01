@@ -100,7 +100,8 @@
 
                         <div class="contact-header-edit">
                             <input type="text" id="contact-name" class="editable-field" readonly>
-                            <button class="btn-primary edit-btn" onclick="modifySelected()" data-toggle="modal" data-target="#editContactModal">
+                            <button class="btn-primary edit-btn" onclick="modifySelected()" data-toggle="modal"
+                                data-target="#editContactModal">
                                 <label for="edit-img">Edit</label>
                                 <img src="contact-images/edit.svg" alt="Edit" class="edit-icon" id="edit-img">
                             </button>
@@ -203,7 +204,8 @@
                                 required></textarea>
                         </div>
 
-                        <button type="button" class="btn btn-primary" onclick="addNewContact()">Add Contact</button>
+                        <button type="button" class="btn btn-primary add-contact-modal" onclick="addNewContact()">Add
+                            Contact</button>
                     </form>
                 </div>
             </div>
@@ -275,7 +277,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
         integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
         crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
     <script src="contacts.js" defer></script>
+
 </body>
 
 </html>

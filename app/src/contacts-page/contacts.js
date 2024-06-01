@@ -6,7 +6,7 @@ const hostname = url.hostname;
 const port = url.port;
 const urlBase = url.protocol + '//' + (port ? `${hostname}:${port}` : hostname);
 
-document.getElementById('add_Contact').addEventListener('click', function(e) {
+document.querySelector('.add-contact-modal').addEventListener('click', function(e) {
     e.preventDefault();
 
     let formData = new FormData();
@@ -301,14 +301,12 @@ function addNewContact() {
     reader.onload = function(event) {
         const avatarDataUrl = event.target.result;
         const contactList = document.querySelector('#contact-list');
-        // const contactId = addContactToDatabase(firstname.value,lastname.value,email.value,bio.value,description.value);
-        const contactId = 13;
         const noContactsMessage = document.querySelector('.no-contacts');
         if (noContactsMessage) {
             noContactsMessage.remove();
         }
 		
-		
+        const contactId = addContactToDatabase(firstname,lastname,email, phone, bio, description.value);
 		// Creates a dynamic instance of a contact using all of the information from the popout
         const newContactItem = document.createElement('li');
         newContactItem.classList.add('list-group-item');
@@ -332,8 +330,6 @@ function addNewContact() {
 
     //will return the id of the contact, this id is used for all other processes
     //involving that contact such as: updating, getting, deleting
-
-    let contactId = addContactToDatabase(firstname,lastname,email,phone,bio,linkedin);
     
     //element 'contact-id' holds the contacts id, doesnt have to be displayed to the user
     //but is necessary for other processes
