@@ -54,7 +54,7 @@ document.querySelector('.add-contact-modal').addEventListener('click', function(
 
 
 class Contact {
-    constructor(id, firstName, lastName, emailAddress, avatarUrl, bio, description, userId) {
+    constructor(id, firstName, lastName, phoneNumber, emailAddress, avatarUrl, bio, description, userId) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -123,13 +123,17 @@ function selectContact(element, firstname, lastname, email, phone, avatar, bio, 
     showContactDetails(firstname, lastname, email, phone, avatar, bio, description);
 }
 
-function showContactDetails(firstname, lastname, email, phone, avatar, bio, description) {
-    document.getElementById('contact-name').value = firstname + ' ' + lastname;
-    document.getElementById('contact-email').value = email;
-    document.getElementById('contact-phone').value = phone;
+async function showContactDetails(firstname, lastname, email, phone, avatar, bio, description) {
+    let contacts = await getContact(parseInt(document.querySelector('.selected').getAttribute('data-id')));
+
+    // Need to Fix Phone Number and Avatar
+
+    document.getElementById('contact-name').value = contacts.firstName + ' ' + contacts.lastName;
+    document.getElementById('contact-email').value = contacts.emailAddress;
+    document.getElementById('contact-phone').value = contacts.phoneNumber;
     document.getElementById('contact-avatar').src = avatar;
-    document.getElementById('contact-bio').value = bio;
-    document.getElementById('contact-descriptionInfo').value = description;
+    document.getElementById('contact-bio').value = contacts.bio;
+    document.getElementById('contact-descriptionInfo').value = contacts.description;
     document.getElementById('contact-details').style.display = 'flex';
     adjustTextareaHeight(document.getElementById('contact-bio'));
     adjustTextareaHeight(document.getElementById("contact-descriptionInfo"));
@@ -372,6 +376,8 @@ async function deleteContact(token, contactId) {
         data.contact.user_id
     );
 }
+
+
 async function getContact(contactId) {
     let token= Cookies.get("jwtToken");
     const response = await fetch(`${urlBase}/api/get_contact.php?contact_id=${encodeURIComponent(contactId)}`, {
