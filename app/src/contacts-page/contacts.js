@@ -54,12 +54,11 @@ document.querySelector('.add-contact-modal').addEventListener('click', function(
 
 
 class Contact {
-    constructor(id, firstName, lastName, emailAddress, phone, avatarUrl, bio, description, userId) {
+    constructor(id, firstName, lastName, emailAddress, avatarUrl, bio, description, userId) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
-        this.phone= phone;
         this.avatarUrl = avatarUrl;
         this.bio = bio;
         this.description = description;
@@ -262,7 +261,7 @@ function addNewContact() {
     reader.readAsDataURL(avatarFile);    
     console.log("passed");
 }
-//AVATAR URL NEEDS FIX
+//AVATAR URL needs fix
 function updatContactToDatabase(){
 
     let updatedContact = {
