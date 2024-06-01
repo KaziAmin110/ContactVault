@@ -100,7 +100,7 @@
 
                         <div class="contact-header-edit">
                             <input type="text" id="contact-name" class="editable-field" readonly>
-                            <button class="btn-primary edit-btn" onclick="modifySelected()">
+                            <button class="btn-primary edit-btn" onclick="modifySelected()" data-toggle="modal" data-target="#editContactModal">
                                 <label for="edit-img">Edit</label>
                                 <img src="contact-images/edit.svg" alt="Edit" class="edit-icon" id="edit-img">
                             </button>
@@ -153,6 +153,7 @@
     <!-- Contact Description Section End -->
 
     <!-- Button trigger modal -->
+
     <!-- Pop Up Modal for Add Contact-->
     <div class="modal fade" id="addContactModal" tabindex="-1" role="dialog" aria-labelledby="addContactModalLabel"
         aria-hidden="true">
@@ -203,6 +204,62 @@
                         </div>
 
                         <button type="button" class="btn btn-primary" onclick="addNewContact()">Add Contact</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pop Up Modal for Edit Contact-->
+    <div class="modal fade" id="editContactModal" tabindex="-1" role="dialog" aria-labelledby="addContactModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addContactModalLabel">Edit Contact</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-contact-form">
+                        <div class="form-group">
+                            <label for="new-contact-firstname">First Name</label>
+                            <input type="text" class="form-control" id="new-contact-firstname" required>
+                            <div class="invalid-feedback">First name is required.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-contact-lastname">Last Name</label>
+                            <input type="text" class="form-control" id="new-contact-lastname" required>
+                            <div class="invalid-feedback">Last name is required.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-contact-email">Email</label>
+                            <input type="email" class="form-control" id="new-contact-email" required>
+                            <div class="invalid-feedback">Enter a valid email address.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-contact-phone">Phone</label>
+                            <input type="text" class="form-control phone-field" id="new-contact-phone" required>
+                            <div class="invalid-feedback">Enter the phone number in the format xxx-xxx-xxxx.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-contact-avatar">Profile Picture</label>
+                            <input type="file" class="form-control-file d-block" id="new-contact-avatar" required>
+                            <div class="invalid-feedback">A profile picture is required.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-contact-bio">Bio</label>
+                            <textarea class="form-control bio-field" id="new-contact-bio" rows="10" cols="60"
+                                required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-contact-description">Description</label>
+                            <textarea class="form-control bio-field" id="new-contact-description" rows="10" cols="60"
+                                required></textarea>
+                        </div>
+
+                        <button type="button" class="btn btn-primary" onclick="addNewContact()">Edit Contact</button>
                     </form>
                 </div>
             </div>
