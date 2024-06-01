@@ -316,6 +316,9 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid red;
 }
 
 .delete-container {
@@ -334,6 +337,9 @@ body {
     display: flex;
     justify-content: center;
     gap: 1rem;
+    border: 1px solid black;
+    padding: 2rem;
+    width: 100%;
 }
 
 .delete-btn {
@@ -350,6 +356,11 @@ body {
 .bio {
     display: flex;
     flex-direction: column;
+}
+
+.edit-icon {
+    width: 30px;
+    height: 30px;
 }
 
 .margin-top {
