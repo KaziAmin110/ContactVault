@@ -186,7 +186,7 @@ function addNewContact() {
         addContactToDatabase(firstname, lastname, email, phone, bio, description.value)
         .then(contactId => {
             // Creates a dynamic instance of a contact using all of the information from the popout
-            uploadAvatar(contactId);
+            uploadAvatar(contactId,1);
             const newContactItem = document.createElement('li');
             newContactItem.setAttribute('data-id', contactId);
             const idDiv = document.createElement('div');
@@ -219,22 +219,26 @@ function addNewContact() {
 //AVATAR URL needs fix
 function updatContactToDatabase(){
 
+    let id= parseInt(document.querySelector('.selected').getAttribute('data-id'))
+    uploadAvatar(id, 2);
+
     let updatedContact = {
-        id: parseInt(document.querySelector('.selected').getAttribute('data-id')),
+        id: id,
         first_name: document.getElementById('update-contact-firstname').value,
         last_name: document.getElementById('update-contact-lastname').value,
         email_address: document.getElementById('update-contact-email').value,
         phone_number: document.getElementById('update-contact-phone').value,
-        avatar_url:document.getElementById('update-contact-avatar').value ,
+        avatar_url: "" ,
         bio: document.getElementById('update-contact-bio').value,
         description: document.getElementById('update-contact-description').value
     };
 
-    //uploadAvatar(parseInt(document.querySelector('.selected').getAttribute('data-id')));
     console.log("UPDATING CONTACT: "+ updateContact(Cookies.get("jwtToken"), updatedContact));
 }
 
-function uploadAvatar(id){
+//mode: 1 (add)
+//mode: 2 (update)
+function uploadAvatar(id,mode){
 
     let formData = new FormData();
 
@@ -244,7 +248,16 @@ function uploadAvatar(id){
     let contactIdField = id;
     console.log("contactIdField.value=" + contactIdField);
 
-    let fileField = document.querySelector('input[type="file"]');
+    let fileField;
+
+    if(mode==1)
+        fileField = document.querySelector('#new-contact-avatar');
+    else if(mode==2)
+        fileField = document.querySelector('#update-contact-avatar');
+    else {
+        console.error("invalid mode");
+        return "invalid mode";
+    }
 
     formData.append('image', fileField.files[0]);
 
