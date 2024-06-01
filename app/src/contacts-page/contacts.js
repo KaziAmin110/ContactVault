@@ -99,7 +99,8 @@ function deleteSelected() {
     //const contactId = document.getElementById('delete-contact-id').value;
 
     //change 12 to contactId
-    deleteContact(Cookies.get("jwtToken"),12);
+    const contactId = parseInt(document.querySelector('.selected').getAttribute('data-id'));
+    deleteContact(Cookies.get("jwtToken"), contactId);
 
 }
 
