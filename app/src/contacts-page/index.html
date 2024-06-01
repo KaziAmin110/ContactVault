@@ -88,7 +88,7 @@
             </a>
         </div>
 
-        <div class="contact-description-header" id="contact-details" style="display: flex;">
+        <div class="contact-description-header" id="contact-details" style="display: none;">
             <div class="contact-desc-container">
                 <div class="contact-header">
 
@@ -108,10 +108,10 @@
                     </div>
 
                     <div class="delete-container">
-                        <button type="button" class="delete-btn">
+                        <button type="button" class="btn delete-btn" onclick="deleteSelected()">
+                            <label for="delete-img">Delete</label>
                             <img src="contact-images/trash.svg" alt="Remove Selected Contact" id="delete-img"
                                 class="close-img">
-                            <label for="delete-img">Delete</label>
                         </button>
                     </div>
 

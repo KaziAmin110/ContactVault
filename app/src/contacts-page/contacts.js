@@ -37,8 +37,12 @@ function deleteSelected() {
         alert("Error: No contacts were selected for deletion.");
         return;
     }
-    selectedContacts.forEach(contact => contact.remove());
+    let confirmDeletion = confirm("Are you sure you want to delete this contact?");
 
+    if (!confirmDeletion)
+        return;
+
+    selectedContacts.forEach(contact => contact.remove());
     // Clear the contact details section (right side) when a profile is deleted
     clearContactDetails();
 
