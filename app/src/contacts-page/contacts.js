@@ -78,6 +78,7 @@ function validateEmail(email) {
 }
 
 function deleteSelected() {
+
     const selectedContacts = document.querySelectorAll('.list-group-item.selected');
     if (selectedContacts.length === 0) {
         alert("Error: No contacts were selected for deletion.");
@@ -88,44 +89,15 @@ function deleteSelected() {
     if (!confirmDeletion)
         return;
 
+    const contactId = parseInt(document.querySelector('.selected').getAttribute('data-id'));
+
     selectedContacts.forEach(contact => contact.remove());
     // Clear the contact details section (right side) when a profile is deleted
     clearContactDetails();
-
-    //for front end people: please make sure to add in the element 'delete-contact-id' that holds the id of the contacts to be deleted
-    //then uncomment the following line
-    //const contactId = document.getElementById('delete-contact-id').value;
-
-    //change 12 to contactId
-    const contactId = parseInt(document.querySelector('.selected').getAttribute('data-id'));
+    
+    console.log(contactId);
     deleteContact(Cookies.get("jwtToken"), contactId);
 
-}
-
-async function deleteContact(token, contactId) {
-    const response = await fetch(`${urlBase}/api/delete_contact.php`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({ contact_id: contactId }),
-    });
-
-    const data = await response.json();
-    if (!response.ok) {
-        throw new Error(data.error);
-    }
-    return new Contact(
-        data.contact.id,
-        data.contact.first_name,
-        data.contact.last_name,
-        data.contact.email_address,
-        data.contact.avatar_url,
-        data.contact.bio,
-        data.contact.description,
-        data.contact.user_id
-    );
 }
 
 function clearContactDetails() {
@@ -185,58 +157,8 @@ function saveContactDetails() {
     updatContactToDatabase();
 }
 
-//incomplete id is harcoded
-function updatContactToDatabase(){
-
-    //front end: need to store each contacts id. this is the id of contact to be edited
-    //let id = document.getElementById('update-contact-id').value,
-
-    const str= document.getElementById('contact-name').value;
-    const split= str.split(' ');
-
-    first_name= split[0];
-
-    if(split[1])
-        last_name=split[1];
-    else last_name="";
-
-    //id is hardcoded
-    let updatedContact = {
-        id: 1,
-        first_name: first_name,
-        last_name: last_name,
-        email_address: document.getElementById('contact-email').value,
-        phone_number: document.getElementById('contact-phone').value,
-        avatar_url:"https://thispersondoesnotexist.com/" ,
-        bio: document.getElementById('contact-bio').value,
-        description: document.getElementById('contact-linkedin').value
-    };
-
-    console.log(updateContact(Cookies.get("jwtToken"), updatedContact));
-}
-
-async function updateContact(token, contact) {
-
-    const response = await fetch(`${urlBase}/api/update_contact.php`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({ contact }),
-    });
-
-    const data = await response.json();
-    if (!response.ok) {
-        throw new Error(data.error);
-    }
-
-    console.log(data.contact.id);
-    return data.contact.id; 
-}
-
 function addNewContact() {
-
+    
     const firstname = document.getElementById('new-contact-firstname').value;
     const lastname = document.getElementById('new-contact-lastname').value;
     const email = document.getElementById('new-contact-email').value;
@@ -335,6 +257,52 @@ function addNewContact() {
     reader.readAsDataURL(avatarFile);    
     console.log("passed");
 }
+//needs review
+function updatContactToDatabase(){
+
+    const str= document.getElementById('contact-name').value;
+    const split= str.split(' ');
+
+    first_name= split[0];
+
+    if(split[1])
+        last_name=split[1];
+    else last_name="";
+
+    //id is hardcoded
+    let updatedContact = {
+        id: 1,
+        first_name: first_name,
+        last_name: last_name,
+        email_address: document.getElementById('contact-email').value,
+        phone_number: document.getElementById('contact-phone').value,
+        avatar_url:"https://thispersondoesnotexist.com/" ,
+        bio: document.getElementById('contact-bio').value,
+        description: document.getElementById('contact-linkedin').value
+    };
+
+    console.log(updateContact(Cookies.get("jwtToken"), updatedContact));
+}
+
+async function updateContact(token, contact) {
+
+    const response = await fetch(`${urlBase}/api/update_contact.php`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ contact }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
+
+    console.log(data.contact.id);
+    return data.contact.id; 
+}
 
 function addContactToDatabase(first_name, last_name, email, phone, bio, description){
 
@@ -375,6 +343,31 @@ async function addContact(token, contact) {
     return data.contact.id;
 }
 
+async function deleteContact(token, contactId) {
+    const response = await fetch(`${urlBase}/api/delete_contact.php`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ contact_id: contactId }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
+    return new Contact(
+        data.contact.id,
+        data.contact.first_name,
+        data.contact.last_name,
+        data.contact.email_address,
+        data.contact.avatar_url,
+        data.contact.bio,
+        data.contact.description,
+        data.contact.user_id
+    );
+}
 async function getContact(contactId) {
     let token= Cookies.get("jwtToken");
     const response = await fetch(`${urlBase}/api/get_contact.php?contact_id=${encodeURIComponent(contactId)}`, {
@@ -401,7 +394,6 @@ async function getContact(contactId) {
         data.contact.user_id
     );
 }
-
 
 // Adjusted text area for the description with event listeners to make the description go further down as the user inputs more
 function adjustTextareaHeight(textarea) {
