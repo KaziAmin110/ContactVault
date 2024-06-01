@@ -311,6 +311,7 @@ function addNewContact() {
         .then(contactId => {
             // Creates a dynamic instance of a contact using all of the information from the popout
             const newContactItem = document.createElement('li');
+            newContactItem.setAttribute('data-id', contactId);
             const idDiv = document.createElement('div');
             idDiv.innerText = `${contactId}`;
             idDiv.style.display = "none";
