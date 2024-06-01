@@ -28,8 +28,6 @@ document.querySelector('.add-contact-modal').addEventListener('click', function(
 
     formData.append('json', JSON.stringify(jsonData));
 
-    console.log("AAAAAAA"+urlBase + '/api/set_contact_avatar.php');
-
     fetch(urlBase + '/api/set_contact_avatar.php', {
         method: 'POST',
         body: formData,
@@ -238,6 +236,7 @@ async function updateContact(token, contact) {
 }
 
 function addNewContact() {
+
     const firstname = document.getElementById('new-contact-firstname').value;
     const lastname = document.getElementById('new-contact-lastname').value;
     const email = document.getElementById('new-contact-email').value;
@@ -337,7 +336,6 @@ function addNewContact() {
     console.log("passed");
 }
 
-
 function addContactToDatabase(first_name, last_name, email, phone, bio, description){
 
     if (typeof Cookies !== 'undefined') {
@@ -375,6 +373,33 @@ async function addContact(token, contact) {
     }
 
     return data.contact.id;
+}
+
+async function getContact(contactId) {
+    let token= Cookies.get("jwtToken");
+    const response = await fetch(`${urlBase}/api/get_contact.php?contact_id=${encodeURIComponent(contactId)}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        }
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
+
+    return new Contact(
+        data.contact.id,
+        data.contact.first_name,
+        data.contact.last_name,
+        data.contact.email_address,
+        data.contact.avatar_url,
+        data.contact.bio,
+        data.contact.description,
+        data.contact.user_id
+    );
 }
 
 
