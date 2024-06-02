@@ -289,7 +289,6 @@ function updateExistingContact() {
 
 }
 
-//AVATAR URL needs fix
 function updatContactToDatabase() {
 
     let id = parseInt(document.querySelector('.selected').getAttribute('data-id'))
@@ -332,7 +331,7 @@ function uploadAvatar(id, mode) {
         return "invalid mode";
     }
 
-    formData.append('image', fileField.files[0]);
+    formData.append('image',  fileField.files[0]);
 
     // Adding JSON-encoded data
     let jsonData = {
@@ -474,6 +473,38 @@ async function getContact(contactId) {
         data.contact.description,
         data.contact.user_id
     );
+}
+
+//doesnt return phone number
+async function searchContacts(query, page = 1) {
+
+    let token= Cookies.get("jwtToken");
+
+    const response = await fetch(`${urlBase}/api/search_contacts.php?query=${encodeURIComponent(query)}&page=${encodeURIComponent(page)}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        }
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
+    
+    console.log(urlBase);
+    return data.contacts.map(contact => new Contact(
+        contact.id,
+        contact.first_name,
+        contact.last_name,
+        contact.email_address,
+        "123-456-789",
+        urlBase+"/"+contact.avatar_url,
+        contact.bio,
+        contact.description,
+        contact.user_id
+    ));
 }
 
 // Adjusted text area for the description with event listeners to make the description go further down as the user inputs more
