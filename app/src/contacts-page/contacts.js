@@ -203,8 +203,8 @@ function addNewContact() {
                 <div class="contact-info">
                     <img src="${avatarDataUrl}" alt="${firstname} ${lastname}" class="avatar">
                     <div class="contact-details">
-                        <h5 class="contact-name">${firstname} ${lastname}</h5>
-                        <small>${phone}</small>
+                        <h5 id="contact-id-${contactId}">${firstname} ${lastname}</h5>
+                        <small class="small-phone-${contactId}">${phone}</small>
                     </div>
                 </div>
             `;
@@ -308,6 +308,33 @@ function updatContactToDatabase() {
     console.log("UPDATING CONTACT: " + updateContact(Cookies.get("jwtToken"), updatedContact));
 }
 
+async function updateContactFrontend(data) {
+    const contacts = await data.contact;
+
+    const descriptionName = document.querySelector("#contact-name");
+    const listName = document.querySelector(`#contact-id-${contacts.id}`);
+    const listPhone = document.querySelector(`.small-phone-${contacts.id}`);
+    const email = document.querySelector("#contact-email");
+    const phone = document.querySelector("#contact-phone");
+    const avatar = document.querySelector("#contact-avatar");
+    const bio = document.querySelector("#contact-bio");
+    const description = document.querySelector("#contact-descriptionInfo");
+
+    descriptionName.value =  `${contacts.first_name} ${contacts.last_name}`;
+    listName.textContent =  `${contacts.first_name} ${contacts.last_name}`;
+    listPhone.textContent = `${contacts.phone_number}`;
+
+    email.value = contacts.email_address;
+    phone.value = contacts.phone_number;
+    avatar.src.value = urlBase + '/' + contacts.avatar_url;
+    bio.value = contacts.bio;
+    description.value = contacts.description;
+
+    console.log(data);
+    console.log("Updated Frontend");
+
+}
+
 //mode: 1 (add)
 //mode: 2 (update)
 function uploadAvatar(id, mode) {
@@ -378,6 +405,7 @@ async function updateContact(token, contact) {
         throw new Error(data.error);
     }
 
+    await updateContactFrontend(data);
     console.log(data.contact.id);
     return data.contact.id;
 }
