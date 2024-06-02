@@ -127,7 +127,9 @@ try {
     $updated = $contact_manager->updateContact($contact);
 
     if ($updated) {
-        deleteFile('/var/www/html/' . $previousAvatarUrl);
+        if ($previousAvatarUrl != null && !empty($previousAvatarUrl)) {
+            deleteFile('/var/www/html/' . $previousAvatarUrl);
+        }
         http_response_code(200);
         echo json_encode(['contact' => $contact]);
     } else {
