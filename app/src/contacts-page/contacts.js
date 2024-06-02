@@ -7,12 +7,14 @@ const port = url.port;
 const urlBase = url.protocol + '//' + (port ? `${hostname}:${port}` : hostname);
 
 
+// When Phone Number is Implemented in Contact Object.. The Select Contact stops working
 class Contact {
-    constructor(id, firstName, lastName, emailAddress, avatarUrl, bio, description, userId) {
+    constructor(id, firstName, lastName, emailAddress, phoneNumber, avatarUrl, bio, description, userId) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
+        this.phoneNumber = phoneNumber;
         this.avatarUrl = avatarUrl;
         this.bio = bio;
         this.description = description;
@@ -63,7 +65,7 @@ function clearContactDetails() {
     document.getElementById('contact-details').style.display = 'none';
 }
 
-function selectContact(element, firstname, lastname, email, phone, avatar, bio, description) {
+function selectContact(element) {
     console.log("Arrived");
     if (isEditing) {
         alert("Please save your changes before selecting another profile.");
@@ -74,16 +76,18 @@ function selectContact(element, firstname, lastname, email, phone, avatar, bio, 
 
     element.classList.add('selected');
 
-    showContactDetails(firstname, lastname, email, phone, avatar, bio, description);
+    showContactDetails();
 }
 
-function showContactDetails(firstname, lastname, email, phone, avatar, bio, description) {
-    document.getElementById('contact-name').value = firstname + ' ' + lastname;
-    document.getElementById('contact-email').value = email;
-    document.getElementById('contact-phone').value = phone;
-    document.getElementById('contact-avatar').src = avatar;
-    document.getElementById('contact-bio').value = bio;
-    document.getElementById('contact-descriptionInfo').value = description;
+async function showContactDetails() {
+    let contacts = await getContact(parseInt(document.querySelector('.selected').getAttribute('data-id')));
+
+    document.getElementById('contact-name').value = contacts.firstName + ' ' + contacts.lastName;
+    document.getElementById('contact-email').value = contacts.emailAddress;
+    document.getElementById('contact-phone').value = contacts.phoneNumber;
+    document.getElementById('contact-avatar').src = contacts.avatarUrl;
+    document.getElementById('contact-bio').value = contacts.bio;
+    document.getElementById('contact-descriptionInfo').value = contacts.description;
     document.getElementById('contact-details').style.display = 'flex';
     adjustTextareaHeight(document.getElementById('contact-bio'));
     adjustTextareaHeight(document.getElementById("contact-descriptionInfo"));
@@ -193,8 +197,8 @@ function addNewContact() {
             idDiv.innerText = `${contactId}`;
             idDiv.style.display = "none";
             newContactItem.classList.add('list-group-item');
+            newContactItem.setAttribute('onclick', 'selectContact(this)');
             newContactItem.appendChild(idDiv);
-            newContactItem.setAttribute('onclick', `selectContact(this, '${firstname}', '${lastname}', '${email}', '${phone}', '${avatarDataUrl}', '${bio}', '${description.value}')`);
             newContactItem.innerHTML = `
                 <div class="contact-info">
                     <img src="${avatarDataUrl}" alt="${firstname} ${lastname}" class="avatar">
@@ -423,3 +427,5 @@ document.addEventListener('DOMContentLoaded', function() {
     const textareas = document.querySelectorAll('textarea');
     textareas.forEach(textarea => adjustTextareaHeight(textarea));
 });
+
+
