@@ -300,7 +300,7 @@ function updatContactToDatabase() {
         last_name: document.getElementById('update-contact-lastname').value,
         email_address: document.getElementById('update-contact-email').value,
         phone_number: document.getElementById('update-contact-phone').value,
-        avatar_url: "",
+        avatar_url: null,
         bio: document.getElementById('update-contact-bio').value,
         description: document.getElementById('update-contact-description').value
     };
@@ -527,7 +527,3 @@ document.addEventListener('DOMContentLoaded', function () {
     const textareas = document.querySelectorAll('textarea');
     textareas.forEach(textarea => adjustTextareaHeight(textarea));
 });
-
-
-
-
