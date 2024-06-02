@@ -469,7 +469,7 @@ async function getContact(contactId) {
         data.contact.last_name,
         data.contact.email_address,
         data.contact.phone_number,
-        data.contact.avatar_url,
+        urlBase+"/"+data.contact.avatar_url,
         data.contact.bio,
         data.contact.description,
         data.contact.user_id
