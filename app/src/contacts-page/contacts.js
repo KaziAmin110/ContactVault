@@ -204,7 +204,7 @@ function addNewContact() {
                     <img src="${avatarDataUrl}" alt="${firstname} ${lastname}" class="avatar">
                     <div class="contact-details">
                         <h5 id="contact-id-${contactId}">${firstname} ${lastname}</h5>
-                        <small class="small-phone">${phone}</small>
+                        <small class="small-phone-${contactId}">${phone}</small>
                     </div>
                 </div>
             `;
@@ -388,7 +388,7 @@ async function updateContactFrontend(data) {
 
     const descriptionName = document.querySelector("#contact-name");
     const listName = document.querySelector(`#contact-id-${contacts.id}`);
-    const listPhone = document.querySelector(".small-phone");
+    const listPhone = document.querySelector(`.small-phone-${contacts.id}`);
     const email = document.querySelector("#contact-email");
     const phone = document.querySelector("#contact-phone");
     const avatar = document.querySelector("#contact-avatar");
