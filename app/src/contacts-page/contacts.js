@@ -378,13 +378,13 @@ async function updateContact(token, contact) {
         throw new Error(data.error);
     }
 
-    await updateContactFrontend();
+    await updateContactFrontend(data);
 
     return data.contact.id;
 }
 
-async function updateContactFrontend() {
-    const contacts = await getContact(document.querySelector('.selected').getAttribute('data-id'));
+async function updateContactFrontend(data) {
+    const contacts = await data.contact;
 
     const descriptionName = document.querySelector("#contact-name");
     const listName = document.querySelector(`#contact-id-${contacts.id}`);
@@ -395,16 +395,17 @@ async function updateContactFrontend() {
     const bio = document.querySelector("#contact-bio");
     const description = document.querySelector("#contact-descriptionInfo");
 
-    descriptionName.value = `${contacts.firstName} ${contacts.lastName}`;
-    listName.textContent = `${contacts.firstName} ${contacts.lastName}`;
-    listPhone.textContent = `${contacts.phoneNumber}`
+    descriptionName.value =  `${contacts.first_name} ${contacts.last_name}`;
+    listName.textContent =  `${contacts.first_name} ${contacts.last_name}`;
+    listPhone.textContent = `${contacts.phone_number}`
 
-    email.value = contacts.emailAddress;
-    phone.value = contacts.phoneNumber;
-    avatar.src.value = contacts.avatarUrl;
+    email.value = contacts.email_address;
+    phone.value = contacts.phone_number;
+    avatar.src.value = contacts.avatar_url;
     bio.value = contacts.bio;
     description.value = contacts.description;
 
+    console.log(data);
     console.log("Updated Frontend");
 
 }
