@@ -6,53 +6,8 @@ const hostname = url.hostname;
 const port = url.port;
 const urlBase = url.protocol + '//' + (port ? `${hostname}:${port}` : hostname);
 
-document.querySelector('.add-contact-modal').addEventListener('click', function(e) {
-    e.preventDefault();
 
-    let formData = new FormData();
-
-    let jwtField = Cookies.get('jwtToken');
-    console.log("jwtField.value=" + jwtField);
-
-    let contactIdField = 1;
-    console.log("contactIdField.value=" + contactIdField);
-
-    let fileField = document.querySelector('input[type="file"]');
-
-    formData.append('image', fileField.files[0]);
-
-    // Adding JSON-encoded data
-    let jsonData = {
-        contact_id: contactIdField,
-    };
-
-    formData.append('json', JSON.stringify(jsonData));
-
-    fetch(urlBase + '/api/set_contact_avatar.php', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'Authorization': 'Bearer ' + jwtField
-        }
-    })
-    .then(response => response.json())
-    .then(result => {
-        console.log('Success:', result);
-        if (result.contact && result.contact.avatar_url) {
-            let imageUrl = result.contact.avatar_url;
-            let imgElement = document.getElementById('avatarImage');
-            imgElement.src = urlBase + '/' + imageUrl;
-        } else {
-            console.error('avatar_url not found in result');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-
-});
-
-
+// When Phone Number is Implemented in Contact Object.. The Select Contact stops working
 class Contact {
     constructor(id, firstName, lastName, emailAddress, phoneNumber, avatarUrl, bio, description, userId) {
         this.id = id;
@@ -95,7 +50,7 @@ function deleteSelected() {
     selectedContacts.forEach(contact => contact.remove());
     // Clear the contact details section (right side) when a profile is deleted
     clearContactDetails();
-    
+
     console.log(contactId);
     deleteContact(Cookies.get("jwtToken"), contactId);
 
@@ -110,7 +65,7 @@ function clearContactDetails() {
     document.getElementById('contact-details').style.display = 'none';
 }
 
-function selectContact(element, firstname, lastname, email, phone, avatar, bio, description) {
+function selectContact(element) {
     console.log("Arrived");
     if (isEditing) {
         alert("Please save your changes before selecting another profile.");
@@ -120,20 +75,17 @@ function selectContact(element, firstname, lastname, email, phone, avatar, bio, 
     allContacts.forEach(contact => contact.classList.remove('selected'));
 
     element.classList.add('selected');
-    console.log(element);
 
-    showContactDetails(firstname, lastname, email, phone, avatar, bio, description);
+    showContactDetails();
 }
 
-async function showContactDetails(firstname, lastname, email, phone, avatar, bio, description) {
+async function showContactDetails() {
     let contacts = await getContact(parseInt(document.querySelector('.selected').getAttribute('data-id')));
-
-    // Need to Fix Phone Number and Avatar
 
     document.getElementById('contact-name').value = contacts.firstName + ' ' + contacts.lastName;
     document.getElementById('contact-email').value = contacts.emailAddress;
     document.getElementById('contact-phone').value = contacts.phoneNumber;
-    document.getElementById('contact-avatar').src = avatar;
+    document.getElementById('contact-avatar').src = contacts.avatarUrl;
     document.getElementById('contact-bio').value = contacts.bio;
     document.getElementById('contact-descriptionInfo').value = contacts.description;
     document.getElementById('contact-details').style.display = 'flex';
@@ -164,7 +116,7 @@ function saveContactDetails() {
 }
 
 function addNewContact() {
-    
+
     const firstname = document.getElementById('new-contact-firstname').value;
     const lastname = document.getElementById('new-contact-lastname').value;
     const email = document.getElementById('new-contact-email').value;
@@ -175,7 +127,7 @@ function addNewContact() {
 
     let isValid = true;
 
-	// A LOT of if statements for the validation of name, email, etc. probably could condense this down or put them into their own functions for readablity
+    // A LOT of if statements for the validation of name, email, etc. probably could condense this down or put them into their own functions for readablity
     if (!firstname) {
         const firstnameInput = document.getElementById('new-contact-firstname');
         firstnameInput.classList.add('is-invalid');
@@ -226,27 +178,28 @@ function addNewContact() {
     }
 
     const reader = new FileReader();
-    reader.onload = function(event) {
+    reader.onload = function (event) {
         const avatarDataUrl = event.target.result;
         const contactList = document.querySelector('#contact-list');
         const noContactsMessage = document.querySelector('.no-contacts');
         if (noContactsMessage) {
             noContactsMessage.remove();
         }
-		
+
         //uses .then() to ensure the id value is returned from the async function addContactToDatabase
         addContactToDatabase(firstname, lastname, email, phone, bio, description.value)
-        .then(contactId => {
-            // Creates a dynamic instance of a contact using all of the information from the popout
-            const newContactItem = document.createElement('li');
-            newContactItem.setAttribute('data-id', contactId);
-            const idDiv = document.createElement('div');
-            idDiv.innerText = `${contactId}`;
-            idDiv.style.display = "none";
-            newContactItem.classList.add('list-group-item');
-            newContactItem.appendChild(idDiv);
-            newContactItem.setAttribute('onclick', `selectContact(this, '${firstname}', '${lastname}', '${email}', '${phone}', '${avatarDataUrl}', '${bio}', '${description.value}')`);
-            newContactItem.innerHTML = `
+            .then(contactId => {
+                // Creates a dynamic instance of a contact using all of the information from the popout
+                uploadAvatar(contactId, 1);
+                const newContactItem = document.createElement('li');
+                newContactItem.setAttribute('data-id', contactId);
+                const idDiv = document.createElement('div');
+                idDiv.innerText = `${contactId}`;
+                idDiv.style.display = "none";
+                newContactItem.classList.add('list-group-item');
+                newContactItem.setAttribute('onclick', 'selectContact(this)');
+                newContactItem.appendChild(idDiv);
+                newContactItem.innerHTML = `
                 <div class="contact-info">
                     <img src="${avatarDataUrl}" alt="${firstname} ${lastname}" class="avatar">
                     <div class="contact-details">
@@ -255,43 +208,173 @@ function addNewContact() {
                     </div>
                 </div>
             `;
-            contactList.appendChild(newContactItem);
-            $('#addContactModal').modal('hide');
-            document.getElementById('add-contact-form').reset();
-        })
-        .catch(error => {
-            console.error("Error adding contact:", error);
-        });
+                contactList.appendChild(newContactItem);
+                $('#addContactModal').modal('hide');
+                document.getElementById('add-contact-form').reset();
+            })
+            .catch(error => {
+                console.error("Error adding contact:", error);
+            });
     };
 
-    reader.readAsDataURL(avatarFile);    
+    reader.readAsDataURL(avatarFile);
     console.log("passed");
 }
-//needs review
-function updatContactToDatabase(){
 
-    const str= document.getElementById('contact-name').value;
-    const split= str.split(' ');
+// Update Existing Contact Code 
+function updateExistingContact() {
 
-    first_name= split[0];
+    const firstname = document.getElementById('update-contact-firstname').value;
+    const lastname = document.getElementById('update-contact-lastname').value;
+    const email = document.getElementById('update-contact-email').value;
+    const phone = document.getElementById('update-contact-phone').value;
+    const avatarFile = document.getElementById('update-contact-avatar').files[0];
+    
 
-    if(split[1])
-        last_name=split[1];
-    else last_name="";
+    let isValid = true;
 
-    //id is hardcoded
-    let updatedContact = {
-        id: 1,
-        first_name: first_name,
-        last_name: last_name,
-        email_address: document.getElementById('contact-email').value,
-        phone_number: document.getElementById('contact-phone').value,
-        avatar_url:"https://thispersondoesnotexist.com/" ,
-        bio: document.getElementById('contact-bio').value,
-        description: document.getElementById('contact-linkedin').value
+    // A LOT of if statements for the validation of name, email, etc. probably could condense this down or put them into their own functions for readablity
+    if (!firstname) {
+        const firstnameInput = document.getElementById('update-contact-firstname');
+        firstnameInput.classList.add('is-invalid');
+        isValid = false;
+    } else {
+        const firstnameInput = document.getElementById('update-contact-firstname');
+        firstnameInput.classList.remove('is-invalid');
+    }
+
+    if (!lastname) {
+        const lastnameInput = document.getElementById('update-contact-lastname');
+        lastnameInput.classList.add('is-invalid');
+        isValid = false;
+    } else {
+        const lastnameInput = document.getElementById('update-contact-lastname');
+        lastnameInput.classList.remove('is-invalid');
+    }
+
+    if (!validateEmail(email)) {
+        const emailInput = document.getElementById('update-contact-email');
+        emailInput.classList.add('is-invalid');
+        isValid = false;
+    } else {
+        const emailInput = document.getElementById('update-contact-email');
+        emailInput.classList.remove('is-invalid');
+    }
+
+    if (!validatePhoneNumber(phone)) {
+        const phoneInput = document.getElementById('update-contact-phone');
+        phoneInput.classList.add('is-invalid');
+        isValid = false;
+    } else {
+        const phoneInput = document.getElementById('update-contact-phone');
+        phoneInput.classList.remove('is-invalid');
+    }
+
+    if (!avatarFile) {
+        const avatarInput = document.getElementById('update-contact-avatar');
+        avatarInput.classList.add('is-invalid');
+        isValid = false;
+    } else {
+        const avatarInput = document.getElementById('update-contact-avatar');
+        avatarInput.classList.remove('is-invalid');
+    }
+
+    if (!isValid) {
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (event) {
+        const avatarDataUrl = event.target.result;
+        const contactList = document.querySelector('#contact-list');
+        const noContactsMessage = document.querySelector('.no-contacts');
+        if (noContactsMessage) {
+            noContactsMessage.remove();
+        }
+
+        //uses .then() to ensure the id value is returned from the async function addContactToDatabase
     };
 
-    console.log(updateContact(Cookies.get("jwtToken"), updatedContact));
+    updatContactToDatabase();
+    $('#editContactModal').modal('hide');
+    document.getElementById('edit-contact-form').reset();
+
+    reader.readAsDataURL(avatarFile);
+    console.log("passed");
+}
+
+//AVATAR URL needs fix
+function updatContactToDatabase() {
+
+    let id = parseInt(document.querySelector('.selected').getAttribute('data-id'))
+    uploadAvatar(id, 2);
+
+    let updatedContact = {
+        id: id,
+        first_name: document.getElementById('update-contact-firstname').value,
+        last_name: document.getElementById('update-contact-lastname').value,
+        email_address: document.getElementById('update-contact-email').value,
+        phone_number: document.getElementById('update-contact-phone').value,
+        avatar_url: "",
+        bio: document.getElementById('update-contact-bio').value,
+        description: document.getElementById('update-contact-description').value
+    };
+
+    console.log("UPDATING CONTACT: " + updateContact(Cookies.get("jwtToken"), updatedContact));
+}
+
+//mode: 1 (add)
+//mode: 2 (update)
+function uploadAvatar(id, mode) {
+
+    let formData = new FormData();
+
+    let jwtField = Cookies.get('jwtToken');
+    console.log("jwtField.value=" + jwtField);
+
+    let contactIdField = id;
+    console.log("contactIdField.value=" + contactIdField);
+
+    let fileField;
+
+    if (mode == 1)
+        fileField = document.querySelector('#new-contact-avatar');
+    else if (mode == 2)
+        fileField = document.querySelector('#update-contact-avatar');
+    else {
+        console.error("invalid mode");
+        return "invalid mode";
+    }
+
+    formData.append('image', fileField.files[0]);
+
+    // Adding JSON-encoded data
+    let jsonData = {
+        contact_id: contactIdField,
+    };
+
+    formData.append('json', JSON.stringify(jsonData));
+
+    fetch(urlBase + '/api/set_contact_avatar.php', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Authorization': 'Bearer ' + jwtField
+        }
+    })
+        .then(response => response.json())
+        .then(result => {
+            console.log('Success:', result);
+            if (result.contact && result.contact.avatar_url) {
+                let imageUrl = result.contact.avatar_url;
+            } else {
+                console.error('avatar_url not found in result');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
 }
 
 async function updateContact(token, contact) {
@@ -311,10 +394,10 @@ async function updateContact(token, contact) {
     }
 
     console.log(data.contact.id);
-    return data.contact.id; 
+    return data.contact.id;
 }
 
-function addContactToDatabase(first_name, last_name, email, phone, bio, description){
+function addContactToDatabase(first_name, last_name, email, phone, bio, description) {
 
     if (typeof Cookies !== 'undefined') {
         console.log('Cookies library is loaded and available');
@@ -328,7 +411,7 @@ function addContactToDatabase(first_name, last_name, email, phone, bio, descript
         email_address: email,
         phone_number: phone,
         bio: bio,
-        description:description
+        description: description
     };
 
     return addContact(Cookies.get("jwtToken"), contact);
@@ -372,7 +455,6 @@ async function deleteContact(token, contactId) {
         data.contact.first_name,
         data.contact.last_name,
         data.contact.email_address,
-        data.contact.phone_number,
         data.contact.avatar_url,
         data.contact.bio,
         data.contact.description,
@@ -380,9 +462,8 @@ async function deleteContact(token, contactId) {
     );
 }
 
-
 async function getContact(contactId) {
-    let token= Cookies.get("jwtToken");
+    let token = Cookies.get("jwtToken");
     const response = await fetch(`${urlBase}/api/get_contact.php?contact_id=${encodeURIComponent(contactId)}`, {
         method: 'GET',
         headers: {
@@ -396,7 +477,6 @@ async function getContact(contactId) {
         throw new Error(data.error);
     }
 
-    
     return new Contact(
         data.contact.id,
         data.contact.first_name,
@@ -426,11 +506,9 @@ document.addEventListener('input', function (event) {
     }
 }, false);
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const textareas = document.querySelectorAll('textarea');
     textareas.forEach(textarea => adjustTextareaHeight(textarea));
 });
-
-
 
 
