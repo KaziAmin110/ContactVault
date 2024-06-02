@@ -203,8 +203,8 @@ function addNewContact() {
                 <div class="contact-info">
                     <img src="${avatarDataUrl}" alt="${firstname} ${lastname}" class="avatar">
                     <div class="contact-details">
-                        <h5 class="contact-name">${firstname} ${lastname}</h5>
-                        <small>${phone}</small>
+                        <h5 id="contact-id-${contactId}">${firstname} ${lastname}</h5>
+                        <small class="small-phone">${phone}</small>
                     </div>
                 </div>
             `;
@@ -282,9 +282,11 @@ function updateExistingContact() {
     if (!isValid) {
         return;
     }
-    console.log("Updateeee");
+    
     updatContactToDatabase();
     $('#editContactModal').modal('hide');
+    document.getElementById('edit-contact-form').reset();
+
 }
 
 function updatContactToDatabase() {
@@ -298,7 +300,7 @@ function updatContactToDatabase() {
         last_name: document.getElementById('update-contact-lastname').value,
         email_address: document.getElementById('update-contact-email').value,
         phone_number: document.getElementById('update-contact-phone').value,
-        avatar_url: "",
+        avatar_url: null,
         bio: document.getElementById('update-contact-bio').value,
         description: document.getElementById('update-contact-description').value
     };
@@ -376,7 +378,7 @@ async function updateContact(token, contact) {
         throw new Error(data.error);
     }
 
-    console.log("updated contact");
+    await updateContactFrontend();
 
     return data.contact.id;
 }
@@ -385,7 +387,8 @@ async function updateContactFrontend() {
     const contacts = await getContact(document.querySelector('.selected').getAttribute('data-id'));
 
     const descriptionName = document.querySelector("#contact-name");
-    const listName = document.querySelector(".contact-name");
+    const listName = document.querySelector(`#contact-id-${contacts.id}`);
+    const listPhone = document.querySelector(".small-phone");
     const email = document.querySelector("#contact-email");
     const phone = document.querySelector("#contact-phone");
     const avatar = document.querySelector("#contact-avatar");
@@ -393,7 +396,8 @@ async function updateContactFrontend() {
     const description = document.querySelector("#contact-descriptionInfo");
 
     descriptionName.value = `${contacts.firstName} ${contacts.lastName}`;
-    listName.value = `${contacts.firstName} ${contacts.lastName}`;
+    listName.textContent = `${contacts.firstName} ${contacts.lastName}`;
+    listPhone.textContent = `${contacts.phoneNumber}`
 
     email.value = contacts.emailAddress;
     phone.value = contacts.phoneNumber;
@@ -550,9 +554,3 @@ document.addEventListener('DOMContentLoaded', function () {
     const textareas = document.querySelectorAll('textarea');
     textareas.forEach(textarea => adjustTextareaHeight(textarea));
 });
-
-document.querySelector('#edit-contact-btn').addEventListener("click", updateExistingContact());
-
-
-
-

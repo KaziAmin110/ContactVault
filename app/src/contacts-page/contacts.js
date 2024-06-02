@@ -203,8 +203,8 @@ function addNewContact() {
                 <div class="contact-info">
                     <img src="${avatarDataUrl}" alt="${firstname} ${lastname}" class="avatar">
                     <div class="contact-details">
-                        <h5 class="contact-name">${firstname} ${lastname}</h5>
-                        <small>${phone}</small>
+                        <h5 id="contact-id-${contactId}">${firstname} ${lastname}</h5>
+                        <small class="small-phone">${phone}</small>
                     </div>
                 </div>
             `;
@@ -378,8 +378,35 @@ async function updateContact(token, contact) {
         throw new Error(data.error);
     }
 
-    console.log(data.contact.id);
+    await updateContactFrontend();
+
     return data.contact.id;
+}
+
+async function updateContactFrontend() {
+    const contacts = await getContact(document.querySelector('.selected').getAttribute('data-id'));
+
+    const descriptionName = document.querySelector("#contact-name");
+    const listName = document.querySelector(`#contact-id-${contacts.id}`);
+    const listPhone = document.querySelector(".small-phone");
+    const email = document.querySelector("#contact-email");
+    const phone = document.querySelector("#contact-phone");
+    const avatar = document.querySelector("#contact-avatar");
+    const bio = document.querySelector("#contact-bio");
+    const description = document.querySelector("#contact-descriptionInfo");
+
+    descriptionName.value = `${contacts.firstName} ${contacts.lastName}`;
+    listName.textContent = `${contacts.firstName} ${contacts.lastName}`;
+    listPhone.textContent = `${contacts.phoneNumber}`
+
+    email.value = contacts.emailAddress;
+    phone.value = contacts.phoneNumber;
+    avatar.src.value = contacts.avatarUrl;
+    bio.value = contacts.bio;
+    description.value = contacts.description;
+
+    console.log("Updated Frontend");
+
 }
 
 function addContactToDatabase(first_name, last_name, email, phone, bio, description) {
