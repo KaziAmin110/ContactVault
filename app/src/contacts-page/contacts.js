@@ -308,8 +308,29 @@ function updatContactToDatabase() {
     console.log("UPDATING CONTACT: " + updateContact(Cookies.get("jwtToken"), updatedContact));
 }
 
+async function updateContact(token, contact) {
+
+    const response = await fetch(`${urlBase}/api/update_contact.php`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ contact }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
+
+    await updateContactFrontend(data);
+    console.log(data.contact.id);
+    return data.contact.id;
+}
+
 async function updateContactFrontend(data) {
-    const contacts = await data.contact;
+    const contacts = await getContact(document.querySelector(".selected").getAttribute('data-id'));
 
     const descriptionName = document.querySelector("#contact-name");
     const listName = document.querySelector(`#contact-id-${contacts.id}`);
@@ -320,13 +341,22 @@ async function updateContactFrontend(data) {
     const bio = document.querySelector("#contact-bio");
     const description = document.querySelector("#contact-descriptionInfo");
 
-    descriptionName.value =  `${contacts.first_name} ${contacts.last_name}`;
-    listName.textContent =  `${contacts.first_name} ${contacts.last_name}`;
-    listPhone.textContent = `${contacts.phone_number}`;
+    
+    // console.log(contacts.firstName);
+    // console.log(contacts.lastName);
+    // console.log(contacts.emailAddress);
+    // console.log(contacts.phoneNumber);
+    // console.log(contacts.avatarUrl);
+    // console.log(contacts.bio);
+    // console.log(contacts.description);
 
-    email.value = contacts.email_address;
-    phone.value = contacts.phone_number;
-    avatar.src.value = urlBase + '/' + contacts.avatar_url;
+    descriptionName.value =  contacts.firstName+" "+contacts.lastName;
+    listName.textContent =  contacts.firstName+" "+contacts.lastName;
+    listPhone.textContent = contacts.phoneNumber;
+
+    email.value = contacts.emailAddress;
+    phone.value = contacts.phoneNumber;
+    avatar.src.value = urlBase + '/' + contacts.avatarUrl;
     bio.value = contacts.bio;
     description.value = contacts.description;
 
@@ -387,27 +417,6 @@ function uploadAvatar(id, mode) {
             console.error('Error:', error);
         });
 
-}
-
-async function updateContact(token, contact) {
-
-    const response = await fetch(`${urlBase}/api/update_contact.php`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({ contact }),
-    });
-
-    const data = await response.json();
-    if (!response.ok) {
-        throw new Error(data.error);
-    }
-
-    await updateContactFrontend(data);
-    console.log(data.contact.id);
-    return data.contact.id;
 }
 
 function addContactToDatabase(first_name, last_name, email, phone, bio, description) {
