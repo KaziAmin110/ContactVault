@@ -52,6 +52,9 @@ function doLogin()
                     Cookies.remove('jwtToken');
 				    Cookies.set('jwtToken', jsonObject.token, {expires: 1, secure: true, sameSite:'strict'});
 
+					Cookies.remove("userId");
+					Cookies.set("userId",userId), {expires: 1, secure: true, sameSite:'strict'};
+
                     window.location.href = "../contacts-page/index.html";
                 }
 

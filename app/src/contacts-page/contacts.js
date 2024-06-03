@@ -7,6 +7,17 @@ const hostname = url.hostname;
 const port = url.port;
 const urlBase = url.protocol + '//' + (port ? `${hostname}:${port}` : hostname);
 
+class User {
+    constructor(id, firstName, lastName, dateCreated, dateLastLoggedIn, authenticationId, authenticationProvider) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateCreated = dateCreated;
+        this.dateLastLoggedIn = dateLastLoggedIn;
+        this.authenticationId = authenticationId;
+        this.authenticationProvider = authenticationProvider;
+    }
+}
 
 // When Phone Number is Implemented in Contact Object.. The Select Contact stops working
 class Contact {
@@ -649,8 +660,9 @@ document.querySelector(".search-button").addEventListener('click', async (event)
 
 
 // Loads First Page Upon Window load
+window.onload = makeNewContactItem("", 1);
+
 window.onload = async function () {
-    window.onload = makeNewContactItem("", 1);
     const currentPage = document.querySelector(".current-page-num");
     const totalPage = document.querySelector(".total-pages-num");
 
@@ -660,3 +672,39 @@ window.onload = async function () {
     totalPage.textContent = total_pages;
 
 };
+
+window.onload = async function () {
+    let userId = Cookies.get("userId");
+
+    const first_name = await getUser(userId).firstName;
+    const last_name = await getUser(userId).lastName;
+
+    document.querySelector(".user-name").textContent = first_name + last_name;
+}
+
+
+async function getUser() {
+    let token = Cookies.get("jwtToken");
+    let userId= Cookies.get("userId");
+
+    const response = await fetch(`${urlBase}/api/get_user.php?user_id=${encodeURIComponent(userId)}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        }
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
+    return new User(
+        data.user.first_name,
+        data.user.last_name,
+        data.user.date_created,
+        data.user.date_last_logged_in,
+        data.user.authentication_id,
+        data.user.authentication_provider
+    );
+}

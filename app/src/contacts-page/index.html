@@ -38,12 +38,6 @@
         <div class="contacts-header">
             <div class="contacts-title">
                 <h3 class="list-button contacts-name">ContactVault | Home</h3>
-                <h3 class="page-count list-button contacts-name">
-                    Pages:
-                    <span class="current-page-num"></span>
-                    -
-                    <span class="total-pages-num"></span>
-                </h3>
             </div>
         </div>
 
@@ -56,33 +50,40 @@
             </form>
 
             <nav aria-label="Page navigation example" class="contacts-navigation">
-                <ul class="pagination d-flex justifiy-content-sm-between">
-                    <li class="page-item prev-page-container">
-                        <button class="page-link prev-page" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </button>
-                    </li>
-                    <div class="number-navigation">
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
+                <div class="pagination-container">
+                    <div class="prev-page-container">
+                        <div class="page-nav button-move">
+                            <button type="button" class="list-button prev-page">
+                                <img src="contact-images/left.svg" alt="Previous Page Button" class="exit">
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="pages-display badge badge-pill">
+                        <h5 class="pages header">Page:</h5>
+                        <div class="page-numbers">
+                            <span class="current-page-num number-display"></span>
+                            <span>/</span>
+                            <span class="total-pages-num number-display"></span>
+                        </div>
 
                     </div>
-                    <li class="page-item">
-                        <button class="page-link next-page" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </button>
-                    </li>
-                </ul>
-            </nav>
 
-            <div class="contact-list-group">
-                <ul class="list-group" id="contact-list">
-                    <li class="list-group-item no-contacts">No contacts added</li>
-                </ul>
-            </div>
+                    <div class="next-page-container"">
+                        <div class=" page-nav button-move">
+                        <button type="button" class="list-button next-page">
+                            <img src="contact-images/right.svg" alt="Next Page Button" class="exit">
+                        </button>
+                    </div>
+                </div>
+        </div>
+        </nav>
+
+        <div class="contact-list-group">
+            <ul class="list-group" id="contact-list">
+                <li class="list-group-item no-contacts">No contacts added</li>
+            </ul>
+        </div>
         </div>
     </section>
     <!-- Contacts Section End -->
@@ -97,9 +98,10 @@
             </div>
 
 
-            <a class="profile-image button-move user-profile">
-                <img src="contact-images/Default_pfp.svg" alt="Default Profile Picture Image" class="profile-image">
-            </a>
+            <div class="user-name-container">
+                <h2>Welcome, </h2>
+                <h3 class="user-name"></h3>
+            </div>
         </div>
 
         <div class="contact-description-header" id="contact-details" style="display: none;">
