@@ -34,7 +34,7 @@ if (!isset($search_contact_payload->query)) {
 $database = new Database();
 try {
     $contact_manager = new ContactManager($database);
-    $response = $contact_manager->searchContacts($loggedInUser->user_id, $search_contact_payload->query, $search_contact_payload->page ?: 1, 10);
+    $response = $contact_manager->searchContacts($loggedInUser->user_id, $search_contact_payload->query, $search_contact_payload->page ?: 1, 6);
 } finally {
     $database->closeConnection();
 }
