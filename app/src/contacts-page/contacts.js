@@ -229,7 +229,7 @@ function updateExistingContact() {
     const email = document.getElementById('update-contact-email').value;
     const phone = document.getElementById('update-contact-phone').value;
     const avatarFile = document.getElementById('update-contact-avatar').files[0];
-    
+
 
     let isValid = true;
 
@@ -282,7 +282,7 @@ function updateExistingContact() {
     if (!isValid) {
         return;
     }
-    
+
     updatContactToDatabase();
     $('#editContactModal').modal('hide');
     document.getElementById('edit-contact-form').reset();
@@ -331,7 +331,7 @@ function uploadAvatar(id, mode) {
         return "invalid mode";
     }
 
-    formData.append('image',  fileField.files[0]);
+    formData.append('image', fileField.files[0]);
 
     // Adding JSON-encoded data
     let jsonData = {
@@ -395,8 +395,8 @@ async function updateContactFrontend(data) {
     const bio = document.querySelector("#contact-bio");
     const description = document.querySelector("#contact-descriptionInfo");
 
-    descriptionName.value =  `${contacts.first_name} ${contacts.last_name}`;
-    listName.textContent =  `${contacts.first_name} ${contacts.last_name}`;
+    descriptionName.value = `${contacts.first_name} ${contacts.last_name}`;
+    listName.textContent = `${contacts.first_name} ${contacts.last_name}`;
     listPhone.textContent = `${contacts.phone_number}`
 
     email.value = contacts.email_address;
@@ -496,7 +496,7 @@ async function getContact(contactId) {
         data.contact.last_name,
         data.contact.email_address,
         data.contact.phone_number,
-        urlBase+"/"+data.contact.avatar_url,
+        urlBase + "/" + data.contact.avatar_url,
         data.contact.bio,
         data.contact.description,
         data.contact.user_id
@@ -506,7 +506,7 @@ async function getContact(contactId) {
 //doesnt return phone number
 async function searchContacts(query, page = 1) {
 
-    let token= Cookies.get("jwtToken");
+    let token = Cookies.get("jwtToken");
 
     const response = await fetch(`${urlBase}/api/search_contacts.php?query=${encodeURIComponent(query)}&page=${encodeURIComponent(page)}`, {
         method: 'GET',
@@ -520,7 +520,7 @@ async function searchContacts(query, page = 1) {
     if (!response.ok) {
         throw new Error(data.error);
     }
-    
+
     console.log(urlBase);
     return data.contacts.map(contact => new Contact(
         contact.id,
@@ -528,7 +528,7 @@ async function searchContacts(query, page = 1) {
         contact.last_name,
         contact.email_address,
         "123-456-789",
-        urlBase+"/"+contact.avatar_url,
+        urlBase + "/" + contact.avatar_url,
         contact.bio,
         contact.description,
         contact.user_id
@@ -555,3 +555,34 @@ document.addEventListener('DOMContentLoaded', function () {
     const textareas = document.querySelectorAll('textarea');
     textareas.forEach(textarea => adjustTextareaHeight(textarea));
 });
+
+
+
+window.onload = async () => {
+    const contacts = await searchContacts("");
+    const listGroup = document.querySelector('#contact-list');
+    const noContactsMessage = document.querySelector('.no-contacts');
+
+    if (contacts.length > 0 && noContactsMessage) {
+        noContactsMessage.remove();
+    }
+
+    console.log(contacts);
+
+    contacts.forEach((contact) => {
+        const newContactItem = document.createElement('li');
+        newContactItem.setAttribute('data-id', contact.id);
+        newContactItem.classList.add('list-group-item');
+        newContactItem.setAttribute('onclick', 'selectContact(this)');
+        newContactItem.innerHTML = `
+                <div class="contact-info">
+                    <img src="${contact.avatarUrl}" alt="${contact.firstName} ${contact.lastName}" class="avatar">
+                    <div class="contact-details">
+                        <h5 id="contact-id-${contact.id}">${contact.firstName} ${contact.lastName}</h5>
+                        <small class="small-phone-${contact.id}">${contact.phoneNumber}</small>
+                    </div>
+                </div>
+            `;
+        listGroup.appendChild(newContactItem);
+    })
+}
