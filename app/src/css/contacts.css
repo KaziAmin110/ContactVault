@@ -232,9 +232,9 @@ body {
 
 .list-group {
     display: flex;
-    margin: 1.0rem;
-    justify-content: center;
-    gap: 0.7rem;
+    margin: 1.3rem;
+    justify-content: flex-start;
+    gap: 1rem;
     max-height: 800px;
     overflow: hidden;
     overflow-y: scroll;

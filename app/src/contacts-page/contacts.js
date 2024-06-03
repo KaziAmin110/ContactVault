@@ -1,5 +1,6 @@
 let isEditing = false;
 let selectedContactIds = new Set();
+let currentPageNum = 1;
 
 const url = new URL(window.location.href);
 const hostname = url.hostname;
@@ -535,6 +536,36 @@ async function searchContacts(query, page = 1) {
     ));
 }
 
+// Makes New Contacts Based on Query and Pagenumber Values
+async function makeNewContactItem(query, pageNumber) {
+
+    const contacts = await searchContacts(query, pageNumber);
+    const listGroup = document.querySelector('#contact-list');
+    const noContactsMessage = document.querySelector('.no-contacts');
+
+    if (contacts.length > 0 && noContactsMessage) {
+        noContactsMessage.remove();
+    }
+
+    contacts.forEach((contact) => {
+        const newContactItem = document.createElement('li');
+        newContactItem.setAttribute('data-id', contact.id);
+        newContactItem.classList.add('list-group-item');
+        newContactItem.setAttribute('onclick', 'selectContact(this)');
+        newContactItem.innerHTML = `
+                <div class="contact-info">
+                    <img src="${contact.avatarUrl}" alt="${contact.firstName} ${contact.lastName}" class="avatar">
+                    <div class="contact-details">
+                        <h5 id="contact-id-${contact.id}">${contact.firstName} ${contact.lastName}</h5>
+                        <small class="small-phone-${contact.id}">${contact.phoneNumber}</small>
+                    </div>
+                </div>
+            `;
+        listGroup.appendChild(newContactItem);
+    })
+}
+
+
 // Adjusted text area for the description with event listeners to make the description go further down as the user inputs more
 function adjustTextareaHeight(textarea) {
     textarea.style.height = 'auto';
@@ -557,32 +588,41 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-
-window.onload = async () => {
-    const contacts = await searchContacts("");
-    const listGroup = document.querySelector('#contact-list');
-    const noContactsMessage = document.querySelector('.no-contacts');
-
-    if (contacts.length > 0 && noContactsMessage) {
-        noContactsMessage.remove();
+// Prev Page Functionality
+document.querySelector(".prev-page").addEventListener('click', async () => {
+    if (currentPageNum === 1) {
+        return;
     }
 
-    console.log(contacts);
+    // Removes all children of list-group
+    let listGroup = document.querySelector('.list-group');
+    listGroup.innerHTML = '';
 
-    contacts.forEach((contact) => {
-        const newContactItem = document.createElement('li');
-        newContactItem.setAttribute('data-id', contact.id);
-        newContactItem.classList.add('list-group-item');
-        newContactItem.setAttribute('onclick', 'selectContact(this)');
-        newContactItem.innerHTML = `
-                <div class="contact-info">
-                    <img src="${contact.avatarUrl}" alt="${contact.firstName} ${contact.lastName}" class="avatar">
-                    <div class="contact-details">
-                        <h5 id="contact-id-${contact.id}">${contact.firstName} ${contact.lastName}</h5>
-                        <small class="small-phone-${contact.id}">${contact.phoneNumber}</small>
-                    </div>
-                </div>
-            `;
-        listGroup.appendChild(newContactItem);
-    })
-}
+    currentPageNum -= 1;
+    let currentQuery = document.querySelector('.search-bar').value;
+
+    makeNewContactItem(currentQuery, currentPageNum);
+
+})
+
+// Next Page Functionality
+document.querySelector(".next-page").addEventListener('click', async() => {
+    currentPageNum += 1;
+    let currentQuery = document.querySelector('.search-bar').value;
+    
+    const search = await searchContacts(currentQuery, currentPageNum);
+    if (search.length === 0) {
+        currentPageNum -= 1;
+        return;
+    }
+
+    // Removes all children of listgroup
+    let listGroup = document.querySelector('.list-group');
+    listGroup.innerHTML = '';
+
+    makeNewContactItem(currentQuery, currentPageNum);
+})
+
+
+// Loads First Page Upon Window load
+window.onload = makeNewContactItem("", 1);
