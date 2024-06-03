@@ -204,7 +204,7 @@ function addNewContact() {
                     <img src="${avatarDataUrl}" alt="${firstname} ${lastname}" class="avatar">
                     <div class="contact-details">
                         <h5 id="contact-id-${contactId}">${firstname} ${lastname}</h5>
-                        <small class="small-phone-${contactId}">${phone}</small>
+                        <small class="small-phone">${phone}</small>
                     </div>
                 </div>
             `;
@@ -378,34 +378,33 @@ async function updateContact(token, contact) {
         throw new Error(data.error);
     }
 
-    await updateContactFrontend(data);
+    await updateContactFrontend();
 
     return data.contact.id;
 }
 
-async function updateContactFrontend(data) {
-    const contacts = await data.contact;
+async function updateContactFrontend() {
+    const contacts = await getContact(document.querySelector('.selected').getAttribute('data-id'));
 
     const descriptionName = document.querySelector("#contact-name");
     const listName = document.querySelector(`#contact-id-${contacts.id}`);
-    const listPhone = document.querySelector(`.small-phone-${contacts.id}`);
+    const listPhone = document.querySelector(".small-phone");
     const email = document.querySelector("#contact-email");
     const phone = document.querySelector("#contact-phone");
     const avatar = document.querySelector("#contact-avatar");
     const bio = document.querySelector("#contact-bio");
     const description = document.querySelector("#contact-descriptionInfo");
 
-    descriptionName.value =  `${contacts.first_name} ${contacts.last_name}`;
-    listName.textContent =  `${contacts.first_name} ${contacts.last_name}`;
-    listPhone.textContent = `${contacts.phone_number}`
+    descriptionName.value = `${contacts.firstName} ${contacts.lastName}`;
+    listName.textContent = `${contacts.firstName} ${contacts.lastName}`;
+    listPhone.textContent = `${contacts.phoneNumber}`
 
-    email.value = contacts.email_address;
-    phone.value = contacts.phone_number;
-    avatar.src.value = contacts.avatar_url;
+    email.value = contacts.emailAddress;
+    phone.value = contacts.phoneNumber;
+    avatar.src.value = contacts.avatarUrl;
     bio.value = contacts.bio;
     description.value = contacts.description;
 
-    console.log(data);
     console.log("Updated Frontend");
 
 }

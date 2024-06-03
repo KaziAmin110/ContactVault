@@ -203,8 +203,8 @@ function addNewContact() {
                 <div class="contact-info">
                     <img src="${avatarDataUrl}" alt="${firstname} ${lastname}" class="avatar">
                     <div class="contact-details">
-                        <h5 id="contact-id-${contactId}">${firstname} ${lastname}</h5>
-                        <small class="small-phone-${contactId}">${phone}</small>
+                        <h5 class="contact-name">${firstname} ${lastname}</h5>
+                        <small>${phone}</small>
                     </div>
                 </div>
             `;
@@ -282,13 +282,28 @@ function updateExistingContact() {
     if (!isValid) {
         return;
     }
-    
+
+    const reader = new FileReader();
+    reader.onload = function (event) {
+        const avatarDataUrl = event.target.result;
+        const contactList = document.querySelector('#contact-list');
+        const noContactsMessage = document.querySelector('.no-contacts');
+        if (noContactsMessage) {
+            noContactsMessage.remove();
+        }
+
+        //uses .then() to ensure the id value is returned from the async function addContactToDatabase
+    };
+
     updatContactToDatabase();
     $('#editContactModal').modal('hide');
     document.getElementById('edit-contact-form').reset();
 
+    reader.readAsDataURL(avatarFile);
+    console.log("passed");
 }
 
+//AVATAR URL needs fix
 function updatContactToDatabase() {
 
     let id = parseInt(document.querySelector('.selected').getAttribute('data-id'))
@@ -300,7 +315,7 @@ function updatContactToDatabase() {
         last_name: document.getElementById('update-contact-lastname').value,
         email_address: document.getElementById('update-contact-email').value,
         phone_number: document.getElementById('update-contact-phone').value,
-        avatar_url: null,
+        avatar_url: "",
         bio: document.getElementById('update-contact-bio').value,
         description: document.getElementById('update-contact-description').value
     };
@@ -331,7 +346,7 @@ function uploadAvatar(id, mode) {
         return "invalid mode";
     }
 
-    formData.append('image',  fileField.files[0]);
+    formData.append('image', fileField.files[0]);
 
     // Adding JSON-encoded data
     let jsonData = {
@@ -378,36 +393,8 @@ async function updateContact(token, contact) {
         throw new Error(data.error);
     }
 
-    await updateContactFrontend(data);
-
+    console.log(data.contact.id);
     return data.contact.id;
-}
-
-async function updateContactFrontend(data) {
-    const contacts = await data.contact;
-
-    const descriptionName = document.querySelector("#contact-name");
-    const listName = document.querySelector(`#contact-id-${contacts.id}`);
-    const listPhone = document.querySelector(`.small-phone-${contacts.id}`);
-    const email = document.querySelector("#contact-email");
-    const phone = document.querySelector("#contact-phone");
-    const avatar = document.querySelector("#contact-avatar");
-    const bio = document.querySelector("#contact-bio");
-    const description = document.querySelector("#contact-descriptionInfo");
-
-    descriptionName.value =  `${contacts.first_name} ${contacts.last_name}`;
-    listName.textContent =  `${contacts.first_name} ${contacts.last_name}`;
-    listPhone.textContent = `${contacts.phone_number}`
-
-    email.value = contacts.email_address;
-    phone.value = contacts.phone_number;
-    avatar.src.value = contacts.avatar_url;
-    bio.value = contacts.bio;
-    description.value = contacts.description;
-
-    console.log(data);
-    console.log("Updated Frontend");
-
 }
 
 function addContactToDatabase(first_name, last_name, email, phone, bio, description) {
@@ -496,43 +483,11 @@ async function getContact(contactId) {
         data.contact.last_name,
         data.contact.email_address,
         data.contact.phone_number,
-        urlBase+"/"+data.contact.avatar_url,
+        data.contact.avatar_url,
         data.contact.bio,
         data.contact.description,
         data.contact.user_id
     );
-}
-
-//doesnt return phone number
-async function searchContacts(query, page = 1) {
-
-    let token= Cookies.get("jwtToken");
-
-    const response = await fetch(`${urlBase}/api/search_contacts.php?query=${encodeURIComponent(query)}&page=${encodeURIComponent(page)}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        }
-    });
-
-    const data = await response.json();
-    if (!response.ok) {
-        throw new Error(data.error);
-    }
-    
-    console.log(urlBase);
-    return data.contacts.map(contact => new Contact(
-        contact.id,
-        contact.first_name,
-        contact.last_name,
-        contact.email_address,
-        "123-456-789",
-        urlBase+"/"+contact.avatar_url,
-        contact.bio,
-        contact.description,
-        contact.user_id
-    ));
 }
 
 // Adjusted text area for the description with event listeners to make the description go further down as the user inputs more
@@ -555,3 +510,5 @@ document.addEventListener('DOMContentLoaded', function () {
     const textareas = document.querySelectorAll('textarea');
     textareas.forEach(textarea => adjustTextareaHeight(textarea));
 });
+
+

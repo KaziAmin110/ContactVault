@@ -49,6 +49,7 @@ try {
 
     if ($success) {
         http_response_code(200);
+        $contact = $contact_manager->getContact($update_contact_payload->contact->id);
         echo json_encode(['contact' => $contact]);
     } else {
         http_response_code(500);
