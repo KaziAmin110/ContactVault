@@ -648,6 +648,8 @@ document.querySelector(".search-button").addEventListener('click', async (event)
     const query = document.querySelector(".search-bar").value;
     const search = await searchContacts(query, 1);
 
+    const totalPage = document.querySelector(".total-pages-num");
+    totalPage.innerText = total_pages;    
     // Removes all children of list-group
     let listGroup = document.querySelector('.list-group');
     listGroup.innerHTML = '';
@@ -664,23 +666,24 @@ window.onload = makeNewContactItem("", 1);
 
 window.onload = async function () {
     const currentPage = document.querySelector(".current-page-num");
-    const totalPage = document.querySelector(".total-pages-num");
 
     currentPage.textContent = currentPageNum;
 
     const search = await searchContacts("");
-    totalPage.textContent = total_pages;
+
+    let userId = Cookies.get("userId");
+
+    document.querySelector('.total-pages-num').textContent = total_pages;
+
+    const userInformation = await getUser(userId);
+    console.log(userInformation);
+    const first_name = userInformation.firstName;
+    const last_name = userInformation.lastName;
+
+    document.querySelector(".user_name_val").innerText = first_name + " " + last_name;
 
 };
 
-window.onload = async function () {
-    let userId = Cookies.get("userId");
-
-    const first_name = await getUser(userId).firstName;
-    const last_name = await getUser(userId).lastName;
-
-    document.querySelector(".user-name").textContent = first_name + last_name;
-}
 
 
 async function getUser() {
@@ -700,11 +703,11 @@ async function getUser() {
         throw new Error(data.error);
     }
     return new User(
+        data.user.authentication_id,
         data.user.first_name,
         data.user.last_name,
         data.user.date_created,
         data.user.date_last_logged_in,
-        data.user.authentication_id,
         data.user.authentication_provider
     );
 }

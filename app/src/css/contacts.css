@@ -92,6 +92,7 @@ body {
     margin-left: 30px;
     margin-right: 30px;
     width: 100%;
+    min-height: 93px;
 }
 
 .contacts-navigation {
@@ -220,7 +221,7 @@ body {
     border-radius: 1rem;
 }
 
-.user-name {
+.user_name_val {
     margin-top: 4px;
 }
 
