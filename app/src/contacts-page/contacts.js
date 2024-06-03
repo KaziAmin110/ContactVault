@@ -504,6 +504,7 @@ async function getContact(contactId) {
     );
 }
 
+let total_pages;
 //doesnt return phone number
 async function searchContacts(query, page = 1) {
 
@@ -522,7 +523,9 @@ async function searchContacts(query, page = 1) {
         throw new Error(data.error);
     }
 
-    console.log(urlBase);
+    console.log(data);
+    total_pages = data.total_pages;
+
     return data.contacts.map(contact => new Contact(
         contact.id,
         contact.first_name,
@@ -586,6 +589,7 @@ document.addEventListener('DOMContentLoaded', function () {
     textareas.forEach(textarea => adjustTextareaHeight(textarea));
 });
 
+// Page Navigation Functionality
 
 // Prev Page Functionality
 document.querySelector(".prev-page").addEventListener('click', async () => {
@@ -598,6 +602,8 @@ document.querySelector(".prev-page").addEventListener('click', async () => {
     listGroup.innerHTML = '';
 
     currentPageNum -= 1;
+    const currentPage = document.querySelector(".current-page-num");
+    currentPage.textContent = currentPageNum;
     let currentQuery = document.querySelector('.search-bar').value;
 
     makeNewContactItem(currentQuery, currentPageNum);
@@ -605,16 +611,18 @@ document.querySelector(".prev-page").addEventListener('click', async () => {
 })
 
 // Next Page Functionality
-document.querySelector(".next-page").addEventListener('click', async() => {
+document.querySelector(".next-page").addEventListener('click', async () => {
+    const currentPage = document.querySelector(".current-page-num");
     currentPageNum += 1;
     let currentQuery = document.querySelector('.search-bar').value;
-    
+
     const search = await searchContacts(currentQuery, currentPageNum);
     if (search.length === 0) {
         currentPageNum -= 1;
         return;
     }
 
+    currentPage.textContent = currentPageNum;
     // Removes all children of listgroup
     let listGroup = document.querySelector('.list-group');
     listGroup.innerHTML = '';
@@ -623,7 +631,7 @@ document.querySelector(".next-page").addEventListener('click', async() => {
 })
 
 // Search Functionality 
-document.querySelector(".search-button").addEventListener('click', async(event) => {
+document.querySelector(".search-button").addEventListener('click', async (event) => {
     event.preventDefault();
 
     const query = document.querySelector(".search-bar").value;
@@ -641,4 +649,14 @@ document.querySelector(".search-button").addEventListener('click', async(event) 
 
 
 // Loads First Page Upon Window load
-window.onload = makeNewContactItem("", 1);
+window.onload = async function () {
+    window.onload = makeNewContactItem("", 1);
+    const currentPage = document.querySelector(".current-page-num");
+    const totalPage = document.querySelector(".total-pages-num");
+
+    currentPage.textContent = currentPageNum;
+
+    const search = await searchContacts("");
+    totalPage.textContent = total_pages;
+
+};
