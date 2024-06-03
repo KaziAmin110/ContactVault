@@ -538,7 +538,6 @@ async function searchContacts(query, page = 1) {
 
 // Makes New Contacts Based on Query and Pagenumber Values
 async function makeNewContactItem(query, pageNumber) {
-
     const contacts = await searchContacts(query, pageNumber);
     const listGroup = document.querySelector('#contact-list');
     const noContactsMessage = document.querySelector('.no-contacts');
@@ -621,6 +620,23 @@ document.querySelector(".next-page").addEventListener('click', async() => {
     listGroup.innerHTML = '';
 
     makeNewContactItem(currentQuery, currentPageNum);
+})
+
+// Search Functionality 
+document.querySelector(".search-button").addEventListener('click', async(event) => {
+    event.preventDefault();
+
+    const query = document.querySelector(".search-bar").value;
+    const search = await searchContacts(query, 1);
+
+    // Removes all children of list-group
+    let listGroup = document.querySelector('.list-group');
+    listGroup.innerHTML = '';
+
+    if (search.length === 0) {
+        return;
+    }
+    makeNewContactItem(query, 1);
 })
 
 
