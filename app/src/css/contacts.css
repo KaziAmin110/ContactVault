@@ -81,23 +81,47 @@ body {
     height: 10%;
 }
 
-.contacts-toggle {
+.contact-body {
     display: flex;
-    width: 50%;
+    flex-direction: column;
+}
 
-    justify-content: flex-start;
-    margin-left: 25px;
-    gap: 1.6rem;
+.contacts-title {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 30px;
+    margin-right: 30px;
+    width: 100%;
+    border: 1px solid green;
+
 }
 
 .contacts-navigation {
     display: flex;
-    width: 50%;
-
-    justify-content: flex-end;
+    width: 100%;
+    border: 1px solid green;
+    justify-content: center;
     align-items: center;
-    gap: 12px;
 }
+
+.pagination {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.number-navigation {
+    display: flex;
+    gap: 1rem;
+}
+
+.page-link {
+    display: flex;
+    align-items: center;
+}
+
+
 
 .list-button {
     margin-top: 25px;
@@ -128,6 +152,7 @@ body {
 .contacts-name {
     margin-top: 33px;
     font-size: larger;
+    justify-self: flex-start;
 }
 
 .search-form {
@@ -234,7 +259,8 @@ body {
     display: flex;
     margin: 1.3rem;
     justify-content: flex-start;
-    gap: 1rem;
+    text-align: center;
+    gap: 0.6rem;
     max-height: 800px;
     overflow: hidden;
     overflow-y: scroll;

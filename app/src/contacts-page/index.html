@@ -36,23 +36,14 @@
     <!-- Contacts Section Start -->
     <section class="contacts-list-container">
         <div class="contacts-header">
-            <div class="contacts-toggle">
+            <div class="contacts-title">
                 <h3 class="list-button contacts-name">ContactVault | Home</h3>
-            </div>
-
-            <div class="contacts-navigation">
-                <div class="page-nav button-move">
-                    <button type="button" class="list-button prev-page">
-                        <img src="contact-images/left.svg" alt="Previous Page Button" class="exit">
-                    </button>
-                </div>
-
-                <div class="page-nav button-move">
-                    <button  type="button" class="list-button next-page">
-                        <img src="contact-images/right.svg" alt="Next Page Button" class="exit">
-                    </button>
-                </div>
-
+                <h3 class="page-count list-button contacts-name">
+                    Pages:
+                    <span class="current-page-num"></span>
+                    -
+                    <span class="total-pages-num"></span>
+                </h3>
             </div>
         </div>
 
@@ -63,6 +54,29 @@
                     <img src="contact-images/search.svg" alt="Search Button Icon">
                 </button>
             </form>
+
+            <nav aria-label="Page navigation example" class="contacts-navigation">
+                <ul class="pagination d-flex justifiy-content-sm-between">
+                    <li class="page-item prev-page-container">
+                        <button class="page-link prev-page" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </button>
+                    </li>
+                    <div class="number-navigation">
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item"><a class="page-link" href="#">5</a></li>
+
+                    </div>
+                    <li class="page-item">
+                        <button class="page-link next-page" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
 
             <div class="contact-list-group">
                 <ul class="list-group" id="contact-list">
@@ -260,7 +274,8 @@
                                 required></textarea>
                         </div>
 
-                        <button type="submit" class="btn btn-primary edit-submit" onclick="updateExistingContact()">Edit Contact</button>
+                        <button type="submit" class="btn btn-primary edit-submit" onclick="updateExistingContact()">Edit
+                            Contact</button>
                     </form>
                 </div>
             </div>
