@@ -192,7 +192,7 @@ async function addNewContact() {
     }
 
     if (avatarFile)
-        uploadAvatar(contactId, 1);
+        await uploadAvatar(contactId, 1);
 
     const avatarUrl = (await getContact(contactId)).avatarUrl;
 
@@ -292,7 +292,7 @@ async function updatContactToDatabase() {
     console.log("updating to database id: " + id);
 
     if (document.querySelector('#update-contact-avatar').files[0]) {
-        uploadAvatar(id, 2);
+        await uploadAvatar(id, 2);
     }
 
     const updatedContact = {
@@ -382,7 +382,7 @@ async function updateContactFrontend() {
 
 //mode: 1 (add)
 //mode: 2 (update)
-function uploadAvatar(id, mode) {
+async function uploadAvatar(id, mode) {
 
     let formData = new FormData();
 
@@ -411,25 +411,22 @@ function uploadAvatar(id, mode) {
 
     formData.append('json', JSON.stringify(jsonData));
 
-    fetch(urlBase + '/api/set_contact_avatar.php', {
+    const response = await fetch(urlBase + '/api/set_contact_avatar.php', {
         method: 'POST',
         body: formData,
         headers: {
             'Authorization': 'Bearer ' + jwtField
         }
     })
-        .then(response => response.json())
-        .then(result => {
-            console.log('Success:', result);
-            if (result.contact && result.contact.avatar_url) {
-                let imageUrl = result.contact.avatar_url;
-            } else {
-                console.error('avatar_url not found in result');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+
+    const result = response.json();
+    console.log('Success:', result);
+    if (result.contact && result.contact.avatar_url) {
+        let imageUrl = result.contact.avatar_url;
+    } else {
+        console.error('avatar_url not found in result');
+    }
+
 
 }
 function addContactToDatabase(first_name, last_name, email, phone, bio, description) {
