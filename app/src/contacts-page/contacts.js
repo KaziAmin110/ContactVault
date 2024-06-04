@@ -295,8 +295,8 @@ async function updateExistingContact() {
         return;
     }
 
-    updateContactFrontend();
     await updatContactToDatabase();
+    await updateContactFrontend();
 
     $('#editContactModal').modal('hide');
     document.getElementById('edit-contact-form').reset();
@@ -350,6 +350,9 @@ async function updateContactFrontend(){
 
     let id= parseInt(document.querySelector('.selected').getAttribute('data-id'));
 
+    let image= (await getContact(id)).avatarUrl;
+    console.log("image: "+ image);
+
     const descriptionName = document.querySelector("#contact-name");
     const listName = document.querySelector(`#contact-id-${id}`);
     const listPhone = document.querySelector(`.small-phone-${id}`);
@@ -365,7 +368,7 @@ async function updateContactFrontend(){
         lastName: document.getElementById('update-contact-lastname').value,
         emailAddress: document.getElementById('update-contact-email').value,
         phoneNumber: document.getElementById('update-contact-phone').value,
-        avatarUrl: document.querySelector('#update-contact-avatar').files[0],
+        avatarUrl: image,
         bio: document.getElementById('update-contact-bio').value,
         description: document.getElementById('update-contact-description').value
     };
@@ -385,7 +388,7 @@ async function updateContactFrontend(){
 
     email.value = contacts.emailAddress;
     phone.value = contacts.phoneNumber;
-    avatar.src.value = urlBase + '/' + contacts.avatarUrl;
+    avatar.src = contacts.avatarUrl;
     bio.value = contacts.bio;
     description.value = contacts.description;
 
