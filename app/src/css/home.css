@@ -68,14 +68,16 @@ body {
 
 .carousel {
     flex: 1;
-    padding-left:375px;
-    padding-top: 100px;
+    padding-left:26%;
+    padding-top: 6.25%;
+    border-radius:10px;
 }
 
 .carousel-item img {
     max-width: 676px;
     max-height: 447px;
     object-fit: cover;
+    border-radius:10px;
 }
 
 .heading-list {
@@ -261,6 +263,7 @@ h3{
     text-align: center;
     text-size-adjust: 1px;
 }
+
 
 /* X-Large Screen Sizes */
 @media (min-width: 1500px) {
