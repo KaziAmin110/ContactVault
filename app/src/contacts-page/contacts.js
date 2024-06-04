@@ -212,7 +212,7 @@ function addNewContact() {
                 newContactItem.appendChild(idDiv);
                 newContactItem.innerHTML = `
                 <div class="contact-info">
-                    <img src="${avatarDataUrl}" alt="${firstname} ${lastname}" class="avatar">
+                    <img src="${avatarDataUrl}" alt="${firstname} ${lastname}" class="avatar-${contactId} avatar">
                     <div class="contact-details">
                         <h5 id="contact-id-${contactId}">${firstname} ${lastname}</h5>
                         <small class="small-phone-${contactId}">${phone}</small>
@@ -358,7 +358,8 @@ async function updateContactFrontend(){
     const listPhone = document.querySelector(`.small-phone-${id}`);
     const email = document.querySelector("#contact-email");
     const phone = document.querySelector("#contact-phone");
-    const avatar = document.querySelector("#contact-avatar");
+    const avatarList = document.querySelector(`.avatar-${id}`);
+    const avatarDescription = document.querySelector(`.avatar-large`);
     const bio = document.querySelector("#contact-bio");
     const description = document.querySelector("#contact-descriptionInfo");
 
@@ -388,11 +389,10 @@ async function updateContactFrontend(){
 
     email.value = contacts.emailAddress;
     phone.value = contacts.phoneNumber;
-    avatar.src = contacts.avatarUrl;
+    avatarList.src = contacts.avatarUrl;
+    avatarDescription.src = contacts.avatarUrl;
     bio.value = contacts.bio;
     description.value = contacts.description;
-
-    console.log("Updated Frontend");
 }
 
 //mode: 1 (add)
@@ -593,7 +593,7 @@ async function makeNewContactItem(query, pageNumber) {
         newContactItem.setAttribute('onclick', 'selectContact(this)');
         newContactItem.innerHTML = `
                 <div class="contact-info">
-                    <img src="${contact.avatarUrl}" alt="${contact.firstName} ${contact.lastName}" class="avatar">
+                    <img src="${contact.avatarUrl}" alt="${contact.firstName} ${contact.lastName}" class="avatar-${contact.id} avatar">
                     <div class="contact-details">
                         <h5 id="contact-id-${contact.id}">${contact.firstName} ${contact.lastName}</h5>
                         <small class="small-phone-${contact.id}">${contact.phoneNumber}</small>
@@ -720,6 +720,12 @@ document.querySelector(".search-button").addEventListener('click', async (event)
     }
 })
 
+function doLogout()
+{
+    console.log("LOGGING OUT...");
+ 	Cookies.remove("jwtToken");
+    Cookies.remove("userId");
+}
 
 // Loads First Page Upon Window load
 window.onload = makeNewContactItem("", 1);
@@ -796,3 +802,11 @@ document.querySelector(".edit-btn").addEventListener('click', async () => {
 
 })
 
+// document.querySelector(".add-contact").addEventListener("click", () => {
+//     const listGroup = document.querySelector(".list-grouop");
+
+//     if (listGroup.childElementCount > 6) {
+        
+//     }
+
+// })

@@ -123,7 +123,7 @@ class ContactManager
         $totalPages = ceil($totalResults / $resultsPerPage);
 
         // Get the search results with pagination
-        $query = "SELECT * FROM contacts WHERE user_id = ? AND (first_name LIKE ? OR last_name LIKE ? OR phone_number LIKE ? OR email_address LIKE ?) LIMIT ?, ?";
+        $query = "SELECT * FROM contacts WHERE user_id = ? AND (first_name LIKE ? OR last_name LIKE ? OR phone_number LIKE ? OR email_address LIKE ?) ORDER BY id DESC LIMIT ?, ?";
         $stmt = $this->connection->prepare($query);
         $stmt->bind_param("issssii", $userId, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $offset, $resultsPerPage);
         $stmt->execute();
