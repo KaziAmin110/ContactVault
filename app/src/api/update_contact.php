@@ -49,8 +49,8 @@ try {
 
     if ($success) {
         http_response_code(200);
-        $contact = $contact_manager->getContact($update_contact_payload->contact->id);
-        echo json_encode(['contact' => $contact]);
+        $final = $contact_manager->getContact($update_contact_payload->contact->id);
+        echo json_encode(['contact' => $final]);
     } else {
         http_response_code(500);
         echo json_encode(['error' => 'Failed to update contact.']);
