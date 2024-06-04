@@ -720,3 +720,32 @@ window.onload = async function () {
 };
 
 
+
+
+async function getUser() {
+    let token = Cookies.get("jwtToken");
+    let userId = Cookies.get("userId");
+
+    const response = await fetch(`${urlBase}/api/get_user.php?user_id=${encodeURIComponent(userId)}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        }
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
+    return new User(
+        data.user.id,
+        data.user.first_name,
+        data.user.last_name,
+        data.user.date_created,
+        data.user.date_last_logged_in,
+        data.user.authentication_id,
+        data.user.authentication_provider
+    );
+}
+
