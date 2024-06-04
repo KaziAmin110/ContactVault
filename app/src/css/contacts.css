@@ -5,7 +5,7 @@
 }
 
 body {
-    height: 100vh;
+    height: 102vh;
     display: flex;
 }
 
@@ -141,6 +141,7 @@ body {
 
 .list-button {
     margin-top: 25px;
+    border-radius: 50%;
 }
 
 .list-nav-buttons {
@@ -175,7 +176,7 @@ body {
     justify-content: center;
     align-items: center;
     width: 50%;
-    border: 1px solid green;
+    border: 3px solid black;
     gap: 0.5rem;
     color: black;
     border-radius: 2rem;
@@ -189,7 +190,7 @@ body {
 .search-form {
     display: flex;
     gap: 1rem;
-    padding: 1.5rem;
+    padding: 1.2rem;
 }
 
 .search-bar {
@@ -203,20 +204,13 @@ body {
 }
 
 /* Contacts List End */
-.contact-description {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid black;
 
-
-}
 
 .user-name-container {
     display: flex;
     gap: 1rem;
     margin-right: 3rem;
-    border: 1px solid red;
+    margin-top: 8px;
     padding: 10px;
     border-radius: 1rem;
 }
@@ -301,12 +295,11 @@ body {
 
 .list-group {
     display: flex;
-    margin: 1.3rem;
+    margin: 1.1rem;
     justify-content: flex-start;
     text-align: center;
-    gap: 0.6rem;
-    max-height: 800px;
-    overflow: hidden;
+    gap: 0.4rem;
+    max-height: 850px;
     overflow-y: scroll;
 }
 
@@ -354,6 +347,7 @@ body {
     justify-content: center;
     align-items: center;
     border: 3px solid green;
+    background-color: #23a6d5;
     flex: 1;
 
 }
@@ -361,6 +355,7 @@ body {
 .contact-desc-container {
     display: flex;
     flex-direction: column;
+    background-color: whitesmoke;
 
     border: 2px solid black;
 
@@ -404,7 +399,7 @@ body {
     display: flex;
     flex-direction: column;
     flex: 1;
-    padding: 2rem;
+    padding: 1.2rem;
 }
 
 .edit-btn {
@@ -454,4 +449,26 @@ body {
 
 .btn-primary:hover {
     transform: translateY(-5px);
+}
+
+.contact-description {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    
+}
+
+.list-button {
+    margin-top: 25px;
+    border-radius: 50%;
+}
+
+.list-group-item {
+    border-radius: 1rem;
+}
+
+.list-group-item:hover {
+    border: #23a6d5 1px solid;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }

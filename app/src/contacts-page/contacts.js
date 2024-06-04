@@ -1,6 +1,7 @@
 let isEditing = false;
 let selectedContactIds = new Set();
 let currentPageNum = 1;
+let totalPages = 1;
 
 const url = new URL(window.location.href);
 const hostname = url.hostname;
@@ -515,7 +516,6 @@ async function getContact(contactId) {
     );
 }
 
-let total_pages;
 //doesnt return phone number
 async function searchContacts(query, page = 1) {
 
@@ -535,7 +535,8 @@ async function searchContacts(query, page = 1) {
     }
 
     console.log(data);
-    total_pages = data.total_pages;
+
+    totalPages = data.total_pages;
 
     return data.contacts.map(contact => new Contact(
         contact.id,
@@ -576,6 +577,32 @@ async function makeNewContactItem(query, pageNumber) {
             `;
         listGroup.appendChild(newContactItem);
     })
+}
+
+async function getUser() {
+    let token = Cookies.get("jwtToken");
+    let userId= Cookies.get("userId");
+
+    const response = await fetch(`${urlBase}/api/get_user.php?user_id=${encodeURIComponent(userId)}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        }
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
+    return new User(
+        data.user.authentication_id,
+        data.user.first_name,
+        data.user.last_name,
+        data.user.date_created,
+        data.user.date_last_logged_in,
+        data.user.authentication_provider
+    );
 }
 
 
@@ -648,8 +675,17 @@ document.querySelector(".search-button").addEventListener('click', async (event)
     const query = document.querySelector(".search-bar").value;
     const search = await searchContacts(query, 1);
 
-    const totalPage = document.querySelector(".total-pages-num");
-    totalPage.innerText = total_pages;    
+    const totalPageNum = document.querySelector(".total-pages-num");
+    const currentPage = document.querySelector(".current-page-num");
+
+    currentPage.textContent = 1;
+    
+    if (totalPages === 0)
+        currentPage.innerText = 0;
+
+    totalPageNum.textContent = totalPages;
+    makeNewContactItem(query, 1);
+
     // Removes all children of list-group
     let listGroup = document.querySelector('.list-group');
     listGroup.innerHTML = '';
@@ -657,7 +693,6 @@ document.querySelector(".search-button").addEventListener('click', async (event)
     if (search.length === 0) {
         return;
     }
-    makeNewContactItem(query, 1);
 })
 
 
@@ -673,7 +708,7 @@ window.onload = async function () {
 
     let userId = Cookies.get("userId");
 
-    document.querySelector('.total-pages-num').textContent = total_pages;
+    document.querySelector('.total-pages-num').textContent = totalPages;
 
     const userInformation = await getUser(userId);
     console.log(userInformation);
@@ -685,29 +720,3 @@ window.onload = async function () {
 };
 
 
-
-async function getUser() {
-    let token = Cookies.get("jwtToken");
-    let userId= Cookies.get("userId");
-
-    const response = await fetch(`${urlBase}/api/get_user.php?user_id=${encodeURIComponent(userId)}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        }
-    });
-
-    const data = await response.json();
-    if (!response.ok) {
-        throw new Error(data.error);
-    }
-    return new User(
-        data.user.authentication_id,
-        data.user.first_name,
-        data.user.last_name,
-        data.user.date_created,
-        data.user.date_last_logged_in,
-        data.user.authentication_provider
-    );
-}
