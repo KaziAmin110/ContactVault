@@ -295,8 +295,8 @@ async function updateExistingContact() {
         return;
     }
 
-    updateContactFrontend();
     await updatContactToDatabase();
+    await updateContactFrontend();
 
     $('#editContactModal').modal('hide');
     document.getElementById('edit-contact-form').reset();
@@ -350,6 +350,9 @@ async function updateContactFrontend(){
 
     let id= parseInt(document.querySelector('.selected').getAttribute('data-id'));
 
+    let image= (await getContact(id)).avatarUrl;
+    console.log("image: "+ image);
+
     const descriptionName = document.querySelector("#contact-name");
     const listName = document.querySelector(`#contact-id-${id}`);
     const listPhone = document.querySelector(`.small-phone-${id}`);
@@ -365,7 +368,7 @@ async function updateContactFrontend(){
         lastName: document.getElementById('update-contact-lastname').value,
         emailAddress: document.getElementById('update-contact-email').value,
         phoneNumber: document.getElementById('update-contact-phone').value,
-        avatarUrl: document.querySelector('#update-contact-avatar').files[0],
+        avatarUrl: image,
         bio: document.getElementById('update-contact-bio').value,
         description: document.getElementById('update-contact-description').value
     };
@@ -385,7 +388,7 @@ async function updateContactFrontend(){
 
     email.value = contacts.emailAddress;
     phone.value = contacts.phoneNumber;
-    avatar.src.value = urlBase + '/' + contacts.avatarUrl;
+    avatar.src = contacts.avatarUrl;
     bio.value = contacts.bio;
     description.value = contacts.description;
 
@@ -741,9 +744,6 @@ window.onload = async function () {
 
 };
 
-
-
-
 async function getUser() {
     let token = Cookies.get("jwtToken");
     let userId = Cookies.get("userId");
@@ -770,4 +770,29 @@ async function getUser() {
         data.user.authentication_provider
     );
 }
+
+
+document.querySelector(".edit-btn").addEventListener('click', async () => {
+    const contactId = parseInt(document.querySelector('.selected').getAttribute('data-id'));
+    const contacts = await getContact(contactId);
+
+    console.log(contacts);
+
+    const edit_first = document.querySelector("#update-contact-firstname");
+    const edit_last = document.querySelector("#update-contact-lastname");
+    const edit_email = document.querySelector("#update-contact-email");
+    const edit_phone = document.querySelector("#update-contact-phone");
+    const edit_picture = document.querySelector("#update-contact-avatar");
+    const edit_bio = document.querySelector("#update-contact-bio");
+    const edit_description = document.querySelector("#update-contact-description");
+
+    edit_first.value = contacts.firstName;
+    edit_last.value = contacts.lastName;
+    edit_email.value = contacts.emailAddress;
+    edit_phone.value = contacts.phoneNumber;
+    // edit_picture.value = contacts.avatarUrl;
+    edit_bio.value = contacts.bio;
+    edit_description.value = contacts.description;
+
+})
 
