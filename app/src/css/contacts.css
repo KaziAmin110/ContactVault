@@ -10,7 +10,9 @@ body {
 }
 
 .navbar {
-    border: 1px solid black;
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 2%;
+    box-shadow: 5px 5px 5px #2865a33b;
     width: 80px;
 
     display: flex;
@@ -19,7 +21,6 @@ body {
     justify-content: space-between;
 
     padding: 10px;
-
 }
 
 /* Icons Start */
@@ -31,7 +32,7 @@ body {
 }
 
 .website-logo {
-    border: 1px solid black;
+    border: 2px solid white;
     border-radius: 25%;
 
     margin-top: 15px;
@@ -66,8 +67,8 @@ body {
 /* Contacts List Start */
 .contacts-list-container {
     width: 40%;
-    border: 1px solid black;
-    background-color: whitesmoke;
+    border: 1px solid #385699;
+    background-color: #f9fbfd;
 
     display: flex;
     flex-direction: column;
@@ -77,7 +78,8 @@ body {
     display: flex;
     justify-content: space-between;
 
-    border-bottom: 1px solid slategray;
+    border-bottom: 2px solid #768dc0;
+    box-shadow: 10px 2px 5px #2865a33b;
     height: 10%;
 }
 
@@ -137,8 +139,6 @@ body {
     font-size: 15px;
 }
 
-
-
 .list-button {
     margin-top: 25px;
     border-radius: 50%;
@@ -152,7 +152,7 @@ body {
     display: flex;
     padding: 5px;
     align-items: center;
-    border: 1px solid black;
+    border: 2px solid black;
     border-radius: 0.5rem;
 }
 
@@ -176,7 +176,7 @@ body {
     justify-content: center;
     align-items: center;
     width: 50%;
-    border: 3px solid black;
+    border: 2px solid black;
     gap: 0.5rem;
     color: black;
     border-radius: 2rem;
@@ -196,6 +196,8 @@ body {
 .search-bar {
     flex: 1;
     padding: 2px;
+    border-radius: 5px;
+    border:2px solid #9ca5b9;
 }
 
 .submit-button {
@@ -221,8 +223,10 @@ body {
 
 .user-header {
     height: 10%;
-    border-bottom: 1px solid slategray;
-    background-color: white;
+    border-bottom: 2px solid #768dc0;
+    border-radius: 2px;
+    box-shadow: 15px 5px 5px #2865a33b;
+    background-color: #f9fbfd;
 
     display: flex;
     justify-content: space-between;
@@ -301,6 +305,7 @@ body {
     gap: 0.4rem;
     max-height: 850px;
     overflow-y: scroll;
+    border: 2px solid #385699;
 }
 
 .contact-info {
@@ -320,12 +325,12 @@ body {
 .avatar {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    border-radius: 100%;
     object-fit: cover;
 }
 
 .avatar-container {
-    border: 1px solid green;
+    border: 1px solid rgb(0, 0, 0);
     border-radius: 25%;
     object-fit: cover;
     object-position: center;
@@ -346,18 +351,21 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 3px solid green;
-    background-color: #23a6d5;
     flex: 1;
 
+    background: linear-gradient(-45deg, #23a6d5, #a4c7df, #92b4db, #b9abf5);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+	height: 100vh;
 }
 
 .contact-desc-container {
     display: flex;
     flex-direction: column;
-    background-color: whitesmoke;
+    background-color: #f9fbfd;
 
-    border: 2px solid black;
+    border: 2px solid #385699;
+    box-shadow: 15px 5px 5px #2865a33b;
 
     width: 85%;
     height: 85%;
@@ -387,7 +395,7 @@ body {
     justify-content: space-around;
     align-items: center;
     gap: 1rem;
-    border: 1px solid red;
+    color:white;
 }
 
 .delete-container {
@@ -406,9 +414,11 @@ body {
     display: flex;
     justify-content: center;
     gap: 1rem;
-    border: 1px solid black;
+    background-color: #385699;
+    border: 2px solid black;
     padding: 2rem;
     width: 100%;
+    
 }
 
 .delete-btn {
@@ -418,7 +428,7 @@ body {
 }
 
 .selected {
-    border: 1px solid green;
+    border: 1px solid #385699;
     background-color: lightgrey;
 }
 
@@ -437,7 +447,7 @@ body {
 }
 
 .btn-primary {
-    background-color: lavender;
+    background-color: #5b8bf1;
     border-radius: 1rem;
     padding: 0.25rem;
 }
@@ -455,8 +465,7 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    border: 1px solid black;
-    
+    border: 2px solid #768dc0;
 }
 
 .list-button {
@@ -469,6 +478,25 @@ body {
 }
 
 .list-group-item:hover {
-    border: #23a6d5 1px solid;
+    border: #385699 1.5px solid;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.editable-field{
+    border: #38579975 1px solid;
+    border-radius: 0.5rem;
+}
+
+
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
