@@ -720,6 +720,12 @@ document.querySelector(".search-button").addEventListener('click', async (event)
     }
 })
 
+function doLogout()
+{
+    console.log("LOGGING OUT...");
+ 	Cookies.remove("jwtToken");
+    Cookies.remove("userId");
+}
 
 // Loads First Page Upon Window load
 window.onload = makeNewContactItem("", 1);
