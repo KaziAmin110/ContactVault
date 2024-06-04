@@ -44,7 +44,7 @@ function isValidEmail(email) {
 
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-	if (emailRegex.test(email)) {
+	if (!emailRegex.test(email)) {
 		emailRequieres += "Please enter a valid email address.<br>";
 	}
 
