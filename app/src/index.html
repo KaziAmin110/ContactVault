@@ -72,43 +72,59 @@
             </div>
         </div>
         
-        <form action="" class="sign-up-form margin">
-            <h3>Get Started With Your 30 Day Free Trial</h3>
-            <div class="form-group">
-                <label for="first-name">First Name</label>
-                <input type="name" class="form-control" id="first-name" aria-describedby="first-name"
-                    placeholder="First Name" required>
-            </div>
-            <div class="form-group">
-                <label for="last-name">Last Name</label>
-                <input type="name" class="form-control" id="last-name" aria-describedby="last-name"
-                    placeholder="Last Name" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email address</label>
-                <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
-                    placeholder="Enter Email" required>
-
-            </div>
-            <div class="form-group username">
-                <label for="user-name">Username</label>
-                <input type="name" class="form-control" id="user-name" aria-describedby="user-name"
-                    placeholder="Enter Username" required>
-            </div>
-            <div class="form-group password">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Password" required>
-                <small id="emailHelp" class="form-text text-muted">We'll never share your personal data with
-                    anyone.</small>
-            </div>
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
-                <label class="form-check-label" for="exampleCheck1">
-                    I agree to the 
-                    <a href="">Terms of Service</a> and
-                    <a href="">Privacy Policy</a>
-                </label>
-            </div>
+                    <form id="sign-up-form" class="sign-in-form" novalidate>
+                        <div class="form-group">
+                            <label for="first-name">First Name</label>
+                            <input type="text" class="form-control" id="first-name" aria-describedby="first-name"
+                                placeholder="First Name" required>
+                            <div class="invalid-feedback">
+                                First Name is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="last-name">Last Name</label>
+                            <input type="text" class="form-control" id="last-name" aria-describedby="last-name"
+                                placeholder="Last Name" required>
+                            <div class="invalid-feedback">
+                                Last Name is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                                placeholder="Enter Email" required>
+                            <div class="invalid-feedback">
+                                A valid Email is required.
+                            </div>
+                        </div>
+                        <div class="form-group username">
+                            <label for="user-name">Username</label>
+                            <input type="text" class="form-control" id="user-name" aria-describedby="user-name"
+                                placeholder="Enter Username" required>
+                            <div class="invalid-feedback">
+                                Username is required.
+                            </div>
+                        </div>
+                        <div class="form-group password">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" placeholder="Password" required>
+                            <small id="emailHelp" class="form-text text-muted">We'll never share your personal data with
+                                anyone.</small>
+                            <div class="invalid-feedback" id="password-feedback">
+                                Password must be at least 8 characters long and contain at least one uppercase letter, one number, and one special character.
+                            </div>
+                        </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
+                            <label class="form-check-label" for="exampleCheck1">
+                                I agree to the 
+                                <a href="">Terms of Service</a> and
+                                <a href="">Privacy Policy</a>
+                            </label>
+                            <div class="invalid-feedback">
+                                You must agree to the terms.
+                            </div>
+                        </div>
             <button type="submit" class="btn btn-primary">Get Started</button>
         </form>
     </header>

@@ -24,33 +24,48 @@
             <h3>to access ContactVault Home</h3>
         </div>
 
-        <form action="" class="sign-in-form">
+
+        <form id="sign-up-form" class="sign-in-form" novalidate>
             <div class="form-group">
                 <label for="first-name">First Name</label>
-                <input type="name" class="form-control" id="first-name" aria-describedby="first-name"
+                <input type="text" class="form-control" id="first-name" aria-describedby="first-name"
                     placeholder="First Name" required>
+                <div class="invalid-feedback">
+                    First Name is required.
+                </div>
             </div>
             <div class="form-group">
                 <label for="last-name">Last Name</label>
-                <input type="name" class="form-control" id="last-name" aria-describedby="last-name"
+                <input type="text" class="form-control" id="last-name" aria-describedby="last-name"
                     placeholder="Last Name" required>
+                <div class="invalid-feedback">
+                    Last Name is required.
+                </div>
             </div>
             <div class="form-group">
                 <label for="email">Email address</label>
                 <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
                     placeholder="Enter Email" required>
-
+                <div class="invalid-feedback">
+                    A valid Email is required.
+                </div>
             </div>
             <div class="form-group username">
                 <label for="user-name">Username</label>
-                <input type="name" class="form-control" id="user-name" aria-describedby="user-name"
+                <input type="text" class="form-control" id="user-name" aria-describedby="user-name"
                     placeholder="Enter Username" required>
+                <div class="invalid-feedback">
+                    Username is required.
+                </div>
             </div>
             <div class="form-group password">
                 <label for="password">Password</label>
                 <input type="password" class="form-control" id="password" placeholder="Password" required>
                 <small id="emailHelp" class="form-text text-muted">We'll never share your personal data with
                     anyone.</small>
+                <div class="invalid-feedback" id="password-feedback">
+                    Password must be at least 8 characters long and contain at least one uppercase letter, one number, and one special character.
+                </div>
             </div>
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
@@ -59,12 +74,15 @@
                     <a href="">Terms of Service</a> and
                     <a href="">Privacy Policy</a>
                 </label>
+                <div class="invalid-feedback">
+                    You must agree to the terms.
+                </div>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Sign Up</button>
                 <div class="sign-up-footer">
                     <small class="sign-up">
-                        <p>Already have an account ?</p>
+                        <p>Already have an account?</p>
                         <a href="login.html">Sign-in</a>
                     </small>
                     <div id="validRegisterResult"></div>
