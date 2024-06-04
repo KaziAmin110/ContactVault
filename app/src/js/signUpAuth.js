@@ -38,6 +38,7 @@ function isValidPassword(password) {
 	console.log("done validating password: "+passwordRequieres);
 	return passwordRequieres;
 }
+
 function isValidEmail(email) {
 	console.log("validating email:");
 	let emailRequieres = "";
@@ -117,6 +118,8 @@ function isValidRegister() {
             checkBox.classList.remove('is-invalid');
             checkBox.classList.add('is-valid');
         }
+
+		return isValid;
 	//if the user has input a field incorrectly, message will let the user know what is wrong
 	/*
 	let message = "";
@@ -217,6 +220,6 @@ form.addEventListener('submit', function signUp(e) {
 
 	//document.getElementById("validRegisterResult").value = res;
 
-	if (res == "")
+	if (res)
 		register();
 });
