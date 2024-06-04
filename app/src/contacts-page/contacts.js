@@ -64,9 +64,7 @@ function deleteSelected() {
     // Clear the contact details section (right side) when a profile is deleted
     clearContactDetails();
 
-    console.log(contactId);
     deleteContact(Cookies.get("jwtToken"), contactId);
-
 }
 
 function clearContactDetails() {
@@ -79,7 +77,7 @@ function clearContactDetails() {
 }
 
 function selectContact(element) {
-    console.log("Arrived");
+
     if (isEditing) {
         alert("Please save your changes before selecting another profile.");
         return;
@@ -231,11 +229,12 @@ function addNewContact() {
     };
 
     reader.readAsDataURL(avatarFile);
-    console.log("passed");
 }
 
 // Update Existing Contact Code 
-function updateExistingContact() {
+async function updateExistingContact() {
+
+    event.preventDefault();
 
     const firstname = document.getElementById('update-contact-firstname').value;
     const lastname = document.getElementById('update-contact-lastname').value;
@@ -296,18 +295,22 @@ function updateExistingContact() {
         return;
     }
 
-    updatContactToDatabase();
+    updateContactFrontend();
+    await updatContactToDatabase();
+
     $('#editContactModal').modal('hide');
     document.getElementById('edit-contact-form').reset();
 
 }
 
-function updatContactToDatabase() {
-
-    let id = parseInt(document.querySelector('.selected').getAttribute('data-id'))
+async function updatContactToDatabase() {
+    
+    let id = parseInt(document.querySelector('.selected').getAttribute('data-id'));
+    console.log("updating to database id: "+id);
+    
     uploadAvatar(id, 2);
 
-    let updatedContact = {
+    const updatedContact = {
         id: id,
         first_name: document.getElementById('update-contact-firstname').value,
         last_name: document.getElementById('update-contact-lastname').value,
@@ -318,7 +321,75 @@ function updatContactToDatabase() {
         description: document.getElementById('update-contact-description').value
     };
 
-    console.log("UPDATING CONTACT: " + updateContact(Cookies.get("jwtToken"), updatedContact));
+    let response= await updateContact(Cookies.get("jwtToken"), updatedContact);
+
+    console.log("UPDATING CONTACT: " + response);
+}
+
+async function updateContact(token, contact) {
+
+    const response = await fetch(`${urlBase}/api/update_contact.php`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ contact }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
+
+    console.log(data.contact.id);
+    return data.contact.id;
+}
+
+async function updateContactFrontend(){
+
+    let id= parseInt(document.querySelector('.selected').getAttribute('data-id'));
+
+    const descriptionName = document.querySelector("#contact-name");
+    const listName = document.querySelector(`#contact-id-${id}`);
+    const listPhone = document.querySelector(`.small-phone-${id}`);
+    const email = document.querySelector("#contact-email");
+    const phone = document.querySelector("#contact-phone");
+    const avatar = document.querySelector("#contact-avatar");
+    const bio = document.querySelector("#contact-bio");
+    const description = document.querySelector("#contact-descriptionInfo");
+
+    let contacts = {
+        id: id,
+        firstName: document.getElementById('update-contact-firstname').value,
+        lastName: document.getElementById('update-contact-lastname').value,
+        emailAddress: document.getElementById('update-contact-email').value,
+        phoneNumber: document.getElementById('update-contact-phone').value,
+        avatarUrl: document.querySelector('#update-contact-avatar').files[0],
+        bio: document.getElementById('update-contact-bio').value,
+        description: document.getElementById('update-contact-description').value
+    };
+
+    // console.log("CONTACT URl: "+urlBase + '/' + contacts.avatarUrl);
+    // console.log(contacts.firstName);
+    // console.log(contacts.lastName);
+    // console.log(contacts.emailAddress);
+    // console.log(contacts.phoneNumber);
+    // console.log(contacts.avatarUrl);
+    // console.log(contacts.bio);
+    // console.log(contacts.description);
+
+    descriptionName.value =  contacts.firstName+" "+contacts.lastName;
+    listName.textContent =  contacts.firstName+" "+contacts.lastName;
+    listPhone.textContent = contacts.phoneNumber;
+
+    email.value = contacts.emailAddress;
+    phone.value = contacts.phoneNumber;
+    avatar.src.value = urlBase + '/' + contacts.avatarUrl;
+    bio.value = contacts.bio;
+    description.value = contacts.description;
+
+    console.log("Updated Frontend");
 }
 
 //mode: 1 (add)
@@ -328,8 +399,7 @@ function uploadAvatar(id, mode) {
     let formData = new FormData();
 
     let jwtField = Cookies.get('jwtToken');
-    console.log("jwtField.value=" + jwtField);
-
+    
     let contactIdField = id;
     console.log("contactIdField.value=" + contactIdField);
 
@@ -374,55 +444,6 @@ function uploadAvatar(id, mode) {
         });
 
 }
-
-async function updateContact(token, contact) {
-
-    const response = await fetch(`${urlBase}/api/update_contact.php`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({ contact }),
-    });
-
-    const data = await response.json();
-    if (!response.ok) {
-        throw new Error(data.error);
-    }
-
-    await updateContactFrontend(data);
-
-    return data.contact.id;
-}
-
-async function updateContactFrontend(data) {
-    const contacts = await data.contact;
-
-    const descriptionName = document.querySelector("#contact-name");
-    const listName = document.querySelector(`#contact-id-${contacts.id}`);
-    const listPhone = document.querySelector(`.small-phone-${contacts.id}`);
-    const email = document.querySelector("#contact-email");
-    const phone = document.querySelector("#contact-phone");
-    const avatar = document.querySelector("#contact-avatar");
-    const bio = document.querySelector("#contact-bio");
-    const description = document.querySelector("#contact-descriptionInfo");
-
-    descriptionName.value = `${contacts.first_name} ${contacts.last_name}`;
-    listName.textContent = `${contacts.first_name} ${contacts.last_name}`;
-    listPhone.textContent = `${contacts.phone_number}`
-
-    email.value = contacts.email_address;
-    phone.value = contacts.phone_number;
-    avatar.src.value = contacts.avatar_url;
-    bio.value = contacts.bio;
-    description.value = contacts.description;
-
-    console.log(data);
-    console.log("Updated Frontend");
-
-}
-
 function addContactToDatabase(first_name, last_name, email, phone, bio, description) {
 
     if (typeof Cookies !== 'undefined') {
