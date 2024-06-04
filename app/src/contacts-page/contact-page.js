@@ -467,7 +467,8 @@ async function deleteContact(token, contactId) {
         data.contact.first_name,
         data.contact.last_name,
         data.contact.email_address,
-        data.contact.avatar_url,
+        data.contact.phone_number,
+        urlBase + "/" + data.contact.avatar_url,
         data.contact.bio,
         data.contact.description,
         data.contact.user_id

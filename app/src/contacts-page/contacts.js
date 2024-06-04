@@ -481,7 +481,8 @@ async function deleteContact(token, contactId) {
         data.contact.first_name,
         data.contact.last_name,
         data.contact.email_address,
-        data.contact.avatar_url,
+        data.contact.phone_number,
+        urlBase + "/" + data.contact.avatar_url,
         data.contact.bio,
         data.contact.description,
         data.contact.user_id
@@ -543,7 +544,7 @@ async function searchContacts(query, page = 1) {
         contact.first_name,
         contact.last_name,
         contact.email_address,
-        "123-456-789",
+        contact.phone_number,
         urlBase + "/" + contact.avatar_url,
         contact.bio,
         contact.description,
