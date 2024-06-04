@@ -69,6 +69,11 @@ class ContactManager
             $params[] = $contact->email_address;
             $types .= 's';
         }
+        if ($contact->avatar_url !== null) {
+            $fields[] = 'avatar_url = ?';
+            $params[] = $contact->avatar_url;
+            $types .= 's';
+        }
         if ($contact->bio !== null) {
             $fields[] = 'bio = ?';
             $params[] = $contact->bio;

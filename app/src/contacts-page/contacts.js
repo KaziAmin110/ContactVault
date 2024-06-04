@@ -1,11 +1,24 @@
 let isEditing = false;
 let selectedContactIds = new Set();
+let currentPageNum = 1;
+let totalPages = 1;
 
 const url = new URL(window.location.href);
 const hostname = url.hostname;
 const port = url.port;
 const urlBase = url.protocol + '//' + (port ? `${hostname}:${port}` : hostname);
 
+class User {
+    constructor(id, firstName, lastName, dateCreated, dateLastLoggedIn, authenticationId, authenticationProvider) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateCreated = dateCreated;
+        this.dateLastLoggedIn = dateLastLoggedIn;
+        this.authenticationId = authenticationId;
+        this.authenticationProvider = authenticationProvider;
+    }
+}
 
 // When Phone Number is Implemented in Contact Object.. The Select Contact stops working
 class Contact {
@@ -51,9 +64,7 @@ function deleteSelected() {
     // Clear the contact details section (right side) when a profile is deleted
     clearContactDetails();
 
-    console.log(contactId);
     deleteContact(Cookies.get("jwtToken"), contactId);
-
 }
 
 function clearContactDetails() {
@@ -66,7 +77,7 @@ function clearContactDetails() {
 }
 
 function selectContact(element) {
-    console.log("Arrived");
+
     if (isEditing) {
         alert("Please save your changes before selecting another profile.");
         return;
@@ -218,18 +229,19 @@ function addNewContact() {
     };
 
     reader.readAsDataURL(avatarFile);
-    console.log("passed");
 }
 
 // Update Existing Contact Code 
-function updateExistingContact() {
+async function updateExistingContact() {
+
+    event.preventDefault();
 
     const firstname = document.getElementById('update-contact-firstname').value;
     const lastname = document.getElementById('update-contact-lastname').value;
     const email = document.getElementById('update-contact-email').value;
     const phone = document.getElementById('update-contact-phone').value;
     const avatarFile = document.getElementById('update-contact-avatar').files[0];
-    
+
 
     let isValid = true;
 
@@ -282,19 +294,23 @@ function updateExistingContact() {
     if (!isValid) {
         return;
     }
-    
-    updatContactToDatabase();
+
+    updateContactFrontend();
+    await updatContactToDatabase();
+
     $('#editContactModal').modal('hide');
     document.getElementById('edit-contact-form').reset();
 
 }
 
-function updatContactToDatabase() {
-
-    let id = parseInt(document.querySelector('.selected').getAttribute('data-id'))
+async function updatContactToDatabase() {
+    
+    let id = parseInt(document.querySelector('.selected').getAttribute('data-id'));
+    console.log("updating to database id: "+id);
+    
     uploadAvatar(id, 2);
 
-    let updatedContact = {
+    const updatedContact = {
         id: id,
         first_name: document.getElementById('update-contact-firstname').value,
         last_name: document.getElementById('update-contact-lastname').value,
@@ -305,7 +321,75 @@ function updatContactToDatabase() {
         description: document.getElementById('update-contact-description').value
     };
 
-    console.log("UPDATING CONTACT: " + updateContact(Cookies.get("jwtToken"), updatedContact));
+    let response= await updateContact(Cookies.get("jwtToken"), updatedContact);
+
+    console.log("UPDATING CONTACT: " + response);
+}
+
+async function updateContact(token, contact) {
+
+    const response = await fetch(`${urlBase}/api/update_contact.php`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ contact }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
+
+    console.log(data.contact.id);
+    return data.contact.id;
+}
+
+async function updateContactFrontend(){
+
+    let id= parseInt(document.querySelector('.selected').getAttribute('data-id'));
+
+    const descriptionName = document.querySelector("#contact-name");
+    const listName = document.querySelector(`#contact-id-${id}`);
+    const listPhone = document.querySelector(`.small-phone-${id}`);
+    const email = document.querySelector("#contact-email");
+    const phone = document.querySelector("#contact-phone");
+    const avatar = document.querySelector("#contact-avatar");
+    const bio = document.querySelector("#contact-bio");
+    const description = document.querySelector("#contact-descriptionInfo");
+
+    let contacts = {
+        id: id,
+        firstName: document.getElementById('update-contact-firstname').value,
+        lastName: document.getElementById('update-contact-lastname').value,
+        emailAddress: document.getElementById('update-contact-email').value,
+        phoneNumber: document.getElementById('update-contact-phone').value,
+        avatarUrl: document.querySelector('#update-contact-avatar').files[0],
+        bio: document.getElementById('update-contact-bio').value,
+        description: document.getElementById('update-contact-description').value
+    };
+
+    // console.log("CONTACT URl: "+urlBase + '/' + contacts.avatarUrl);
+    // console.log(contacts.firstName);
+    // console.log(contacts.lastName);
+    // console.log(contacts.emailAddress);
+    // console.log(contacts.phoneNumber);
+    // console.log(contacts.avatarUrl);
+    // console.log(contacts.bio);
+    // console.log(contacts.description);
+
+    descriptionName.value =  contacts.firstName+" "+contacts.lastName;
+    listName.textContent =  contacts.firstName+" "+contacts.lastName;
+    listPhone.textContent = contacts.phoneNumber;
+
+    email.value = contacts.emailAddress;
+    phone.value = contacts.phoneNumber;
+    avatar.src.value = urlBase + '/' + contacts.avatarUrl;
+    bio.value = contacts.bio;
+    description.value = contacts.description;
+
+    console.log("Updated Frontend");
 }
 
 //mode: 1 (add)
@@ -315,8 +399,7 @@ function uploadAvatar(id, mode) {
     let formData = new FormData();
 
     let jwtField = Cookies.get('jwtToken');
-    console.log("jwtField.value=" + jwtField);
-
+    
     let contactIdField = id;
     console.log("contactIdField.value=" + contactIdField);
 
@@ -331,7 +414,7 @@ function uploadAvatar(id, mode) {
         return "invalid mode";
     }
 
-    formData.append('image',  fileField.files[0]);
+    formData.append('image', fileField.files[0]);
 
     // Adding JSON-encoded data
     let jsonData = {
@@ -361,55 +444,6 @@ function uploadAvatar(id, mode) {
         });
 
 }
-
-async function updateContact(token, contact) {
-
-    const response = await fetch(`${urlBase}/api/update_contact.php`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({ contact }),
-    });
-
-    const data = await response.json();
-    if (!response.ok) {
-        throw new Error(data.error);
-    }
-
-    await updateContactFrontend(data);
-
-    return data.contact.id;
-}
-
-async function updateContactFrontend(data) {
-    const contacts = await data.contact;
-
-    const descriptionName = document.querySelector("#contact-name");
-    const listName = document.querySelector(`#contact-id-${contacts.id}`);
-    const listPhone = document.querySelector(`.small-phone-${contacts.id}`);
-    const email = document.querySelector("#contact-email");
-    const phone = document.querySelector("#contact-phone");
-    const avatar = document.querySelector("#contact-avatar");
-    const bio = document.querySelector("#contact-bio");
-    const description = document.querySelector("#contact-descriptionInfo");
-
-    descriptionName.value =  `${contacts.first_name} ${contacts.last_name}`;
-    listName.textContent =  `${contacts.first_name} ${contacts.last_name}`;
-    listPhone.textContent = `${contacts.phone_number}`
-
-    email.value = contacts.email_address;
-    phone.value = contacts.phone_number;
-    avatar.src.value = contacts.avatar_url;
-    bio.value = contacts.bio;
-    description.value = contacts.description;
-
-    console.log(data);
-    console.log("Updated Frontend");
-
-}
-
 function addContactToDatabase(first_name, last_name, email, phone, bio, description) {
 
     if (typeof Cookies !== 'undefined') {
@@ -468,7 +502,8 @@ async function deleteContact(token, contactId) {
         data.contact.first_name,
         data.contact.last_name,
         data.contact.email_address,
-        data.contact.avatar_url,
+        data.contact.phone_number,
+        urlBase + "/" + data.contact.avatar_url,
         data.contact.bio,
         data.contact.description,
         data.contact.user_id
@@ -496,7 +531,7 @@ async function getContact(contactId) {
         data.contact.last_name,
         data.contact.email_address,
         data.contact.phone_number,
-        urlBase+"/"+data.contact.avatar_url,
+        urlBase + "/" + data.contact.avatar_url,
         data.contact.bio,
         data.contact.description,
         data.contact.user_id
@@ -506,7 +541,7 @@ async function getContact(contactId) {
 //doesnt return phone number
 async function searchContacts(query, page = 1) {
 
-    let token= Cookies.get("jwtToken");
+    let token = Cookies.get("jwtToken");
 
     const response = await fetch(`${urlBase}/api/search_contacts.php?query=${encodeURIComponent(query)}&page=${encodeURIComponent(page)}`, {
         method: 'GET',
@@ -520,20 +555,78 @@ async function searchContacts(query, page = 1) {
     if (!response.ok) {
         throw new Error(data.error);
     }
-    
-    console.log(urlBase);
+
+    console.log(data);
+
+    totalPages = data.total_pages;
+
     return data.contacts.map(contact => new Contact(
         contact.id,
         contact.first_name,
         contact.last_name,
         contact.email_address,
-        "123-456-789",
-        urlBase+"/"+contact.avatar_url,
+        contact.phone_number,
+        urlBase + "/" + contact.avatar_url,
         contact.bio,
         contact.description,
         contact.user_id
     ));
 }
+
+// Makes New Contacts Based on Query and Pagenumber Values
+async function makeNewContactItem(query, pageNumber) {
+    const contacts = await searchContacts(query, pageNumber);
+    const listGroup = document.querySelector('#contact-list');
+    const noContactsMessage = document.querySelector('.no-contacts');
+
+    if (contacts.length > 0 && noContactsMessage) {
+        noContactsMessage.remove();
+    }
+
+    contacts.forEach((contact) => {
+        const newContactItem = document.createElement('li');
+        newContactItem.setAttribute('data-id', contact.id);
+        newContactItem.classList.add('list-group-item');
+        newContactItem.setAttribute('onclick', 'selectContact(this)');
+        newContactItem.innerHTML = `
+                <div class="contact-info">
+                    <img src="${contact.avatarUrl}" alt="${contact.firstName} ${contact.lastName}" class="avatar">
+                    <div class="contact-details">
+                        <h5 id="contact-id-${contact.id}">${contact.firstName} ${contact.lastName}</h5>
+                        <small class="small-phone-${contact.id}">${contact.phoneNumber}</small>
+                    </div>
+                </div>
+            `;
+        listGroup.appendChild(newContactItem);
+    })
+}
+
+async function getUser() {
+    let token = Cookies.get("jwtToken");
+    let userId= Cookies.get("userId");
+
+    const response = await fetch(`${urlBase}/api/get_user.php?user_id=${encodeURIComponent(userId)}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        }
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
+    return new User(
+        data.user.authentication_id,
+        data.user.first_name,
+        data.user.last_name,
+        data.user.date_created,
+        data.user.date_last_logged_in,
+        data.user.authentication_provider
+    );
+}
+
 
 // Adjusted text area for the description with event listeners to make the description go further down as the user inputs more
 function adjustTextareaHeight(textarea) {
@@ -555,3 +648,126 @@ document.addEventListener('DOMContentLoaded', function () {
     const textareas = document.querySelectorAll('textarea');
     textareas.forEach(textarea => adjustTextareaHeight(textarea));
 });
+
+// Page Navigation Functionality
+
+// Prev Page Functionality
+document.querySelector(".prev-page").addEventListener('click', async () => {
+    if (currentPageNum === 1) {
+        return;
+    }
+
+    // Removes all children of list-group
+    let listGroup = document.querySelector('.list-group');
+    listGroup.innerHTML = '';
+
+    currentPageNum -= 1;
+    const currentPage = document.querySelector(".current-page-num");
+    currentPage.textContent = currentPageNum;
+    let currentQuery = document.querySelector('.search-bar').value;
+
+    makeNewContactItem(currentQuery, currentPageNum);
+
+})
+
+// Next Page Functionality
+document.querySelector(".next-page").addEventListener('click', async () => {
+    const currentPage = document.querySelector(".current-page-num");
+    currentPageNum += 1;
+    let currentQuery = document.querySelector('.search-bar').value;
+
+    const search = await searchContacts(currentQuery, currentPageNum);
+    if (search.length === 0) {
+        currentPageNum -= 1;
+        return;
+    }
+
+    currentPage.textContent = currentPageNum;
+    // Removes all children of listgroup
+    let listGroup = document.querySelector('.list-group');
+    listGroup.innerHTML = '';
+
+    makeNewContactItem(currentQuery, currentPageNum);
+})
+
+// Search Functionality 
+document.querySelector(".search-button").addEventListener('click', async (event) => {
+    event.preventDefault();
+
+    const query = document.querySelector(".search-bar").value;
+    const search = await searchContacts(query, 1);
+
+    const totalPageNum = document.querySelector(".total-pages-num");
+    const currentPage = document.querySelector(".current-page-num");
+
+    currentPage.textContent = 1;
+    
+    if (totalPages === 0)
+        currentPage.innerText = 0;
+
+    totalPageNum.textContent = totalPages;
+    makeNewContactItem(query, 1);
+
+    // Removes all children of list-group
+    let listGroup = document.querySelector('.list-group');
+    listGroup.innerHTML = '';
+
+    if (search.length === 0) {
+        return;
+    }
+})
+
+
+// Loads First Page Upon Window load
+window.onload = makeNewContactItem("", 1);
+
+window.onload = async function () {
+    const currentPage = document.querySelector(".current-page-num");
+
+    currentPage.textContent = currentPageNum;
+
+    const search = await searchContacts("");
+
+    let userId = Cookies.get("userId");
+
+    document.querySelector('.total-pages-num').textContent = totalPages;
+
+    const userInformation = await getUser(userId);
+    console.log(userInformation);
+    const first_name = userInformation.firstName;
+    const last_name = userInformation.lastName;
+
+    document.querySelector(".user_name_val").innerText = first_name + " " + last_name;
+
+};
+
+
+
+
+async function getUser() {
+    let token = Cookies.get("jwtToken");
+    let userId = Cookies.get("userId");
+
+    const response = await fetch(`${urlBase}/api/get_user.php?user_id=${encodeURIComponent(userId)}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        }
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
+    return new User(
+        data.user.id,
+        data.user.first_name,
+        data.user.last_name,
+        data.user.date_created,
+        data.user.date_last_logged_in,
+        data.user.authentication_id,
+        data.user.authentication_provider
+    );
+}
+

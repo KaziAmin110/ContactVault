@@ -5,7 +5,7 @@
 }
 
 body {
-    height: 100vh;
+    height: 102vh;
     display: flex;
 }
 
@@ -81,26 +81,67 @@ body {
     height: 10%;
 }
 
-.contacts-toggle {
+.contact-body {
     display: flex;
-    width: 50%;
+    flex-direction: column;
+}
 
-    justify-content: flex-start;
-    margin-left: 25px;
-    gap: 1.6rem;
+.contacts-title {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 30px;
+    margin-right: 30px;
+    width: 100%;
+    min-height: 93px;
 }
 
 .contacts-navigation {
     display: flex;
-    width: 50%;
-
-    justify-content: flex-end;
+    width: 100%;
+    justify-content: center;
     align-items: center;
-    gap: 12px;
 }
+
+.pagination-container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 25px;
+    margin-right: 25px;
+    
+}
+
+
+.next-page-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.number-navigation {
+    display: flex;
+    gap: 1rem;
+}
+
+.numbers {
+    margin-bottom: 7px;
+}
+
+.page-link {
+    display: flex;
+    align-items: center;
+}
+
+.page-numbers {
+    margin-bottom: 7px;
+    font-size: 15px;
+}
+
+
 
 .list-button {
     margin-top: 25px;
+    border-radius: 50%;
 }
 
 .list-nav-buttons {
@@ -113,9 +154,6 @@ body {
     align-items: center;
     border: 1px solid black;
     border-radius: 0.5rem;
-    margin-right: 25px;
-
-    height: 50%;
 }
 
 .toggle-button {
@@ -126,14 +164,33 @@ body {
 }
 
 .contacts-name {
-    margin-top: 33px;
+    display: flex;
+    text-align: center;
     font-size: larger;
+    gap: 0.75rem;
+    color: black;
 }
+
+.pages-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    border: 3px solid black;
+    gap: 0.5rem;
+    color: black;
+    border-radius: 2rem;
+}
+
+.number-display {
+    font-size: 20px;
+}
+
 
 .search-form {
     display: flex;
     gap: 1rem;
-    padding: 1.5rem;
+    padding: 1.2rem;
 }
 
 .search-bar {
@@ -145,14 +202,21 @@ body {
     width: 30px;
     height: 30px;
 }
-/* Contacts List End */
-.contact-description {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid black;
 
-    
+/* Contacts List End */
+
+
+.user-name-container {
+    display: flex;
+    gap: 1rem;
+    margin-right: 3rem;
+    margin-top: 8px;
+    padding: 10px;
+    border-radius: 1rem;
+}
+
+.user_name_val {
+    margin-top: 4px;
 }
 
 .user-header {
@@ -169,7 +233,7 @@ body {
 .add-container {
     display: flex;
     cursor: pointer;
-    
+
 }
 
 
@@ -231,9 +295,12 @@ body {
 
 .list-group {
     display: flex;
-    margin: 1.5rem;
-    justify-content: center;
-    gap: 1rem;
+    margin: 1.1rem;
+    justify-content: flex-start;
+    text-align: center;
+    gap: 0.4rem;
+    max-height: 850px;
+    overflow-y: scroll;
 }
 
 .contact-info {
@@ -247,6 +314,7 @@ body {
     display: flex;
     flex-direction: column;
     text-transform: capitalize;
+
 }
 
 .avatar {
@@ -279,6 +347,7 @@ body {
     justify-content: center;
     align-items: center;
     border: 3px solid green;
+    background-color: #23a6d5;
     flex: 1;
 
 }
@@ -286,6 +355,7 @@ body {
 .contact-desc-container {
     display: flex;
     flex-direction: column;
+    background-color: whitesmoke;
 
     border: 2px solid black;
 
@@ -299,7 +369,6 @@ body {
 .contact-header {
     display: flex;
     flex-direction: row;
-    border: 1px solid green;
     justify-content: space-between;
     gap: 2rem;
     padding: 2rem;
@@ -330,7 +399,7 @@ body {
     display: flex;
     flex-direction: column;
     flex: 1;
-    padding: 2rem;
+    padding: 1.2rem;
 }
 
 .edit-btn {
@@ -382,4 +451,24 @@ body {
     transform: translateY(-5px);
 }
 
+.contact-description {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    
+}
 
+.list-button {
+    margin-top: 25px;
+    border-radius: 50%;
+}
+
+.list-group-item {
+    border-radius: 1rem;
+}
+
+.list-group-item:hover {
+    border: #23a6d5 1px solid;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}

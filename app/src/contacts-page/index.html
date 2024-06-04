@@ -22,12 +22,12 @@
 
         <div class="bottom-icons">
 
-            <a href="../frontend/login.html" class="button-move">
+            <a href="../login.html" class="button-move">
                 <img src="contact-images/members.svg" alt="Show Creators Button" class="members">
             </a>
 
 
-            <a href="../frontend/login.html" class="button-move">
+            <a href="../login.html" class="button-move">
                 <img src="contact-images/exit.svg" alt="Exit Button" class="exit">
             </a>
         </div>
@@ -36,39 +36,54 @@
     <!-- Contacts Section Start -->
     <section class="contacts-list-container">
         <div class="contacts-header">
-            <div class="contacts-toggle">
+            <div class="contacts-title">
                 <h3 class="list-button contacts-name">ContactVault | Home</h3>
-            </div>
-
-            <div class="contacts-navigation">
-                <div class="page-nav button-move">
-                    <a href="../frontend/login.html" class="list-button">
-                        <img src="contact-images/left.svg" alt="Previous Page Button" class="exit">
-                    </a>
-                </div>
-
-                <div class="page-nav button-move">
-                    <a href="../frontend/login.html" class="list-button">
-                        <img src="contact-images/right.svg" alt="Next Page Button" class="exit">
-                    </a>
-                </div>
-
             </div>
         </div>
 
         <div class="contacts-body">
             <form action="" class="search-form">
                 <input type="text" placeholder="Search for a contact" class="search-bar">
-                <button type="submit" class="submit-button button-move">
+                <button type="button" class="submit-button button-move search-button">
                     <img src="contact-images/search.svg" alt="Search Button Icon">
                 </button>
             </form>
 
-            <div class="contact-list-group">
-                <ul class="list-group" id="contact-list">
-                    <li class="list-group-item no-contacts">No contacts added</li>
-                </ul>
-            </div>
+            <nav aria-label="Page navigation example" class="contacts-navigation">
+                <div class="pagination-container">
+                    <div class="prev-page-container">
+                        <div class="page-nav button-move">
+                            <button type="button" class="list-button prev-page">
+                                <img src="contact-images/left.svg" alt="Previous Page Button" class="exit">
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="pages-display badge badge-pill">
+                        <h5 class="pages header">Page:</h5>
+                        <div class="page-numbers">
+                            <span class="current-page-num number-display"></span>
+                            <span>/</span>
+                            <span class="total-pages-num number-display"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="next-page-container"">
+                        <div class=" page-nav button-move">
+                        <button type="button" class="list-button next-page">
+                            <img src="contact-images/right.svg" alt="Next Page Button" class="exit">
+                        </button>
+                    </div>
+                </div>
+        </div>
+        </nav>
+
+        <div class="contact-list-group">
+            <ul class="list-group" id="contact-list">
+                <li class="list-group-item no-contacts">No contacts added</li>
+            </ul>
+        </div>
         </div>
     </section>
     <!-- Contacts Section End -->
@@ -83,9 +98,10 @@
             </div>
 
 
-            <a class="profile-image button-move user-profile">
-                <img src="contact-images/Default_pfp.svg" alt="Default Profile Picture Image" class="profile-image">
-            </a>
+            <div class="user-name-container">
+                <h2>Welcome, </h2>
+                <h3 class="user_name_val"></h3>
+            </div>
         </div>
 
         <div class="contact-description-header" id="contact-details" style="display: none;">
@@ -217,7 +233,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addContactModalLabel">Edit Contact</h5>
+                    <h5 class="modal-title" id="editContactModalLabel">Edit Contact</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -260,7 +276,8 @@
                                 required></textarea>
                         </div>
 
-                        <button type="submit" class="btn btn-primary edit-submit" onclick="updateExistingContact()">Edit Contact</button>
+                        <button type="submit" class="btn btn-primary edit-submit" onclick="updateExistingContact()">Edit
+                            Contact</button>
                     </form>
                 </div>
             </div>
@@ -279,7 +296,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
     <script src="contacts.js" defer></script>
-    <script src="../js/api.js" defer></script>
 
 </body>
 
