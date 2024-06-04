@@ -126,7 +126,7 @@ function saveContactDetails() {
     updatContactToDatabase();
 }
 
-function addNewContact() {
+async function addNewContact() {
 
     const firstname = document.getElementById('new-contact-firstname').value;
     const lastname = document.getElementById('new-contact-lastname').value;
@@ -148,16 +148,13 @@ function addNewContact() {
         firstnameInput.classList.remove('is-invalid');
     }
 
-    if (!lastname) {
-        const lastnameInput = document.getElementById('new-contact-lastname');
-        lastnameInput.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        const lastnameInput = document.getElementById('new-contact-lastname');
-        lastnameInput.classList.remove('is-invalid');
-    }
 
-    if (!validateEmail(email)) {
+
+    const lastnameInput = document.getElementById('new-contact-lastname');
+    lastnameInput.classList.remove('is-invalid');
+
+
+    if (email && !validateEmail(email)) {
         const emailInput = document.getElementById('new-contact-email');
         emailInput.classList.add('is-invalid');
         isValid = false;
@@ -166,7 +163,7 @@ function addNewContact() {
         emailInput.classList.remove('is-invalid');
     }
 
-    if (!validatePhoneNumber(phone)) {
+    if (phone && !validatePhoneNumber(phone)) {
         const phoneInput = document.getElementById('new-contact-phone');
         phoneInput.classList.add('is-invalid');
         isValid = false;
@@ -175,61 +172,53 @@ function addNewContact() {
         phoneInput.classList.remove('is-invalid');
     }
 
-    if (!avatarFile) {
-        const avatarInput = document.getElementById('new-contact-avatar');
-        avatarInput.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        const avatarInput = document.getElementById('new-contact-avatar');
-        avatarInput.classList.remove('is-invalid');
-    }
 
+
+    const avatarInput = document.getElementById('new-contact-avatar');
+    avatarInput.classList.remove('is-invalid');
+
+    console.log(isValid);
     if (!isValid) {
         return;
     }
+    const contactId = await addContactToDatabase(firstname, lastname, email, phone, bio, description.value);
 
-    const reader = new FileReader();
-    reader.onload = function (event) {
-        const avatarDataUrl = event.target.result;
-        const contactList = document.querySelector('#contact-list');
-        const noContactsMessage = document.querySelector('.no-contacts');
-        if (noContactsMessage) {
-            noContactsMessage.remove();
-        }
+    // Creates a dynamic instance of a contact using all of the information from the popout
 
-        //uses .then() to ensure the id value is returned from the async function addContactToDatabase
-        addContactToDatabase(firstname, lastname, email, phone, bio, description.value)
-            .then(contactId => {
-                // Creates a dynamic instance of a contact using all of the information from the popout
-                uploadAvatar(contactId, 1);
-                const newContactItem = document.createElement('li');
-                newContactItem.setAttribute('data-id', contactId);
-                const idDiv = document.createElement('div');
-                idDiv.innerText = `${contactId}`;
-                idDiv.style.display = "none";
-                newContactItem.classList.add('list-group-item');
-                newContactItem.setAttribute('onclick', 'selectContact(this)');
-                newContactItem.appendChild(idDiv);
-                newContactItem.innerHTML = `
-                <div class="contact-info">
-                    <img src="${avatarDataUrl}" alt="${firstname} ${lastname}" class="avatar">
-                    <div class="contact-details">
-                        <h5 id="contact-id-${contactId}">${firstname} ${lastname}</h5>
-                        <small class="small-phone-${contactId}">${phone}</small>
-                    </div>
-                </div>
-            `;
-                contactList.appendChild(newContactItem);
-                $('#addContactModal').modal('hide');
-                document.getElementById('add-contact-form').reset();
-            })
-            .catch(error => {
-                console.error("Error adding contact:", error);
-            });
-    };
+    const contactList = document.querySelector('#contact-list');
+    const noContactsMessage = document.querySelector('.no-contacts');
+    if (noContactsMessage) {
+        noContactsMessage.remove();
+    }
 
-    reader.readAsDataURL(avatarFile);
+    if (avatarFile)
+        uploadAvatar(contactId, 1);
+
+    const avatarUrl = (await getContact(contactId)).avatarUrl;
+
+    const newContactItem = document.createElement('li');
+    newContactItem.setAttribute('data-id', contactId);
+    const idDiv = document.createElement('div');
+    idDiv.innerText = `${contactId}`;
+    idDiv.style.display = "none";
+    newContactItem.classList.add('list-group-item');
+    newContactItem.setAttribute('onclick', 'selectContact(this)');
+    newContactItem.appendChild(idDiv);
+    newContactItem.innerHTML = `
+    <div class="contact-info">
+        <img src="${avatarUrl}" alt="${firstname} ${lastname}" class="avatar-${contactId} avatar">
+        <div class="contact-details">
+            <h5 id="contact-id-${contactId}">${firstname} ${lastname}</h5>
+            <small class="small-phone-${contactId}">${phone}</small>
+        </div>
+    </div>`;
+    contactList.appendChild(newContactItem);
+    $('#addContactModal').modal('hide');
+    document.getElementById('add-contact-form').reset();
+
 }
+
+
 
 // Update Existing Contact Code 
 async function updateExistingContact() {
@@ -255,16 +244,13 @@ async function updateExistingContact() {
         firstnameInput.classList.remove('is-invalid');
     }
 
-    if (!lastname) {
-        const lastnameInput = document.getElementById('update-contact-lastname');
-        lastnameInput.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        const lastnameInput = document.getElementById('update-contact-lastname');
-        lastnameInput.classList.remove('is-invalid');
-    }
 
-    if (!validateEmail(email)) {
+
+    const lastnameInput = document.getElementById('update-contact-lastname');
+    lastnameInput.classList.remove('is-invalid');
+
+
+    if (email && !validateEmail(email)) {
         const emailInput = document.getElementById('update-contact-email');
         emailInput.classList.add('is-invalid');
         isValid = false;
@@ -273,7 +259,8 @@ async function updateExistingContact() {
         emailInput.classList.remove('is-invalid');
     }
 
-    if (!validatePhoneNumber(phone)) {
+
+    if (phone && !validatePhoneNumber(phone)) {
         const phoneInput = document.getElementById('update-contact-phone');
         phoneInput.classList.add('is-invalid');
         isValid = false;
@@ -282,21 +269,17 @@ async function updateExistingContact() {
         phoneInput.classList.remove('is-invalid');
     }
 
-    if (!avatarFile) {
-        const avatarInput = document.getElementById('update-contact-avatar');
-        avatarInput.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        const avatarInput = document.getElementById('update-contact-avatar');
-        avatarInput.classList.remove('is-invalid');
-    }
+
+    const avatarInput = document.getElementById('update-contact-avatar');
+    avatarInput.classList.remove('is-invalid');
+
 
     if (!isValid) {
         return;
     }
 
-    updateContactFrontend();
     await updatContactToDatabase();
+    await updateContactFrontend();
 
     $('#editContactModal').modal('hide');
     document.getElementById('edit-contact-form').reset();
@@ -304,11 +287,13 @@ async function updateExistingContact() {
 }
 
 async function updatContactToDatabase() {
-    
+
     let id = parseInt(document.querySelector('.selected').getAttribute('data-id'));
-    console.log("updating to database id: "+id);
-    
-    uploadAvatar(id, 2);
+    console.log("updating to database id: " + id);
+
+    if (document.querySelector('#update-contact-avatar').files[0]) {
+        uploadAvatar(id, 2);
+    }
 
     const updatedContact = {
         id: id,
@@ -321,7 +306,7 @@ async function updatContactToDatabase() {
         description: document.getElementById('update-contact-description').value
     };
 
-    let response= await updateContact(Cookies.get("jwtToken"), updatedContact);
+    let response = await updateContact(Cookies.get("jwtToken"), updatedContact);
 
     console.log("UPDATING CONTACT: " + response);
 }
@@ -346,16 +331,20 @@ async function updateContact(token, contact) {
     return data.contact.id;
 }
 
-async function updateContactFrontend(){
+async function updateContactFrontend() {
 
-    let id= parseInt(document.querySelector('.selected').getAttribute('data-id'));
+    let id = parseInt(document.querySelector('.selected').getAttribute('data-id'));
+
+    let image = (await getContact(id)).avatarUrl;
+    console.log("image: " + image);
 
     const descriptionName = document.querySelector("#contact-name");
     const listName = document.querySelector(`#contact-id-${id}`);
     const listPhone = document.querySelector(`.small-phone-${id}`);
     const email = document.querySelector("#contact-email");
     const phone = document.querySelector("#contact-phone");
-    const avatar = document.querySelector("#contact-avatar");
+    const avatarList = document.querySelector(`.avatar-${id}`);
+    const avatarDescription = document.querySelector(`.avatar-large`);
     const bio = document.querySelector("#contact-bio");
     const description = document.querySelector("#contact-descriptionInfo");
 
@@ -365,7 +354,7 @@ async function updateContactFrontend(){
         lastName: document.getElementById('update-contact-lastname').value,
         emailAddress: document.getElementById('update-contact-email').value,
         phoneNumber: document.getElementById('update-contact-phone').value,
-        avatarUrl: document.querySelector('#update-contact-avatar').files[0],
+        avatarUrl: image,
         bio: document.getElementById('update-contact-bio').value,
         description: document.getElementById('update-contact-description').value
     };
@@ -379,17 +368,16 @@ async function updateContactFrontend(){
     // console.log(contacts.bio);
     // console.log(contacts.description);
 
-    descriptionName.value =  contacts.firstName+" "+contacts.lastName;
-    listName.textContent =  contacts.firstName+" "+contacts.lastName;
+    descriptionName.value = contacts.firstName + " " + contacts.lastName;
+    listName.textContent = contacts.firstName + " " + contacts.lastName;
     listPhone.textContent = contacts.phoneNumber;
 
     email.value = contacts.emailAddress;
     phone.value = contacts.phoneNumber;
-    avatar.src.value = urlBase + '/' + contacts.avatarUrl;
+    avatarList.src = contacts.avatarUrl;
+    avatarDescription.src = contacts.avatarUrl;
     bio.value = contacts.bio;
     description.value = contacts.description;
-
-    console.log("Updated Frontend");
 }
 
 //mode: 1 (add)
@@ -399,7 +387,7 @@ function uploadAvatar(id, mode) {
     let formData = new FormData();
 
     let jwtField = Cookies.get('jwtToken');
-    
+
     let contactIdField = id;
     console.log("contactIdField.value=" + contactIdField);
 
@@ -590,20 +578,20 @@ async function makeNewContactItem(query, pageNumber) {
         newContactItem.setAttribute('onclick', 'selectContact(this)');
         newContactItem.innerHTML = `
                 <div class="contact-info">
-                    <img src="${contact.avatarUrl}" alt="${contact.firstName} ${contact.lastName}" class="avatar">
+                    <img src="${contact.avatarUrl}" alt="${contact.firstName} ${contact.lastName}" class="avatar-${contact.id} avatar">
                     <div class="contact-details">
                         <h5 id="contact-id-${contact.id}">${contact.firstName} ${contact.lastName}</h5>
                         <small class="small-phone-${contact.id}">${contact.phoneNumber}</small>
                     </div>
                 </div>
             `;
-        listGroup.appendChild(newContactItem);
+        listGroup.prepend(newContactItem);
     })
 }
 
 async function getUser() {
     let token = Cookies.get("jwtToken");
-    let userId= Cookies.get("userId");
+    let userId = Cookies.get("userId");
 
     const response = await fetch(`${urlBase}/api/get_user.php?user_id=${encodeURIComponent(userId)}`, {
         method: 'GET',
@@ -701,7 +689,7 @@ document.querySelector(".search-button").addEventListener('click', async (event)
     const currentPage = document.querySelector(".current-page-num");
 
     currentPage.textContent = 1;
-    
+
     if (totalPages === 0)
         currentPage.innerText = 0;
 
@@ -717,6 +705,11 @@ document.querySelector(".search-button").addEventListener('click', async (event)
     }
 })
 
+function doLogout() {
+    console.log("LOGGING OUT...");
+    Cookies.remove("jwtToken");
+    Cookies.remove("userId");
+}
 
 // Loads First Page Upon Window load
 window.onload = makeNewContactItem("", 1);
@@ -740,9 +733,6 @@ window.onload = async function () {
     document.querySelector(".user_name_val").innerText = first_name + " " + last_name;
 
 };
-
-
-
 
 async function getUser() {
     let token = Cookies.get("jwtToken");
@@ -771,3 +761,41 @@ async function getUser() {
     );
 }
 
+
+document.querySelector(".edit-btn").addEventListener('click', async () => {
+    const contactId = parseInt(document.querySelector('.selected').getAttribute('data-id'));
+    const contacts = await getContact(contactId);
+
+    console.log(contacts);
+
+    const edit_first = document.querySelector("#update-contact-firstname");
+    const edit_last = document.querySelector("#update-contact-lastname");
+    const edit_email = document.querySelector("#update-contact-email");
+    const edit_phone = document.querySelector("#update-contact-phone");
+    const edit_picture = document.querySelector("#update-contact-avatar");
+    const edit_bio = document.querySelector("#update-contact-bio");
+    const edit_description = document.querySelector("#update-contact-description");
+
+    edit_first.value = contacts.firstName;
+    edit_last.value = contacts.lastName;
+    edit_email.value = contacts.emailAddress;
+    edit_phone.value = contacts.phoneNumber;
+    // edit_picture.value = contacts.avatarUrl;
+    edit_bio.value = contacts.bio;
+    edit_description.value = contacts.description;
+
+})
+
+
+document.querySelector(".add-contact-modal").addEventListener("click", (event) => {
+    event.preventDefault();
+    const listGroup = document.querySelector(".list-group");
+    console.log(listGroup);
+
+    if (listGroup.childElementCount === 6) {
+        const lastItem = listGroup.lastChild;
+        console.log(lastItem);
+        listGroup.removeChild(lastItem);
+    }
+
+})

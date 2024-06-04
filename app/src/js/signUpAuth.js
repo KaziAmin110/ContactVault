@@ -39,10 +39,90 @@ function isValidPassword(password) {
 	return passwordRequieres;
 }
 
-function isValidRegister() {
-	console.log("validating registter");
+function isValidEmail(email) {
+	console.log("validating email:");
+	let emailRequieres = "";
 
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+	if (!emailRegex.test(email)) {
+		emailRequieres += "Please enter a valid email address.<br>";
+	}
+
+	console.log("done validating email: " + emailRequieres);
+	return emailRequieres;
+}
+
+function isValidRegister() {
+	console.log("validating register");
+	var isValid = true;
+
+        var firstName = document.getElementById('first-name');
+        var lastName = document.getElementById('last-name');
+        var email = document.getElementById('email');
+        var userName = document.getElementById('user-name');
+        var password = document.getElementById('password');
+        var checkBox = document.getElementById('exampleCheck1');
+        var passwordFeedback = document.getElementById('password-feedback');
+
+        if (!firstName.value) {
+            isValid = false;
+            firstName.classList.add('is-invalid');
+        } else {
+            firstName.classList.remove('is-invalid');
+            firstName.classList.add('is-valid');
+        }
+
+        if (!lastName.value) {
+            isValid = false;
+            lastName.classList.add('is-invalid');
+        } else {
+            lastName.classList.remove('is-invalid');
+            lastName.classList.add('is-valid');
+        }
+		
+		var emailFeedback = document.getElementById('email-feedback');
+        var emailValidationMessage = isValidEmail(email.value);
+        if (emailValidationMessage) {
+            isValid = false;
+            email.classList.add('is-invalid');
+            emailFeedback.innerHTML = emailValidationMessage;
+        } else {
+            email.classList.remove('is-invalid');
+            email.classList.add('is-valid');
+            emailFeedback.innerHTML = "";
+        }
+
+        if (!userName.value) {
+            isValid = false;
+            userName.classList.add('is-invalid');
+        } else {
+            userName.classList.remove('is-invalid');
+            userName.classList.add('is-valid');
+        }
+
+        var passwordValidationMessage = isValidPassword(password.value);
+        if (passwordValidationMessage) {
+            isValid = false;
+            password.classList.add('is-invalid');
+            passwordFeedback.innerHTML = passwordValidationMessage;
+        } else {
+            password.classList.remove('is-invalid');
+            password.classList.add('is-valid');
+            passwordFeedback.innerHTML = "";
+        }
+
+        if (!checkBox.checked) {
+            isValid = false;
+            checkBox.classList.add('is-invalid');
+        } else {
+            checkBox.classList.remove('is-invalid');
+            checkBox.classList.add('is-valid');
+        }
+
+		return isValid;
 	//if the user has input a field incorrectly, message will let the user know what is wrong
+	/*
 	let message = "";
 
 	let first_name = document.getElementById("first-name").value;
@@ -76,6 +156,7 @@ function isValidRegister() {
 	
 	console.log("done validating register: "+message);
 	return message;
+	*/
 }
 
 //not complete
@@ -140,6 +221,6 @@ form.addEventListener('submit', function signUp(e) {
 
 	//document.getElementById("validRegisterResult").value = res;
 
-	if (res == "")
+	if (res)
 		register();
 });

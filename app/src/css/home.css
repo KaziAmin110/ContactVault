@@ -80,6 +80,10 @@ body {
     border-radius:10px;
 }
 
+.carousel-img {
+    border-radius: 5%;
+}
+
 .heading-list {
     text-align: center;
 
@@ -230,9 +234,7 @@ body {
     transition: 2s;
   }
 
-  .carousel-img {
-    border-radius: 5%;
-  }
+
 
 
 .footer > button {
