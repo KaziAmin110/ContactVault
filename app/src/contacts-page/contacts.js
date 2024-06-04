@@ -200,8 +200,10 @@ function addNewContact() {
         //uses .then() to ensure the id value is returned from the async function addContactToDatabase
         addContactToDatabase(firstname, lastname, email, phone, bio, description.value)
             .then(contactId => {
+                if (avatarFile) {
+                    uploadAvatar(contactId, 1);
+                }
                 // Creates a dynamic instance of a contact using all of the information from the popout
-                uploadAvatar(contactId, 1);
                 const newContactItem = document.createElement('li');
                 newContactItem.setAttribute('data-id', contactId);
                 const idDiv = document.createElement('div');
@@ -264,7 +266,7 @@ async function updateExistingContact() {
         lastnameInput.classList.remove('is-invalid');
     }
 
-    if (!validateEmail(email)) {
+    if (email && !validateEmail(email)) {
         const emailInput = document.getElementById('update-contact-email');
         emailInput.classList.add('is-invalid');
         isValid = false;
@@ -273,7 +275,8 @@ async function updateExistingContact() {
         emailInput.classList.remove('is-invalid');
     }
 
-    if (!validatePhoneNumber(phone)) {
+
+    if (phone && !validatePhoneNumber(phone)) {
         const phoneInput = document.getElementById('update-contact-phone');
         phoneInput.classList.add('is-invalid');
         isValid = false;
@@ -282,14 +285,10 @@ async function updateExistingContact() {
         phoneInput.classList.remove('is-invalid');
     }
 
-    if (!avatarFile) {
-        const avatarInput = document.getElementById('update-contact-avatar');
-        avatarInput.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        const avatarInput = document.getElementById('update-contact-avatar');
-        avatarInput.classList.remove('is-invalid');
-    }
+
+    const avatarInput = document.getElementById('update-contact-avatar');
+    avatarInput.classList.remove('is-invalid');
+
 
     if (!isValid) {
         return;
@@ -304,11 +303,13 @@ async function updateExistingContact() {
 }
 
 async function updatContactToDatabase() {
-    
+
     let id = parseInt(document.querySelector('.selected').getAttribute('data-id'));
-    console.log("updating to database id: "+id);
+    console.log("updating to database id: " + id);
     
-    uploadAvatar(id, 2);
+    if (avatarFile) {
+        uploadAvatar(id, 2);
+    }
 
     const updatedContact = {
         id: id,
@@ -321,7 +322,7 @@ async function updatContactToDatabase() {
         description: document.getElementById('update-contact-description').value
     };
 
-    let response= await updateContact(Cookies.get("jwtToken"), updatedContact);
+    let response = await updateContact(Cookies.get("jwtToken"), updatedContact);
 
     console.log("UPDATING CONTACT: " + response);
 }
@@ -346,12 +347,12 @@ async function updateContact(token, contact) {
     return data.contact.id;
 }
 
-async function updateContactFrontend(){
+async function updateContactFrontend() {
 
-    let id= parseInt(document.querySelector('.selected').getAttribute('data-id'));
+    let id = parseInt(document.querySelector('.selected').getAttribute('data-id'));
 
-    let image= (await getContact(id)).avatarUrl;
-    console.log("image: "+ image);
+    let image = (await getContact(id)).avatarUrl;
+    console.log("image: " + image);
 
     const descriptionName = document.querySelector("#contact-name");
     const listName = document.querySelector(`#contact-id-${id}`);
@@ -383,8 +384,8 @@ async function updateContactFrontend(){
     // console.log(contacts.bio);
     // console.log(contacts.description);
 
-    descriptionName.value =  contacts.firstName+" "+contacts.lastName;
-    listName.textContent =  contacts.firstName+" "+contacts.lastName;
+    descriptionName.value = contacts.firstName + " " + contacts.lastName;
+    listName.textContent = contacts.firstName + " " + contacts.lastName;
     listPhone.textContent = contacts.phoneNumber;
 
     email.value = contacts.emailAddress;
@@ -402,7 +403,7 @@ function uploadAvatar(id, mode) {
     let formData = new FormData();
 
     let jwtField = Cookies.get('jwtToken');
-    
+
     let contactIdField = id;
     console.log("contactIdField.value=" + contactIdField);
 
@@ -600,13 +601,13 @@ async function makeNewContactItem(query, pageNumber) {
                     </div>
                 </div>
             `;
-        listGroup.appendChild(newContactItem);
+        listGroup.prepend(newContactItem);
     })
 }
 
 async function getUser() {
     let token = Cookies.get("jwtToken");
-    let userId= Cookies.get("userId");
+    let userId = Cookies.get("userId");
 
     const response = await fetch(`${urlBase}/api/get_user.php?user_id=${encodeURIComponent(userId)}`, {
         method: 'GET',
@@ -704,7 +705,7 @@ document.querySelector(".search-button").addEventListener('click', async (event)
     const currentPage = document.querySelector(".current-page-num");
 
     currentPage.textContent = 1;
-    
+
     if (totalPages === 0)
         currentPage.innerText = 0;
 
@@ -720,10 +721,9 @@ document.querySelector(".search-button").addEventListener('click', async (event)
     }
 })
 
-function doLogout()
-{
+function doLogout() {
     console.log("LOGGING OUT...");
- 	Cookies.remove("jwtToken");
+    Cookies.remove("jwtToken");
     Cookies.remove("userId");
 }
 
@@ -802,11 +802,16 @@ document.querySelector(".edit-btn").addEventListener('click', async () => {
 
 })
 
-// document.querySelector(".add-contact").addEventListener("click", () => {
-//     const listGroup = document.querySelector(".list-grouop");
 
-//     if (listGroup.childElementCount > 6) {
-        
-//     }
+document.querySelector(".add-contact-modal").addEventListener("click", (event) => {
+    event.preventDefault();
+    const listGroup = document.querySelector(".list-group");
+    console.log(listGroup);
 
-// })
+    if (listGroup.childElementCount === 6) {
+        const lastItem = listGroup.lastChild;
+        console.log(lastItem);
+        listGroup.removeChild(lastItem);
+    }
+
+})

@@ -152,7 +152,7 @@
                         </div>
 
                         <div class="bio margin-top">
-                            <label for="contact-descriptionInfo" class="d-block">Description: </label>
+                            <label for="contact-descriptionInfo" class="d-block">Notes: </label>
                             <textarea id="contact-descriptionInfo" class="editable-field bio-field" rows="2" cols="20"
                                 readonly></textarea>
                         </div>
@@ -209,12 +209,12 @@
                             <div class="invalid-feedback">A profile picture is required.</div>
                         </div>
                         <div class="form-group">
-                            <label for="new-contact-bio">Bio</label>
+                            <label for="new-contact-bio">Bio:</label>
                             <textarea class="form-control bio-field" id="new-contact-bio" rows="10" cols="60"
                                 required></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="new-contact-description">Description</label>
+                            <label for="new-contact-description">Notes:</label>
                             <textarea class="form-control bio-field" id="new-contact-description" rows="10" cols="60"
                                 required></textarea>
                         </div>
@@ -242,38 +242,38 @@
                     <form id="edit-contact-form">
                         <div class="form-group">
                             <label for="new-contact-firstname">First Name</label>
-                            <input type="text" class="form-control" id="update-contact-firstname" required>
+                            <input type="text" class="form-control" id="update-contact-firstname" >
                             <div class="invalid-feedback">First name is required.</div>
                         </div>
                         <div class="form-group">
                             <label for="new-contact-lastname">Last Name</label>
-                            <input type="text" class="form-control" id="update-contact-lastname" required>
+                            <input type="text" class="form-control" id="update-contact-lastname" >
                             <div class="invalid-feedback">Last name is required.</div>
                         </div>
                         <div class="form-group">
                             <label for="new-contact-email">Email</label>
-                            <input type="email" class="form-control" id="update-contact-email" required>
+                            <input type="email" class="form-control" id="update-contact-email" >
                             <div class="invalid-feedback">Enter a valid email address.</div>
                         </div>
                         <div class="form-group">
                             <label for="new-contact-phone">Phone</label>
-                            <input type="text" class="form-control phone-field" id="update-contact-phone" required>
+                            <input type="text" class="form-control phone-field" id="update-contact-phone" >
                             <div class="invalid-feedback">Enter the phone number in the format xxx-xxx-xxxx.</div>
                         </div>
                         <div class="form-group">
                             <label for="new-contact-avatar">Profile Picture</label>
-                            <input type="file" class="form-control-file d-block" id="update-contact-avatar" required>
+                            <input type="file" class="form-control-file d-block" id="update-contact-avatar" >
                             <div class="invalid-feedback">A profile picture is required.</div>
                         </div>
                         <div class="form-group">
-                            <label for="new-contact-bio">Bio</label>
+                            <label for="new-contact-bio">Bio:</label>
                             <textarea class="form-control bio-field" id="update-contact-bio" rows="10" cols="60"
-                                required></textarea>
+                                ></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="new-contact-description">Description</label>
+                            <label for="new-contact-description">Notes:</label>
                             <textarea class="form-control bio-field" id="update-contact-description" rows="10" cols="60"
-                                required></textarea>
+                                ></textarea>
                         </div>
 
                         <button type="submit" class="btn btn-primary edit-submit" onclick="updateExistingContact()">Edit
