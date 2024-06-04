@@ -649,7 +649,7 @@ document.querySelector(".search-button").addEventListener('click', async (event)
     const search = await searchContacts(query, 1);
 
     const totalPage = document.querySelector(".total-pages-num");
-    totalPage.innerText = total_pages;    
+    totalPage.innerText = total_pages;
     // Removes all children of list-group
     let listGroup = document.querySelector('.list-group');
     listGroup.innerHTML = '';
@@ -688,7 +688,7 @@ window.onload = async function () {
 
 async function getUser() {
     let token = Cookies.get("jwtToken");
-    let userId= Cookies.get("userId");
+    let userId = Cookies.get("userId");
 
     const response = await fetch(`${urlBase}/api/get_user.php?user_id=${encodeURIComponent(userId)}`, {
         method: 'GET',
@@ -703,11 +703,12 @@ async function getUser() {
         throw new Error(data.error);
     }
     return new User(
-        data.user.authentication_id,
+        data.user.id,
         data.user.first_name,
         data.user.last_name,
         data.user.date_created,
         data.user.date_last_logged_in,
+        data.user.authentication_id,
         data.user.authentication_provider
     );
 }
