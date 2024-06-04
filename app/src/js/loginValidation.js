@@ -5,50 +5,50 @@ const userForm = document.querySelector('.username');
 const passForm = document.querySelector('.password');
 
 function isValidPassword(password) {
-	console.log("validating password:");
-	let passwordRequieres = "";
+    console.log("validating password:");
+    let passwordRequieres = "";
 
-	const minLength = 8;
+    const minLength = 8;
 
-	const hasUppercase = /[A-Z]/.test(password);
-	const hasLowercase = /[a-z]/.test(password);
-	const hasNumber = /[0-9]/.test(password);
-	const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
-	const isValidLength = password.length >= minLength;
+    const isValidLength = password.length >= minLength;
 
-	if (!isValidLength)
-		passwordRequieres += "Password must be atleast 8 characters long<br>"
-	if (!hasUppercase)
-		passwordRequieres += "Password must contain atleast 1 uppercase<br>"
-	if (!hasLowercase)
-		passwordRequieres += "Password must contain atleast 1 lowercase<br>"
-	if (!hasNumber)
-		passwordRequieres += "Password must contain atleast 1 number<br>"
-	if (!hasSpecialChar)
-		passwordRequieres += "Password must contain atleast 1 special character<br>"
+    if (!isValidLength)
+        passwordRequieres += "Password must be atleast 8 characters long<br>"
+    if (!hasUppercase)
+        passwordRequieres += "Password must contain atleast 1 uppercase<br>"
+    if (!hasLowercase)
+        passwordRequieres += "Password must contain atleast 1 lowercase<br>"
+    if (!hasNumber)
+        passwordRequieres += "Password must contain atleast 1 number<br>"
+    if (!hasSpecialChar)
+        passwordRequieres += "Password must contain atleast 1 special character<br>"
 
-	console.log("done validating password: "+passwordRequieres);
-	return passwordRequieres;
+    console.log("done validating password: " + passwordRequieres);
+    return passwordRequieres;
 }
 
 function isValidEmail(email) {
-	console.log("validating email:");
-	let emailRequieres = "";
+    console.log("validating email:");
+    let emailRequieres = "";
 
-	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-	if (!emailRegex.test(email)) {
-		emailRequieres += "Please enter a valid email address.<br>";
-	}
+    if (!emailRegex.test(email)) {
+        emailRequieres += "Please enter a valid email address.<br>";
+    }
 
-	console.log("done validating email: " + emailRequieres);
-	return emailRequieres;
+    console.log("done validating email: " + emailRequieres);
+    return emailRequieres;
 }
 
 function isValidRegister() {
-	console.log("validating register");
-	var isValid = true;
+    console.log("validating register");
+    var isValid = true;
 
     var firstName = document.getElementById('first-name');
     var lastName = document.getElementById('last-name');
@@ -74,6 +74,7 @@ function isValidRegister() {
         lastName.classList.add('is-valid');
     }
 
+    var emailFeedback = document.getElementById('email-feedback');
     var emailValidationMessage = isValidEmail(email.value);
     if (emailValidationMessage) {
         isValid = false;
@@ -112,7 +113,7 @@ function isValidRegister() {
         checkBox.classList.add('is-valid');
     }
 
-	return isValid;
+    return isValid;
 }
 const clearElements = () => {
     const usernameDiv = document.querySelector('.usernameDiv');
@@ -121,25 +122,25 @@ const clearElements = () => {
     if (usernameDiv) {
         userForm.removeChild(usernameDiv);
     }
-        
-    
+
+
     if (passwordDiv) {
         passForm.removeChild(passwordDiv);
-    }        
+    }
 }
 
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
     clearElements();
-    
+
     let numbers = /[0-9]/g;
     let letters = /[a-zA-Z]/g;
     let special = /[!@#$%^&*]/g;
 
     // const div = document.createElement('div');
     // div.classList.add('invalid-feedback');
-    
+
     // Username Validation (Must be between 3 and 20 characters)
     if (username.value.length >= 3 && username.value.length <= 20) {
         console.log("Username Valid");
@@ -151,13 +152,13 @@ form.addEventListener("submit", (e) => {
 
         if (username.classList.contains('is-invalid'))
             username.classList.remove('is-invalid');
-        
+
         username.classList.add("is-valid");
         userForm.appendChild(div);
     }
     else {
         console.log("Username Invalid")
-        
+
         const div = document.createElement('div');
         div.classList.add('usernameDiv');
         div.classList.add('invalid-feedback');
@@ -202,5 +203,5 @@ form.addEventListener("submit", (e) => {
 
         password.classList.add("is-invalid");
         passForm.appendChild(div);
-    }        
+    }
 })

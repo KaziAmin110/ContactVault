@@ -194,7 +194,7 @@ async function addNewContact() {
     if (avatarFile)
         uploadAvatar(contactId, 1);
 
-    const avatarUrl = await getContact(contactId).avatarUrl;
+    const avatarUrl = (await getContact(contactId)).avatarUrl;
 
     const newContactItem = document.createElement('li');
     newContactItem.setAttribute('data-id', contactId);

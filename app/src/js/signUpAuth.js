@@ -80,7 +80,8 @@ function isValidRegister() {
             lastName.classList.remove('is-invalid');
             lastName.classList.add('is-valid');
         }
-
+		
+		var emailFeedback = document.getElementById('email-feedback');
         var emailValidationMessage = isValidEmail(email.value);
         if (emailValidationMessage) {
             isValid = false;
