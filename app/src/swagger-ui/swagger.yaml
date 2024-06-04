@@ -210,17 +210,13 @@ paths:
       summary: Get a contact
       security:
         - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                contact_id:
-                  type: integer
-            example:
-              contact_id: 1
+      parameters:
+        - name: contact_id
+          in: query
+          required: true
+          schema:
+            type: integer
+          example: 1
       responses:
         "200":
           description: Contact retrieved successfully
@@ -463,21 +459,18 @@ paths:
       summary: Search contacts
       security:
         - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                query:
-                  type: string
-                page:
-                  type: integer
-                  default: 1
-            example:
-              query: "Jane"
-              page: 1
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "Jane"
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
       responses:
         "200":
           description: Contacts retrieved successfully
@@ -525,6 +518,7 @@ paths:
                 properties:
                   error:
                     type: string
+
   /get_user.php:
     get:
       tags:
@@ -532,19 +526,13 @@ paths:
       summary: Get user information
       security:
         - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                user_id:
-                  type: integer
-              required:
-                - user_id
-            example:
-              user_id: 1
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          schema:
+            type: integer
+          example: 1
       responses:
         "200":
           description: Successful retrieval of user information

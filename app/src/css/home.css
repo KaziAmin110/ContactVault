@@ -3,22 +3,22 @@ body {
 }
 
 .btn-primary {
-    background-color: lightseagreen;
+    background-color: #385699;
     min-width: 150px;
 	border: 2px solid black;
     border-radius: 1rem;
 }
 
 .btn-primary:hover {
-    background-color: red;
+    background-color: #A03131;
     box-shadow: 0px 25px 20px -20px rgba(0, 0, 0, 0.45);
     transform: translateY(-5px);
 }
 
 .sign-up-btn {
     background-color: #fff;
-    color: lightseagreen;
-    border-color: lightseagreen;
+    color: #385699;
+    border-color: #385699;
 }
 
 .navbar {
@@ -26,10 +26,11 @@ body {
     margin-left: 0px;
     margin-right: 0px;
     width: 100%;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid rgb(177, 196, 218);
     display: flex;
     justify-content: space-between;
-    background-color: white;
+    background-color: rgb(237, 238, 247);
+    box-shadow: 0px 25px 20px -20px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
@@ -58,11 +59,17 @@ body {
     flex-direction: row;
     justify-content: center;
     gap: 2rem;
-    background-image: linear-gradient(white, skyblue);
+
+    background: linear-gradient(-45deg, #23a6d5, #a4c7df, #92b4db, #b9abf5);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+	height: 100vh;
 }
 
 .carousel {
     flex: 1;
+    padding-left:375px;
+    padding-top: 100px;
 }
 
 .carousel-item img {
@@ -100,18 +107,6 @@ body {
     align-items: center;
     gap: 1.25rem;
     margin-top: 1.2rem;
-}
-
-.google-btn {
-    width: 75px;
-    border-radius: 3rem;
-    background-color: #fff;
-    cursor: pointer;
-}
-
-.google-icon {
-    width: 25px;
-    height: 25px;
 }
 
 .footer {
@@ -156,7 +151,7 @@ body {
 }
 
 .list-div {
-    background-color: blue;
+    background-color: #385699;
     color: white;
     padding: 2rem;
     width: 70%;
@@ -190,22 +185,22 @@ body {
     width: 60px;
     height: 60px;
     color: black;
-    background-color: yellow;
+    background-color: rgb(235, 235, 178);
     border-radius: 7.5%;
     margin-bottom: 1.25rem;
     padding: 1rem;
-
-    
 }
 
 .customer-input-header {
-    background-image: linear-gradient(skyblue, white);
+    background: linear-gradient(-45deg, #23a6d5, #a4c7df, #92b4db, #b9abf5);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+	height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     text-align: center;
-    
 }
 
 .company-owner {
@@ -237,36 +232,34 @@ body {
     border-radius: 5%;
   }
 
-  .google-btn {
-    width: 100%;
-    background-color: white;
-    cursor: pointer;
-    border: 1px solid black;
-    border-radius: 0.75rem;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin-top: -10px;
-
-
-    display: flex;
-    justify-content: center;
-    align-self: flex-start;
-    gap: 2rem;
-    flex: 1;
-}
-
-.google-btn:hover {
-    box-shadow: 0px 25px 20px -20px rgba(0, 0, 0, 0.45);
-    transform: translateY(-5px);
-}
-
-.google-icon {
-    width: 25px;
-    height: 25px;
-}
 
 .footer > button {
     margin-top: 2rem;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+
+h3{
+    font-size: 20px;
+}
+
+.h3-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 10px;
+    text-align: center;
+    text-size-adjust: 1px;
 }
 
 /* X-Large Screen Sizes */
