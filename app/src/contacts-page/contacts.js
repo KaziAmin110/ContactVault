@@ -126,7 +126,7 @@ function saveContactDetails() {
     updatContactToDatabase();
 }
 
-function addNewContact() {
+async function addNewContact() {
 
     const firstname = document.getElementById('new-contact-firstname').value;
     const lastname = document.getElementById('new-contact-lastname').value;
@@ -148,16 +148,13 @@ function addNewContact() {
         firstnameInput.classList.remove('is-invalid');
     }
 
-    if (!lastname) {
-        const lastnameInput = document.getElementById('new-contact-lastname');
-        lastnameInput.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        const lastnameInput = document.getElementById('new-contact-lastname');
-        lastnameInput.classList.remove('is-invalid');
-    }
 
-    if (!validateEmail(email)) {
+
+    const lastnameInput = document.getElementById('new-contact-lastname');
+    lastnameInput.classList.remove('is-invalid');
+
+
+    if (email && !validateEmail(email)) {
         const emailInput = document.getElementById('new-contact-email');
         emailInput.classList.add('is-invalid');
         isValid = false;
@@ -166,7 +163,7 @@ function addNewContact() {
         emailInput.classList.remove('is-invalid');
     }
 
-    if (!validatePhoneNumber(phone)) {
+    if (phone && !validatePhoneNumber(phone)) {
         const phoneInput = document.getElementById('new-contact-phone');
         phoneInput.classList.add('is-invalid');
         isValid = false;
@@ -175,63 +172,53 @@ function addNewContact() {
         phoneInput.classList.remove('is-invalid');
     }
 
-    if (!avatarFile) {
-        const avatarInput = document.getElementById('new-contact-avatar');
-        avatarInput.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        const avatarInput = document.getElementById('new-contact-avatar');
-        avatarInput.classList.remove('is-invalid');
-    }
 
+
+    const avatarInput = document.getElementById('new-contact-avatar');
+    avatarInput.classList.remove('is-invalid');
+
+    console.log(isValid);
     if (!isValid) {
         return;
     }
+    const contactId = await addContactToDatabase(firstname, lastname, email, phone, bio, description.value);
 
-    const reader = new FileReader();
-    reader.onload = function (event) {
-        const avatarDataUrl = event.target.result;
-        const contactList = document.querySelector('#contact-list');
-        const noContactsMessage = document.querySelector('.no-contacts');
-        if (noContactsMessage) {
-            noContactsMessage.remove();
-        }
+    // Creates a dynamic instance of a contact using all of the information from the popout
 
-        //uses .then() to ensure the id value is returned from the async function addContactToDatabase
-        addContactToDatabase(firstname, lastname, email, phone, bio, description.value)
-            .then(contactId => {
-                if (avatarFile) {
-                    uploadAvatar(contactId, 1);
-                }
-                // Creates a dynamic instance of a contact using all of the information from the popout
-                const newContactItem = document.createElement('li');
-                newContactItem.setAttribute('data-id', contactId);
-                const idDiv = document.createElement('div');
-                idDiv.innerText = `${contactId}`;
-                idDiv.style.display = "none";
-                newContactItem.classList.add('list-group-item');
-                newContactItem.setAttribute('onclick', 'selectContact(this)');
-                newContactItem.appendChild(idDiv);
-                newContactItem.innerHTML = `
-                <div class="contact-info">
-                    <img src="${avatarDataUrl}" alt="${firstname} ${lastname}" class="avatar-${contactId} avatar">
-                    <div class="contact-details">
-                        <h5 id="contact-id-${contactId}">${firstname} ${lastname}</h5>
-                        <small class="small-phone-${contactId}">${phone}</small>
-                    </div>
-                </div>
-            `;
-                contactList.appendChild(newContactItem);
-                $('#addContactModal').modal('hide');
-                document.getElementById('add-contact-form').reset();
-            })
-            .catch(error => {
-                console.error("Error adding contact:", error);
-            });
-    };
+    const contactList = document.querySelector('#contact-list');
+    const noContactsMessage = document.querySelector('.no-contacts');
+    if (noContactsMessage) {
+        noContactsMessage.remove();
+    }
 
-    reader.readAsDataURL(avatarFile);
+    if (avatarFile)
+        uploadAvatar(contactId, 1);
+
+    const avatarUrl = await getContact(contactId).avatarUrl;
+
+    const newContactItem = document.createElement('li');
+    newContactItem.setAttribute('data-id', contactId);
+    const idDiv = document.createElement('div');
+    idDiv.innerText = `${contactId}`;
+    idDiv.style.display = "none";
+    newContactItem.classList.add('list-group-item');
+    newContactItem.setAttribute('onclick', 'selectContact(this)');
+    newContactItem.appendChild(idDiv);
+    newContactItem.innerHTML = `
+    <div class="contact-info">
+        <img src="${avatarUrl}" alt="${firstname} ${lastname}" class="avatar-${contactId} avatar">
+        <div class="contact-details">
+            <h5 id="contact-id-${contactId}">${firstname} ${lastname}</h5>
+            <small class="small-phone-${contactId}">${phone}</small>
+        </div>
+    </div>`;
+    contactList.appendChild(newContactItem);
+    $('#addContactModal').modal('hide');
+    document.getElementById('add-contact-form').reset();
+
 }
+
+
 
 // Update Existing Contact Code 
 async function updateExistingContact() {
@@ -257,14 +244,11 @@ async function updateExistingContact() {
         firstnameInput.classList.remove('is-invalid');
     }
 
-    if (!lastname) {
-        const lastnameInput = document.getElementById('update-contact-lastname');
-        lastnameInput.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        const lastnameInput = document.getElementById('update-contact-lastname');
-        lastnameInput.classList.remove('is-invalid');
-    }
+
+
+    const lastnameInput = document.getElementById('update-contact-lastname');
+    lastnameInput.classList.remove('is-invalid');
+
 
     if (email && !validateEmail(email)) {
         const emailInput = document.getElementById('update-contact-email');
@@ -306,8 +290,8 @@ async function updatContactToDatabase() {
 
     let id = parseInt(document.querySelector('.selected').getAttribute('data-id'));
     console.log("updating to database id: " + id);
-    
-    if (avatarFile) {
+
+    if (document.querySelector('#update-contact-avatar').files[0]) {
         uploadAvatar(id, 2);
     }
 
