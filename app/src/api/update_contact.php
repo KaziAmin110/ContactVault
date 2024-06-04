@@ -20,6 +20,12 @@ if (!isset($update_contact_payload->contact)) {
     exit;
 }
 
+if ($update_contact_payload->contact->avatar_url != null) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Cannot update avatar_url directly, use set_contact_avatar.php']);
+    exit;
+}
+
 $database = new Database();
 
 $contact_manager = new ContactManager($database);
@@ -44,6 +50,7 @@ try {
     $contact->email_address = $update_contact_payload->contact->email_address ?? $contact->email_address;
     $contact->bio = $update_contact_payload->contact->bio ?? $contact->bio;
     $contact->description = $update_contact_payload->contact->description ?? $contact->description;
+    $contact->avatar_url = $update_contact_payload->contact->avatar_url ?? $contact->avatar_url;
 
     $success = $contact_manager->updateContact($contact);
 
