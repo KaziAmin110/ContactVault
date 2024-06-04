@@ -219,7 +219,9 @@ function addNewContact() {
 }
 
 // Update Existing Contact Code 
-function updateExistingContact() {
+async function updateExistingContact() {
+
+    event.preventDefault();
 
     const firstname = document.getElementById('update-contact-firstname').value;
     const lastname = document.getElementById('update-contact-lastname').value;
@@ -281,32 +283,34 @@ function updateExistingContact() {
     }
 
     updateContactFrontend();
-    updatContactToDatabase();
+    await updatContactToDatabase();
 
     $('#editContactModal').modal('hide');
     document.getElementById('edit-contact-form').reset();
 
 }
 
-function updatContactToDatabase() {
-
+async function updatContactToDatabase() {
+    
     let id = parseInt(document.querySelector('.selected').getAttribute('data-id'));
     console.log("updating to database id: "+id);
     
     uploadAvatar(id, 2);
 
-    let updatedContact = {
+    const updatedContact = {
         id: id,
         first_name: document.getElementById('update-contact-firstname').value,
         last_name: document.getElementById('update-contact-lastname').value,
         email_address: document.getElementById('update-contact-email').value,
         phone_number: document.getElementById('update-contact-phone').value,
-        avatar_url: "",
+        avatar_url: null,
         bio: document.getElementById('update-contact-bio').value,
         description: document.getElementById('update-contact-description').value
     };
 
-    console.log("UPDATING CONTACT: " + updateContact(Cookies.get("jwtToken"), updatedContact));
+    let response= await updateContact(Cookies.get("jwtToken"), updatedContact);
+
+    console.log("UPDATING CONTACT: " + response);
 }
 
 async function updateContact(token, contact) {
