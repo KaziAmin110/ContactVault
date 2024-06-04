@@ -165,6 +165,9 @@ class Contact
         $this->last_name = $last_name;
         $this->phone_number = $phone_number;
         $this->email_address = $email_address;
+        if ($avatar_url == null || empty($avatar_url)) {
+            $avatar_url = "contacts-page/contact-images/Default_pfp.svg";
+        }
         $this->avatar_url = $avatar_url;
         $this->bio = $bio;
         $this->description = $description;
