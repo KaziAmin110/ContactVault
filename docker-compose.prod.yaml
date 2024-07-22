@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  traefik:
+    image: traefik:v2.9
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge=true"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare"
+      - "--certificatesresolvers.cloudflare.acme.email=contact@warrensnipse.dev"
+      - "--certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    env_file: .cloudflare
+    restart: always
+
+  database:
+    image: mysql:8.4
+    restart: always
+    env_file:
+      - ./secrets/.env
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: true
+    volumes:
+      - ./database_init_scripts:/docker-entrypoint-initdb.d/:ro
+      - ./.cache/mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: database
+      PMA_PORT: 3306
+    env_file:
+      - ./secrets/.env
+    volumes:
+      - ./secrets:/secrets
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.phpmyadmin.rule=Host(`contact-vault-phpmyadmin.warrensnipes.dev`)"
+      - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
+      - "traefik.http.routers.phpmyadmin.tls.certresolver=cloudflare"
+
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: ./app
+    restart: always
+    env_file:
+      - ./secrets/.env
+    volumes:
+      - "./secrets:/secrets"
+      - "./avatars:/var/www/html/avatars"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`contact-vault.warrensnipes.dev`)"
+      - "traefik.http.routers.app.entrypoints=websecure"
+      - "traefik.http.routers.app.tls.certresolver=cloudflare"
+
+volumes:
+  letsencrypt:
+
